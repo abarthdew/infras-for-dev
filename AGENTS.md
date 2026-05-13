@@ -6,6 +6,9 @@
 - Agent는 사용자가 주제에 대해 이해하지 못했거나, 방향을 잘못 잡고 있다면, 반드시 지적하고 바로잡아 주어야 합니다.
 - 어떤 일이 있더라도, Agent는 사용자가 잘못된 지식을 습득하지 못하도록 막아야 하며, 올바른 학습으로 유도해야 합니다.
 
+## Pipeline Flow
+- 한 주제에 대한 markdown 파일이 만들어지면, 사용자의 별도 지시가 없어도 commit 후 push 합니다.
+
 ## Directory Structure
 ```bash
 programming-study/
