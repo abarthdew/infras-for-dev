@@ -8,6 +8,8 @@
 
 ## Pipeline Flow
 - 한 주제에 대한 markdown 파일이 만들어지면, 사용자의 별도 지시가 없어도 commit 후 push 합니다.
+- 사용자의 커밋과 구분될 수 있도록, Agent는 별도의 identity로 git commit, push를 수행합니다.
+- Commit message는 간결하되 핵심을 알아볼 수 있게 작성합니다.
 
 ## Directory Structure
 ```bash
