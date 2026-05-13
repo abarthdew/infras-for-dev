@@ -1,47 +1,109 @@
 # Linux
 
 ## 명령어
+아래 예시는 다음과 같은 연습 디렉토리를 전제한다.
+
+```bash
+~/study-linux/
+├── notes/
+│   ├── linux.md
+│   └── shell.md
+├── logs/
+│   ├── app.log
+│   └── error.log
+└── scripts/
+    └── backup.sh
+```
+
 ### 파일/디렉토리
 ```bash
+# 현재 내가 어느 디렉토리에 있는지 확인
 pwd
-ls
-cd
-mkdir
-rm
-cp
-mv
-find
+
+# 숨김 파일과 자세한 정보를 함께 보기
+ls -la ~/study-linux
+
+# 작업 디렉토리 이동
+cd ~/study-linux/notes
+
+# 중간 디렉토리까지 한 번에 만들기
+mkdir -p ~/study-linux/archive/2026
+
+# 파일 삭제: rm은 되돌리기 어렵기 때문에 먼저 ls로 대상을 확인하는 습관이 좋다
+ls ~/study-linux/logs/*.log
+rm ~/study-linux/logs/error.log
+
+# 파일 복사
+cp ~/study-linux/notes/linux.md ~/study-linux/archive/linux-2026.md
+
+# 파일 이름 변경 또는 위치 이동
+mv ~/study-linux/archive/linux-2026.md ~/study-linux/archive/linux-basic.md
+
+# 특정 이름의 파일 찾기
+find ~/study-linux -name "*.md"
 ```
 
 ### 파일 보기
 ```bash
-cat
-less
-head
-tail
-grep
+# 짧은 파일 전체 출력
+cat ~/study-linux/notes/linux.md
+
+# 긴 파일을 페이지 단위로 읽기
+less ~/study-linux/logs/app.log
+
+# 파일 앞부분만 확인
+head -n 20 ~/study-linux/logs/app.log
+
+# 파일 끝부분만 확인
+tail -n 20 ~/study-linux/logs/app.log
+
+# 로그를 실시간으로 따라가며 보기
+tail -f ~/study-linux/logs/app.log
+
+# 특정 단어가 들어간 줄 검색
+grep "ERROR" ~/study-linux/logs/app.log
 ```
 
 ### 권한
 ```bash
-chmod
-chown
-sudo
+# 스크립트 실행 권한 추가
+chmod +x ~/study-linux/scripts/backup.sh
+
+# 파일 소유자 변경
+sudo chown $USER:$USER ~/study-linux/scripts/backup.sh
+
+# 관리자 권한으로 명령 실행
+sudo apt update
 ```
 
 ### 네트워크
 ```bash
-curl
-ping
-ssh
-scp
+# HTTP 응답 헤더 확인
+curl -I https://example.com
+
+# 네트워크 연결 확인
+ping -c 4 google.com
+
+# 원격 서버 접속
+ssh ubuntu@192.168.0.10
+
+# 로컬 파일을 원격 서버로 복사
+scp ~/study-linux/notes/linux.md ubuntu@192.168.0.10:/home/ubuntu/
 ```
 
 ### 패키지 관리
 ```bash
-apt
-apt install
-apt update
+# 패키지 목록 갱신
+sudo apt update
+
+# 설치 가능한 패키지 검색
+apt search tree
+
+# 패키지 설치
+sudo apt install tree
+
+# 설치된 패키지 제거
+sudo apt remove tree
 ```
 
 ## Shell
