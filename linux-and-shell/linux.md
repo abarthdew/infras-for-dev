@@ -901,3 +901,345 @@ stdin         프로그램에게 데이터 흐름을 넘기는 공통 입력 통
 ```
 
 따라서 `cat` 예시만 보면 stdin이 불필요해 보일 수 있지만, 리눅스 전체에서는 stdin이 명령어 조합과 자동화의 핵심이다.
+
+## Q&A: 여러 단계의 명령을 한꺼번에 입력하는 방식
+
+### 질문
+복수 단계의 명령을 한꺼번에 입력하는 방식은 무엇인가? `Enter`를 치거나, 한 줄로 쓰거나 하는 방식이 있는 것으로 안다. 다양한 방식의 예시와 원리를 알고 싶다. 예를 들어 cmd, PowerShell, shell에서 입력하는 엔터 방식이 모두 다르다.
+
+### 답변
+여러 단계의 명령을 한꺼번에 입력하는 방식은 크게 두 가지 관점으로 나눌 수 있다.
+
+```text
+1. 명령어 여러 개를 어떤 관계로 이어서 실행할 것인가
+2. 한 명령어를 여러 줄에 나누어 입력할 것인가
+```
+
+첫 번째는 `;`, `&&`, `||`, `|` 같은 **명령 연결 방식**의 문제다. 두 번째는 `\`, 따옴표, 괄호, here document 같은 **줄 계속 입력 방식**의 문제다.
+
+## 1. 명령어를 순서대로 실행하기: `;`
+
+`;`는 앞 명령의 성공/실패와 관계없이 다음 명령을 실행한다.
+
+```bash
+mkdir logs; cd logs; touch app.log
+```
+
+이 명령은 다음을 한 줄에 쓴 것이다.
+
+```bash
+mkdir logs
+cd logs
+touch app.log
+```
+
+다만 `;`는 앞 명령이 실패해도 뒤 명령을 실행한다. 그래서 실패하면 멈춰야 하는 작업에는 적합하지 않을 수 있다.
+
+## 2. 성공했을 때만 다음 명령 실행하기: `&&`
+
+`&&`는 앞 명령이 성공했을 때만 뒤 명령을 실행한다.
+
+```bash
+mkdir logs && cd logs && touch app.log
+```
+
+이 경우 `mkdir logs`가 실패하면 `cd logs`는 실행되지 않는다. `cd logs`가 실패하면 `touch app.log`도 실행되지 않는다.
+
+실무에서는 `;`보다 `&&`가 더 안전한 경우가 많다.
+
+```text
+;   앞 명령 실패와 관계없이 계속 실행
+&&  앞 명령 성공 시에만 계속 실행
+```
+
+## 3. 실패했을 때만 다음 명령 실행하기: `||`
+
+`||`는 앞 명령이 실패했을 때만 뒤 명령을 실행한다.
+
+```bash
+ls missing.txt || echo "파일이 없습니다"
+```
+
+`missing.txt`가 없어서 `ls`가 실패하면 `echo`가 실행된다.
+
+`&&`와 `||`를 함께 쓰면 간단한 조건 처리처럼 사용할 수 있다.
+
+```bash
+grep "ERROR" app.log && echo "에러 있음" || echo "에러 없음"
+```
+
+다만 이런 방식은 명령의 성공/실패 상태에 의존하므로, 복잡한 로직은 shell script의 `if`문으로 쓰는 편이 더 명확하다.
+
+## 4. 왼쪽 출력을 오른쪽 입력으로 넘기기: `|`
+
+파이프 `|`는 왼쪽 명령의 stdout을 오른쪽 명령의 stdin으로 연결한다.
+
+```bash
+ls -la | grep ".md"
+```
+
+흐름은 다음과 같다.
+
+```text
+ls -la의 stdout -> grep의 stdin -> grep의 stdout -> 터미널
+```
+
+여러 단계로 이어 붙일 수도 있다.
+
+```bash
+cat app.log | grep "ERROR" | sort | uniq
+```
+
+하지만 `grep`은 파일 이름을 직접 받을 수 있으므로, 아래처럼 쓰는 편이 더 간단한 경우도 많다.
+
+```bash
+grep "ERROR" app.log | sort | uniq
+```
+
+## 5. 한 명령어를 여러 줄로 나누기: `\`
+
+Bash 같은 리눅스 셸에서는 줄 끝에 `\`를 붙이면 다음 줄까지 하나의 명령으로 이어진다.
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"name":"shin"}' \
+  https://example.com/users
+```
+
+여기서 `\`는 "아직 명령이 끝나지 않았다. 다음 줄도 이어서 읽어라"는 뜻이다.
+
+주의할 점은 `\` 뒤에 공백이 있으면 문제가 될 수 있다는 것이다. 줄 끝의 마지막 문자가 `\`여야 한다.
+
+## 6. 따옴표가 닫히지 않으면 계속 입력 상태가 된다
+
+셸에서 따옴표를 열고 닫지 않으면 `Enter`를 쳐도 명령이 실행되지 않고 다음 줄 입력을 기다린다.
+
+```bash
+echo "hello
+world"
+```
+
+셸은 큰따옴표가 닫힐 때까지 계속 입력을 받는다. 보통 프롬프트가 `>`처럼 바뀐다.
+
+```bash
+$ echo "hello
+> world"
+```
+
+이 `>`는 리다이렉션 기호가 아니라, 셸이 "아직 입력이 끝나지 않았다"고 보여주는 보조 프롬프트다.
+
+## 7. 괄호나 블록을 사용해 여러 명령 묶기
+
+소괄호 `(...)`는 명령 묶음을 서브셸에서 실행한다.
+
+```bash
+(cd logs && ls -la)
+```
+
+이 경우 괄호 안에서 `cd logs`를 해도, 괄호 밖 현재 디렉토리는 바뀌지 않는다.
+
+중괄호 `{ ...; }`는 현재 셸에서 명령을 묶는다.
+
+```bash
+{ echo "start"; date; echo "end"; }
+```
+
+주의할 점은 `{` 뒤와 `}` 앞에 공백이 필요하고, 마지막 명령 뒤에 `;`가 필요하다는 것이다.
+
+```text
+(...)  서브셸에서 실행
+{ ...; } 현재 셸에서 실행
+```
+
+## 8. 여러 줄 입력을 명령어에 넘기기: here document
+
+here document는 여러 줄 텍스트를 명령어의 stdin으로 넘길 때 사용한다.
+
+```bash
+cat << EOF
+hello
+linux
+EOF
+```
+
+흐름은 다음과 같다.
+
+```text
+hello\nlinux 텍스트 -> cat의 stdin -> cat의 stdout -> 터미널
+```
+
+파일을 만들 때도 자주 쓴다.
+
+```bash
+cat > memo.txt << EOF
+first line
+second line
+EOF
+```
+
+이 방식은 스크립트에서 설정 파일이나 긴 입력을 만들 때 유용하다.
+
+## 9. Bash에서 Enter가 실행인지 계속 입력인지 결정되는 원리
+
+Bash에서 `Enter`를 쳤을 때 명령이 실행되는지는 셸이 보기에 **문장이 완성되었는지**에 따라 달라진다.
+
+즉 다음 상태라면 계속 입력을 기다린다.
+
+```text
+따옴표가 닫히지 않음
+괄호가 닫히지 않음
+파이프 뒤에 다음 명령이 없음
+줄 끝이 \ 로 끝남
+here document가 아직 끝나지 않음
+```
+
+예를 들어 파이프 뒤에서 줄을 바꿔도 된다.
+
+```bash
+ls -la |
+grep ".md"
+```
+
+셸은 `|` 뒤에 오른쪽 명령이 필요하다는 것을 알기 때문에 바로 실행하지 않고 다음 줄을 기다린다.
+
+## 10. cmd.exe에서는 어떻게 다른가
+
+Windows의 `cmd.exe`에서는 명령 연결 방식이 일부 비슷하지만 문법이 다르다.
+
+```cmd
+dir & echo done
+```
+
+`&`는 앞 명령 성공/실패와 관계없이 다음 명령을 실행한다. Bash의 `;`와 비슷하다.
+
+```cmd
+dir && echo success
+```
+
+앞 명령이 성공하면 다음 명령을 실행한다.
+
+```cmd
+dir missing || echo failed
+```
+
+앞 명령이 실패하면 다음 명령을 실행한다.
+
+cmd에서 한 명령을 다음 줄로 이어 쓰려면 줄 끝에 `^`를 사용한다.
+
+```cmd
+echo hello ^
+world
+```
+
+즉 Bash의 `\` 역할을 cmd에서는 `^`가 한다고 보면 된다.
+
+## 11. PowerShell에서는 어떻게 다른가
+
+PowerShell은 객체 기반 셸이라 Bash/cmd와 사고방식이 조금 다르다. 그래도 여러 명령 연결 방식은 있다.
+
+PowerShell 7 이상에서는 `&&`, `||`를 지원한다.
+
+```powershell
+Get-ChildItem && Write-Output "success"
+Get-ChildItem missing || Write-Output "failed"
+```
+
+명령을 한 줄에 여러 개 쓰려면 `;`를 사용한다.
+
+```powershell
+New-Item -ItemType Directory logs; Set-Location logs; New-Item app.log
+```
+
+PowerShell에서 파이프 `|`는 텍스트 줄만 넘기는 것이 아니라, 가능하면 **객체**를 넘긴다.
+
+```powershell
+Get-ChildItem | Where-Object { $_.Extension -eq ".md" }
+```
+
+Bash의 파이프는 보통 텍스트 스트림을 넘긴다. PowerShell의 파이프는 객체를 넘긴다는 점이 큰 차이다.
+
+PowerShell에서 줄을 이어 쓰는 대표적인 방법은 백틱 `` ` `` 이다.
+
+```powershell
+Get-ChildItem `
+  -Path . `
+  -Recurse
+```
+
+하지만 PowerShell에서는 파이프 뒤, 괄호 안, 배열 안처럼 문장이 아직 끝나지 않았다는 것이 명확하면 백틱 없이도 줄바꿈할 수 있다.
+
+```powershell
+Get-ChildItem |
+  Where-Object { $_.Extension -eq ".md" } |
+  Select-Object Name
+```
+
+## 12. Bash, cmd, PowerShell 비교
+
+```text
+목적                       Bash/sh        cmd.exe        PowerShell
+순차 실행                  ;              &              ;
+성공 시 다음 실행           &&             &&             &&
+실패 시 다음 실행           ||             ||             ||
+파이프                     |              |              |
+한 명령 줄 이어쓰기         \              ^              `
+출력 덮어쓰기              >              >              >
+출력 추가                  >>             >>             >>
+에러 리다이렉션             2>             2>             2>
+```
+
+단, 같은 기호라도 셸마다 세부 의미가 다를 수 있다. 특히 PowerShell의 파이프는 텍스트보다 객체 중심이라는 차이가 크다.
+
+## 13. 실전에서 추천하는 사용 방식
+
+간단히 여러 명령을 실행할 때는 다음처럼 쓴다.
+
+```bash
+pwd; ls; date
+```
+
+앞 명령이 성공해야 다음 명령을 실행해야 한다면 `&&`를 쓴다.
+
+```bash
+mkdir logs && cd logs && touch app.log
+```
+
+출력을 단계적으로 가공해야 한다면 파이프를 쓴다.
+
+```bash
+grep "ERROR" app.log | sort | uniq
+```
+
+긴 명령은 `\`로 여러 줄에 나누어 쓴다.
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"name":"shin"}' \
+  https://example.com/users
+```
+
+반복해서 사용할 명령 묶음이 길어진다면 한 줄에 억지로 쓰기보다 `.sh` 파일로 분리하는 것이 좋다.
+
+```bash
+#!/usr/bin/env bash
+mkdir -p logs
+cd logs || exit 1
+touch app.log
+```
+
+정리하면 다음과 같다.
+
+```text
+;       순서대로 실행하되 실패해도 계속 간다
+&&      성공했을 때만 다음 단계로 간다
+||      실패했을 때만 다음 단계로 간다
+|       출력과 입력을 연결한다
+\       Bash에서 한 명령을 다음 줄로 이어 쓴다
+^       cmd에서 한 명령을 다음 줄로 이어 쓴다
+`       PowerShell에서 한 명령을 다음 줄로 이어 쓴다
+Enter   문장이 완성되면 실행, 완성되지 않았으면 계속 입력
+```
+
+핵심은 `Enter` 자체가 항상 실행을 의미하는 것은 아니라는 점이다. 셸은 사용자가 입력한 문장이 문법적으로 완성되었는지 판단하고, 완성되었으면 실행하고, 아직 덜 끝났으면 다음 줄 입력을 기다린다.
