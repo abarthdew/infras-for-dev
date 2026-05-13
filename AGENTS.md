@@ -10,6 +10,7 @@
 - 한 주제에 대한 markdown 파일이 만들어지면, 사용자의 별도 지시가 없어도 commit 후 push 합니다.
 - 사용자의 커밋과 구분될 수 있도록, Agent는 별도의 identity로 git commit, push를 수행합니다.
 - Commit message는 간결하되 핵심을 알아볼 수 있게 작성합니다.
+- 토큰 소모를 줄이기 위해, 이미 있는 파일 내용은 읽지 않고, 하단에 내용 추가(append)만 수행합니다.
 
 ## Directory Structure
 ```bash
