@@ -1347,3 +1347,119 @@ SSH                         CLI 원격 제어
 ```
 
 따라서 "구글 리모트 데스크탑이 GUI 레벨의 원격 제어라면, SSH는 CLI 레벨의 원격 접속"이라는 이해는 대체로 맞다. 다만 SSH는 커널에 직접 접속하는 것이 아니라, 원격 OS에서 동작하는 SSH 서버를 통해 사용자 인증 후 셸을 실행하는 방식이라고 정확히 이해해야 한다.
+
+## Q&A: 데이터센터 노드, Headless 서버, SSH, EC2
+
+### 질문
+데이터 센터의 노드는 전부 headless PC라고 할 수 있고, SSH로 접속한 다음 거기서 앱 배포를 하거나 서버 관리를 하는 식인가? AWS의 EC2 사용 방식이 이것을 채택하고 있는가?
+
+### 답변
+큰 방향은 맞다. 데이터센터에 있는 서버들은 대부분 모니터, 키보드, 마우스를 직접 연결해서 쓰는 개인용 PC처럼 운영하지 않는다. 보통은 **headless 서버**처럼 운영한다.
+
+여기서 headless란 그래픽 모니터나 데스크톱 환경 없이, 네트워크를 통해 원격으로 관리되는 방식을 말한다.
+
+```text
+headless server = 직접 화면을 보고 조작하지 않고, 네트워크로 원격 관리하는 서버
+```
+
+다만 "데이터센터의 노드는 전부 headless PC"라고 표현하면 조금 좁다. 데이터센터의 노드는 보통 다음을 포함한다.
+
+```text
+물리 서버 bare-metal server
+가상 머신 VM
+컨테이너를 실행하는 호스트
+스토리지 노드
+네트워크 장비
+관리용 서버
+```
+
+즉 일반적인 PC라기보다는, 서버용 하드웨어 또는 그 위에서 실행되는 가상화된 컴퓨팅 단위라고 보는 편이 정확하다.
+
+리눅스 서버 관리에서는 SSH가 매우 일반적인 접속 방식이다.
+
+```bash
+ssh ubuntu@server.example.com
+```
+
+접속 후에는 원격 서버의 셸에서 다음과 같은 작업을 한다.
+
+```text
+패키지 설치
+설정 파일 수정
+로그 확인
+프로세스 상태 확인
+서비스 재시작
+애플리케이션 배포
+디스크/메모리/CPU 상태 점검
+방화벽 설정
+```
+
+예를 들면 다음과 같은 명령을 원격 서버에서 실행할 수 있다.
+
+```bash
+sudo apt update
+sudo systemctl status nginx
+journalctl -u nginx
+cd /srv/my-app
+git pull
+sudo systemctl restart my-app
+```
+
+하지만 현대 운영에서는 사람이 매번 SSH로 들어가서 수동으로 배포하는 방식만 쓰지는 않는다. 규모가 커질수록 자동화 도구를 많이 사용한다.
+
+```text
+SSH 수동 접속
+배포 스크립트
+Ansible 같은 구성 관리 도구
+CI/CD 파이프라인
+Docker/Kubernetes 기반 배포
+클라우드 제공 관리 도구
+```
+
+즉 SSH는 기본적이고 강력한 관리 통로지만, 큰 시스템에서는 SSH 위에 자동화 계층을 얹거나, SSH 없이도 관리 가능한 방식을 함께 사용한다.
+
+AWS EC2도 이 모델을 매우 대표적으로 사용한다. EC2에서 Linux 인스턴스를 만들면 보통 SSH 키 페어를 등록하고, 다음처럼 접속한다.
+
+```bash
+ssh -i my-key.pem ubuntu@ec2-public-ip
+```
+
+Amazon Linux라면 사용자 이름이 보통 `ec2-user`인 경우가 많다.
+
+```bash
+ssh -i my-key.pem ec2-user@ec2-public-ip
+```
+
+Ubuntu AMI라면 보통 `ubuntu` 사용자로 접속한다.
+
+```bash
+ssh -i my-key.pem ubuntu@ec2-public-ip
+```
+
+접속 후에는 일반 리눅스 서버처럼 패키지를 설치하고, 앱을 실행하고, 로그를 확인하고, 서비스를 관리한다.
+
+```bash
+sudo apt update
+sudo apt install nginx
+sudo systemctl start nginx
+```
+
+다만 EC2가 반드시 SSH만 사용하는 것은 아니다. Windows EC2는 보통 RDP로 접속하고, Linux EC2도 AWS Systems Manager Session Manager를 사용하면 SSH 포트를 열지 않고도 세션 접속을 할 수 있다.
+
+```text
+Linux EC2   보통 SSH
+Windows EC2 보통 RDP
+SSM Session Manager SSH 대체 또는 보완 수단
+```
+
+정리하면 다음과 같다.
+
+```text
+데이터센터 서버는 보통 headless 방식으로 운영된다.
+SSH는 리눅스 서버에 원격 CLI로 접속하는 대표적인 방법이다.
+서버 관리와 앱 배포를 SSH 세션에서 직접 수행할 수 있다.
+EC2의 Linux 인스턴스도 기본적으로 이 방식을 많이 사용한다.
+하지만 대규모 운영에서는 SSH 수동 작업보다 자동화와 관리 도구를 함께 사용한다.
+```
+
+따라서 "GUI 원격 제어 대신 SSH로 CLI 접속해서 서버를 관리하고 앱을 배포한다"는 이해는 맞다. 다만 데이터센터의 노드는 단순한 PC라기보다 서버, VM, 컨테이너 호스트 같은 컴퓨팅 자원이고, EC2는 그중 VM 기반 클라우드 서버를 SSH로 관리하는 대표적인 예라고 보면 된다.
