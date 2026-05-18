@@ -1786,3 +1786,80 @@ systemctl     systemd를 조작하는 명령어
 ```
 
 따라서 `systemd`는 리눅스 커널의 네이티브 기능은 아니지만, 현대 리눅스 배포판에서 사실상 표준처럼 널리 쓰이는 기본 시스템 관리 도구라고 이해하면 된다.
+
+## Q&A: systemd, systemctl, shell, kernel의 관계
+
+### 질문
+그러니까 `systemd`는 `systemctl`으로 조작되는 프로그램이고, `curl` 등을 명령어로 입력하면 shell이 그걸 커널로 전달하는 메커니즘과 비슷한 것인가?
+
+### 답변
+거의 맞지만, 조금만 정확히 다듬자.
+
+`systemd`와 `systemctl` 관계는 이렇게 봐야 한다.
+
+```text
+systemd    실제로 시스템/서비스를 관리하는 데몬
+systemctl  systemd에게 명령을 보내는 CLI 도구
+```
+
+예를 들어 다음 명령을 보자.
+
+```bash
+sudo systemctl restart nginx
+```
+
+이건 `systemctl`이라는 명령어가 실행되고, 그 명령어가 `systemd`에게 "nginx 서비스를 재시작해줘"라고 요청하는 구조다. 실제로 nginx 프로세스를 관리하고 상태를 추적하는 주체는 `systemd`다.
+
+다만 `curl` 실행과는 조금 다르다.
+
+```bash
+curl https://example.com
+```
+
+이 경우 셸이 `curl`을 "커널로 전달한다"기보다는 다음 흐름에 가깝다.
+
+```text
+사용자 입력
+-> shell이 curl 실행 파일을 찾음
+-> shell이 커널에게 새 프로세스 실행을 요청
+-> 커널이 curl 프로세스를 만듦
+-> curl 프로세스가 실행됨
+```
+
+즉 셸은 커널에게 "이 프로그램 실행해줘"라고 시스템 콜을 통해 요청한다.
+
+반면 다음 명령은 이렇게 볼 수 있다.
+
+```bash
+systemctl restart nginx
+```
+
+```text
+사용자 입력
+-> shell이 systemctl 실행
+-> systemctl 프로세스가 systemd와 통신
+-> systemd가 nginx 서비스 상태를 변경
+-> 필요하면 커널에게 프로세스 생성/종료 등을 요청
+```
+
+그래서 비슷한 점은 있다.
+
+```text
+둘 다 사용자는 명령어를 입력한다.
+둘 다 shell이 실행 파일을 찾아 프로세스로 실행한다.
+둘 다 결국 커널의 도움을 받아 프로세스가 실행된다.
+```
+
+하지만 차이는 다음과 같다.
+
+```text
+curl      = curl 자신이 일을 하는 일반 명령어
+systemctl = systemd에게 일을 시키는 조작 명령어
+systemd   = 백그라운드에서 서비스들을 관리하는 관리자 프로세스
+```
+
+한 줄로 말하면 다음과 같다.
+
+```text
+systemctl은 systemd를 조작하는 리모컨이고, curl은 직접 일을 하는 도구다.
+```
