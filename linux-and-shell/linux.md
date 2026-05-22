@@ -171,5 +171,7 @@ man grep
 ## Related Notes
 - [파일시스템과 사용자](linux-filesystem-and-users.md)
 - [셸 입출력과 명령 흐름](linux-shell-io-and-command-flow.md)
+- [네트워크 기초](linux-networking-basics.md)
 - [원격 접속과 서버](linux-remote-access.md)
+- [컨테이너](linux-containers.md)
 - [시스템 운영 개념](linux-system-operations.md)

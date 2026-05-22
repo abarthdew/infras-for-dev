@@ -415,3 +415,103 @@ systemd   = 백그라운드에서 서비스들을 관리하는 관리자 프로�
 systemctl은 systemd를 조작하는 리모컨이고, curl은 직접 일을 하는 도구다.
 ```
 
+## Q&A: systemd unit file은 무엇인가?
+
+### 질문
+systemd unit file은 무엇인가?
+
+### 답변
+systemd unit file은 `systemd`가 어떤 대상을 어떻게 관리할지 적어 둔 설정 파일이다. 서비스 실행 방법, 자동 재시작 여부, 의존성 같은 정보를 선언한다.
+
+unit은 서비스만 뜻하지 않는다.
+
+```text
+.service  데몬이나 서비스 프로세스
+.socket   소켓 기반 활성화 대상
+.timer    시간 기반 실행
+.mount    마운트 대상
+```
+
+가장 자주 보는 것은 `.service` unit이다.
+
+```ini
+[Unit]
+Description=My App
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/my-app
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+이 파일은 대략 다음 뜻이다.
+
+```text
+network.target 이후 실행
+my-app 실행 파일로 서비스 시작
+실패하면 재시작
+부팅 시 일반 서버 모드에서 함께 켤 수 있음
+```
+
+`systemctl`은 이런 unit을 기준으로 동작한다.
+
+```bash
+sudo systemctl start my-app
+sudo systemctl enable my-app
+systemctl status my-app
+```
+
+정리하면 다음과 같다.
+
+```text
+systemd unit       systemd가 관리하는 대상
+unit file          그 대상의 실행/관리 규칙을 적은 설정 파일
+systemctl          unit을 시작, 중지, 조회하는 명령어
+```
+
+## Q&A: signal은 무엇인가?
+
+### 질문
+signal은 무엇인가?
+
+### 답변
+signal은 프로세스에게 보내는 **짧은 알림 또는 제어 요청**이다. 운영체제나 다른 프로세스가 실행 중인 프로세스에 "종료해", "중단됐어", "계속해" 같은 사건을 전달할 때 쓴다.
+
+자주 만나는 signal은 다음과 같다.
+
+```text
+SIGINT   인터럽트 요청. 터미널에서 Ctrl-C와 자주 연결됨
+SIGTERM  정상 종료를 요청
+SIGKILL  즉시 강제 종료. 프로세스가 무시하거나 처리할 수 없음
+```
+
+예를 들어 프로세스에 종료 요청을 보낼 수 있다.
+
+```bash
+kill 1234
+```
+
+기본 `kill`은 보통 `SIGTERM`을 보낸다. 즉 "정리하고 종료해 달라"는 요청에 가깝다.
+
+강제 종료는 다음처럼 쓴다.
+
+```bash
+kill -KILL 1234
+```
+
+이것은 프로세스가 정리 코드를 실행할 기회도 거의 주지 않으므로 마지막 수단으로 보는 편이 좋다.
+
+프로그램은 일부 signal을 받아서 정리 작업을 수행할 수 있다. 예를 들어 서버가 `SIGTERM`을 받으면 새 요청을 그만 받고 진행 중인 작업을 정리한 뒤 종료하도록 만들 수 있다.
+
+정리하면 다음과 같다.
+
+```text
+signal    실행 중인 프로세스에 전달되는 제어/알림 메커니즘
+SIGTERM   종료 요청
+SIGKILL   강제 종료
+Ctrl-C    포그라운드 프로세스에 SIGINT를 보내는 흔한 입력
+```
+
