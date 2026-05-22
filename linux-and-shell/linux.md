@@ -1736,6 +1736,21 @@ tmux는 SSH 세션 안에서 작업 공간을 유지하고 여러 터미널을 �
 리버스 프록시는 사용자와 앱 서버 사이에서 요청을 받아 전달하고, nginx가 그 역할을 자주 맡는다.
 ```
 
+전체 연결해서 보면
+```
+사용자 요청
+↓
+Nginx(reverse proxy daemon)
+↓
+Application process
+↓
+systemd가 관리
+↓
+SSH로 원격 운영
+↓
+tmux로 세션 유지
+```
+
 ## Q&A: systemd는 무엇인가?
 
 ### 질문
