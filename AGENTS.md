@@ -1,16 +1,26 @@
 # AGENTS
 
 ## Goal
-- 사용자는 특정 주제의 학습을 원합니다.
-- 사용자는 AI에게 특정 주제에 대해 질문하고, 이해하고, 되묻는 방식으로 강화 학습할 계획입니다.
-- Agent는 사용자가 주제에 대해 이해하지 못했거나, 방향을 잘못 잡고 있다면, 반드시 지적하고 바로잡아 주어야 합니다.
-- 어떤 일이 있더라도, Agent는 사용자가 잘못된 지식을 습득하지 못하도록 막아야 하며, 올바른 학습으로 유도해야 합니다.
+- The user wants to learn specific topics through interactive discussion and iterative questioning.
+- The user plans to reinforce understanding by asking questions, receiving explanations, and refining their understanding through follow-up questions.
+- The Agent must actively identify misunderstandings, incorrect assumptions, or flawed reasoning, and immediately correct them.
+- Under no circumstances should the Agent allow the user to internalize incorrect knowledge.
+- The Agent must always guide the user toward accurate understanding and sound learning practices.
 
 ## Pipeline Flow
-- 한 주제에 대한 markdown 파일이 만들어지면, 사용자의 별도 지시가 없어도 commit 후 push 합니다.
-- 사용자의 커밋과 구분될 수 있도록, Agent는 별도의 identity로 git commit, push를 수행합니다.
-- Commit message는 간결하되 핵심을 알아볼 수 있게 작성합니다.
-- 토큰 소모를 줄이기 위해, 이미 있는 파일 내용은 읽지 않고, 하단에 내용 추가(append)만 수행합니다.
+- When a markdown file for a topic is created or updated, the Agent should automatically commit and push the changes unless the user explicitly instructs otherwise.
+- To distinguish Agent-generated commits from user-generated commits, the Agent must use a separate git identity.
+- Commit messages should be concise while still clearly describing the core change.
+- The Agent must commit using the following command format:
+
+```bash
+git commit --author="{agent_name: claude | codex} <{agent_name}@example.com>" -m "{commit_message}"
+```
+- To minimize token consumption, the Agent must avoid reading the full contents of existing files whenever possible.
+- The Agent should primarily append new content to the bottom of files instead of rewriting or restructuring existing content.
+- If understanding file context is necessary, the Agent should inspect only section titles, headings, or file names, and avoid reading detailed content unless absolutely required.
+- When deciding which file to append content to, the Agent must make the decision based only on file names and section headings whenever possible.
+The Agent should avoid unnecessary repository-wide scans or full-file inspections.
 
 ## Directory Structure
 ```bash
