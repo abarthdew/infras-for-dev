@@ -606,3 +606,316 @@ PPID          부모 프로세스 ID
 PID 1         시스템의 최상위 사용자 공간 프로세스
 ```
 
+
+---
+
+## Q&A: 시스템 모니터링 (System Monitoring)
+
+### 질문
+시스템의 CPU, 메모리 사용량 등을 어떻게 확인할까?
+
+### 답변
+
+**top** - 실시간 시스템 모니터링
+
+```bash
+top
+```
+
+```
+top - 10:30:45 up 5 days, 3:21, 1 user, load average: 0.50, 0.45, 0.40
+Tasks: 123 total,  2 running, 121 sleeping,  0 stopped,  0 zombie
+%Cpu(s):  5.2 us,  2.1 sy,  0.0 ni, 92.7 id,  0.0 wa,  0.0 hi,  0.0 si
+MiB Mem :   7956.1 total,  3456.8 free,  2048.5 used,  2450.8 buff/cache
+MiB Swap:   2048.0 total,  2048.0 free,     0.0 used.  5200.0 avail Mem
+
+   PID USER   PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+  1234 ubuntu 20   0  456789 128456  45678 S   8.2  1.6   0:15.23 python3
+  5678 www-data 20  0  789456 234567  78901 S   5.1  2.9   1:23.45 nginx
+  ...
+```
+
+각 항목의 의미:
+
+```
+load average   현재, 5분, 15분 평균 로드
+%Cpu(s)        CPU 사용률 (us: user, sy: system, id: idle)
+Mem            메모리 사용 현황
+PID            프로세스 ID
+%CPU           CPU 사용률
+%MEM           메모리 사용률
+COMMAND        명령어
+```
+
+**top 명령어 단축키**
+
+```
+q           종료
+h           도움말
+P           CPU로 정렬
+M           메모리로 정렬
+k           프로세스 종료 (kill)
+r           프로세스 우선순위 변경
+```
+
+**ps** - 현재 프로세스 목록
+
+```bash
+# 현재 사용자의 프로세스만 보기
+ps
+
+# 모든 프로세스 상세 정보
+ps aux
+
+# 특정 프로세스 검색
+ps aux | grep nginx
+```
+
+**free** - 메모리 사용량
+
+```bash
+# 기본 보기 (KB 단위)
+free
+
+# 사람이 읽기 쉬운 단위 (MB, GB)
+free -h
+
+# 1초마다 갱신
+free -h -s 1
+```
+
+```
+              total       used       free     shared   buffers    cached
+Mem:           7956       2048       3456        512        256        768
+Swap:          2048          0       2048
+```
+
+**htop** - top보다 친화적인 모니터링
+
+```bash
+# 설치 (필요한 경우)
+sudo apt install htop
+
+# 실행
+htop
+```
+
+**시스템 부하 확인**
+
+```bash
+# 로드 평균 확인
+uptime
+# 10:30:45 up 5 days, 3:21, 1 user, load average: 0.50, 0.45, 0.40
+
+# /proc/loadavg에서도 확인 가능
+cat /proc/loadavg
+# 0.50 0.45 0.40 1/123 5678
+```
+
+로드 평균 해석:
+- 1.0 = 1개 CPU를 완전히 사용 (CPU 개수에 따라 다름)
+- 4.0 (4 CPU 서버) = CPU를 완전히 사용 (정상)
+- 8.0 (4 CPU 서버) = CPU 부하 높음 (문제 가능)
+
+---
+
+## Q&A: Job Control & Background Processes
+
+### 질문
+긴 작업을 실행 중인데 중단했다가 다시 실행하고 싶으면 어떻게 할까?
+
+### 답변
+
+**백그라운드에서 프로세스 실행**
+
+```bash
+# 포그라운드에서 실행 (기본, Ctrl+C로 종료까지)
+./long-running-script.sh
+
+# 백그라운드에서 실행 (& 사용)
+./long-running-script.sh &
+
+# 출력을 리다이렉션하면서 백그라운드 실행
+./long-running-script.sh > output.log 2>&1 &
+```
+
+**jobs** - 백그라운드 작업 목록
+
+```bash
+# 현재 셸의 백그라운드 작업
+jobs
+
+# 출력 예
+[1]   Running    ./deploy.sh &
+[2]   Stopped    ./backup.sh
+[3]   Done       ./cleanup.sh
+```
+
+`[숫자]`는 job number, 상태는 Running/Stopped/Done 등.
+
+**fg** - 백그라운드 프로세스를 포그라운드로 가져오기
+
+```bash
+# 가장 최근 백그라운드 작업을 포그라운드로
+fg
+
+# 특정 job number로 가져오기
+fg %1   # job 1을 포그라운드로
+fg %2   # job 2를 포그라운드로
+```
+
+**bg** - 중지된 프로세스를 백그라운드에서 계속 실행
+
+```bash
+# 포그라운드 작업 중단 (Ctrl+Z)
+# 프롬프트에서:
+bg %1   # job 1을 백그라운드에서 계속 실행
+```
+
+**실제 흐름**
+
+```bash
+# 1. 시간이 오래 걸리는 작업 시작
+./compile.sh
+
+# 2. 중단 (Ctrl+Z)
+# [1]+ Stopped    ./compile.sh
+
+# 3. 다른 작업을 할 수 있음
+ls -la
+pwd
+
+# 4. 백그라운드에서 계속 실행
+bg %1
+# [1]+ ./compile.sh &
+
+# 5. 작업 목록 확인
+jobs
+# [1]+ Running    ./compile.sh &
+
+# 6. 포그라운드로 가져오기
+fg %1
+# ./compile.sh (작업 진행 상황 보임)
+
+# 7. 완료 또는 Ctrl+C로 종료
+```
+
+**disown** - 작업 관리에서 제거
+
+```bash
+# 백그라운드에서 실행 중인 작업
+./long-process.sh &
+
+# jobs에서 제거 (프로세스는 계속 실행)
+disown %1
+
+# 셸 종료해도 프로세스는 계속 실행됨
+exit
+```
+
+**nohup** - 연결 끊겨도 실행 계속
+
+```bash
+# SSH 접속이 끊겨도 계속 실행
+nohup ./deploy.sh > deploy.log 2>&1 &
+
+# nohup.out에 출력 저장됨 (또는 지정한 파일)
+tail -f deploy.log
+```
+
+---
+
+## Q&A: Signal & Process Management
+
+### 질문
+실행 중인 프로세스를 어떻게 종료할까? 강제 종료는 어떻게 할까?
+
+### 답변
+
+**kill** - 프로세스에 신호 전송
+
+```bash
+# 프로세스 ID 찾기
+ps aux | grep python
+# ubuntu  1234  0.5  2.1 456789 128456 ...
+
+# SIGTERM 신호로 종료 (graceful shutdown)
+kill 1234
+
+# SIGKILL 신호로 강제 종료
+kill -9 1234
+
+# SIGSTOP 신호로 일시 중지
+kill -STOP 1234
+
+# SIGCONT 신호로 재시작
+kill -CONT 1234
+```
+
+**주요 신호들**
+
+```
+SIGHUP (1)      터미널 종료 (설정 파일 재로드)
+SIGTERM (15)    정상 종료 (graceful shutdown)
+SIGKILL (9)     강제 종료 (차단 불가능)
+SIGSTOP (19)    일시 중지
+SIGCONT (18)    재시작
+```
+
+**pkill** - 프로세스 이름으로 종료
+
+```bash
+# 프로세스 이름으로 신호 전송
+pkill python      # python 프로세스 종료
+pkill -9 nginx    # nginx 강제 종료
+pkill -f "node app.js"  # 정확한 명령어로 매칭
+```
+
+**killall** - 같은 이름의 모든 프로세스 종료
+
+```bash
+# 같은 이름의 모든 프로세스 종료
+killall python
+killall -9 java
+```
+
+**프로세스 상태 확인 후 종료**
+
+```bash
+#!/bin/bash
+
+# 프로세스가 실행 중인지 확인
+if pgrep -x "myapp" > /dev/null; then
+    echo "myapp이 실행 중입니다"
+    kill $(pgrep -x "myapp")
+    sleep 2
+    
+    # 여전히 실행 중이면 강제 종료
+    if pgrep -x "myapp" > /dev/null; then
+        echo "강제 종료 중..."
+        kill -9 $(pgrep -x "myapp")
+    fi
+else
+    echo "myapp이 실행 중이 아닙니다"
+fi
+```
+
+**실제 사용 예**
+
+```bash
+# 1. Nginx 재시작
+sudo systemctl stop nginx    # graceful
+sudo systemctl start nginx
+
+# 2. 응답 없는 프로세스 강제 종료
+kill -9 12345
+
+# 3. 개발 중 이전 서버 종료 후 재실행
+pkill -f "node server.js"
+node server.js &
+
+# 4. 배포 전 이전 버전 종료
+pkill -f "python app.py"
+wait    # 모든 백그라운드 작업 대기
+```
+

@@ -296,3 +296,218 @@ root          최고 관리자 사용자
 ```
 
 따라서 `sudo -i` 후에 보이는 `root`는 `/` 경로를 뜻하는 것이 아니라, **현재 셸이 root 사용자 권한으로 실행 중**이라는 뜻이다. `/`는 경로이고, `root`는 사용자 계정이며, `/root`는 root 사용자의 홈 디렉토리다.
+
+---
+
+## Q&A: 사용자 및 그룹 관리
+
+### 질문
+리눅스에서 새로운 사용자를 추가하거나 관리하려면 어떻게 해야 할까?
+
+### 답변
+
+**사용자 관리 파일**
+
+리눅스의 사용자 정보는 다음 파일들에 저장된다:
+
+```bash
+/etc/passwd      # 사용자 계정 정보 (암호화되지 않은)
+/etc/shadow      # 사용자 암호 (암호화됨)
+/etc/group       # 그룹 정보
+/etc/gshadow     # 그룹 암호 (거의 사용 안 함)
+```
+
+**/etc/passwd 형식**
+
+```bash
+cat /etc/passwd
+```
+
+```
+root:x:0:0:root:/root:/bin/bash
+ubuntu:x:1000:1000:ubuntu:/home/ubuntu:/bin/bash
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+```
+
+각 필드:
+
+```
+사용자명:암호:UID:GID:설명:홈디렉토리:셸
+```
+
+- **UID**: User ID (0 = root, 1-999 = 시스템 사용자, 1000+ = 일반 사용자)
+- **GID**: 기본 Group ID
+- **홈디렉토리**: 로그인 후 시작 위치
+- **셸**: 로그인 셸 (nologin이면 로그인 불가)
+
+**/etc/shadow 형식**
+
+```bash
+# root만 읽을 수 있음
+sudo cat /etc/shadow
+```
+
+```
+root:$6$...(암호화):18000:0:99999:7:::
+ubuntu:$6$...(암호화):18001:0:99999:7:::
+```
+
+**useradd** - 사용자 추가
+
+```bash
+# 기본 사용자 추가
+sudo useradd john
+
+# 홈 디렉토리와 함께 추가 (-m)
+sudo useradd -m john
+
+# 특정 그룹에 속하는 사용자 추가 (-g)
+sudo useradd -m -g developers john
+
+# 여러 그룹에 속함 (-G)
+sudo useradd -m -G developers,sudo john
+
+# 셸 지정 (-s)
+sudo useradd -m -s /bin/bash john
+
+# 홈 디렉토리 경로 지정 (-d)
+sudo useradd -m -d /custom/home/john john
+
+# 한 번에 지정
+sudo useradd -m -s /bin/bash -G sudo,developers -c "John Doe" john
+```
+
+**passwd** - 비밀번호 설정/변경
+
+```bash
+# 현재 사용자 비밀번호 변경
+passwd
+
+# 다른 사용자의 비밀번호 설정 (root만)
+sudo passwd john
+
+# 비밀번호 지우기
+sudo passwd -d john
+
+# 비밀번호 잠금
+sudo passwd -l john
+
+# 비밀번호 해제
+sudo passwd -u john
+```
+
+**usermod** - 사용자 정보 수정
+
+```bash
+# 그룹 변경
+sudo usermod -g developers john
+
+# 추가 그룹 지정 (-a: append)
+sudo usermod -aG sudo john
+
+# 홈 디렉토리 변경
+sudo usermod -d /new/home/john john
+
+# 셸 변경
+sudo usermod -s /bin/zsh john
+
+# 사용자명 변경
+sudo usermod -l jane john  # john -> jane
+
+# 계정 비활성화
+sudo usermod -L john  # 로그인 불가
+sudo usermod -U john  # 로그인 가능
+```
+
+**userdel** - 사용자 삭제
+
+```bash
+# 사용자만 삭제 (홈 디렉토리 유지)
+sudo userdel john
+
+# 사용자와 홈 디렉토리 함께 삭제 (-r)
+sudo userdel -r john
+```
+
+**그룹 관리**
+
+```bash
+# 그룹 생성
+sudo groupadd developers
+
+# 그룹에 사용자 추가
+sudo usermod -aG developers john
+
+# 그룹 확인
+cat /etc/group | grep developers
+# developers:x:1001:john,jane,bob
+
+# 그룹 삭제
+sudo groupdel developers
+
+# 그룹명 변경
+sudo groupmod -n backend developers
+```
+
+**id** - 사용자 정보 확인
+
+```bash
+# 현재 사용자
+id
+# uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu),4(adm),27(sudo)
+
+# 특정 사용자
+id john
+# uid=1001(john) gid=1001(john) groups=1001(john),1002(developers)
+```
+
+**groups** - 속한 그룹 확인
+
+```bash
+# 현재 사용자
+groups
+# ubuntu adm sudo
+
+# 특정 사용자
+groups john
+# john developers sudo
+```
+
+**실제 사용 예**
+
+```bash
+# 1. 개발자 그룹 만들고 사용자 추가
+sudo groupadd developers
+sudo useradd -m -s /bin/bash -G developers alice
+sudo useradd -m -s /bin/bash -G developers bob
+
+# 2. 개발 프로젝트 디렉토리 권한 설정
+sudo chown -R :developers /home/shared/project
+sudo chmod -R 775 /home/shared/project
+# 이제 developers 그룹 멤버들이 자유롭게 수정 가능
+
+# 3. 웹 서버 사용자 추가
+sudo useradd -m -s /usr/sbin/nologin www-app
+sudo usermod -aG www-data www-app
+# nologin 셸이므로 SSH 접속 불가능 (자동 스크립트만 실행)
+
+# 4. 사용자 확인
+grep "john\|jane" /etc/passwd
+id john
+groups john
+```
+
+**sudo 권한 설정**
+
+```bash
+# /etc/sudoers 파일 편집 (visudo 사용!)
+sudo visudo
+
+# 파일 내용
+john ALL=(ALL) NOPASSWD: /usr/bin/systemctl
+# john은 systemctl을 비밀번호 없이 실행 가능
+
+bob ALL=(ALL) ALL
+# bob은 모든 명령어를 sudo로 실행 가능 (비밀번호 필요)
+```
+
