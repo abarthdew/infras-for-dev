@@ -12,10 +12,9 @@
 - To distinguish Agent-generated commits from user-generated commits, the Agent must use a separate git identity.
 - Commit messages should be concise while still clearly describing the core change.
 - The Agent must commit using the following command format:
-
-```bash
-git commit --author="{agent_name: claude | codex} <{agent_name}@example.com>" -m "{commit_message}"
-```
+    ```bash
+    git commit --author="{agent_name: claude | codex} <{agent_name}@example.com>" -m "{commit_message}"
+    ```
 - To minimize token consumption, the Agent must avoid reading the full contents of existing files whenever possible.
 - The Agent should primarily append new content to the bottom of files instead of rewriting or restructuring existing content.
 - If understanding file context is necessary, the Agent should inspect only section titles, headings, or file names, and avoid reading detailed content unless absolutely required.
