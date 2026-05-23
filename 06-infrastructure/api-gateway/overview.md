@@ -1,5 +1,39 @@
 # API Gateway
 
+## 목차
+
+- API Gateway의 역할
+- Gateway와 Reverse Proxy
+- 인증, 라우팅, Rate Limit
+- 마이크로서비스에서의 위치
+
+## 기초 개념
+
+API Gateway는 여러 내부 서비스 앞에서 외부 요청을 먼저 받는 진입점이다. 클라이언트는 각 마이크로서비스를 직접 호출하지 않고 Gateway를 호출하며, Gateway가 인증, 라우팅, 제한, 로깅 같은 공통 기능을 처리한 뒤 내부 서비스로 전달한다.
+
+```text
+client
+-> API Gateway
+-> service A / service B / service C
+```
+
+## 간단한 예시
+
+```text
+GET /users/1
+-> API Gateway
+-> user-service /users/1
+```
+
+## 반드시 알아야 할 질문
+
+- API Gateway는 Reverse Proxy와 무엇이 다른가?
+- 인증과 인가를 Gateway에서 처리하면 어떤 장단점이 있는가?
+- Gateway가 장애나 병목이 되지 않게 하려면 무엇을 고려해야 하는가?
+- 내부 서비스 간 통신도 Gateway를 거쳐야 하는가?
+
+## 세부 노트
+
 ## 개념
 
 API Gateway는 클라이언트와 백엔드 서비스 사이에 위치하는 **중간 계층(미들웨어)**이다. 모든 API 요청이 여기를 거쳐서 적절한 백엔드로 분배된다.
@@ -194,4 +228,4 @@ API Gateway는 **가장 높은 추상화 계층(L7)**에 있으면서 **API 처�
 
 ## Related Notes
 
-- [L4 vs L7 로드밸런싱](load-balancing.md)
+- [L4 vs L7 로드밸런싱](../load-balancing/overview.md)

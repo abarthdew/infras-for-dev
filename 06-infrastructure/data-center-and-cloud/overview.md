@@ -1,5 +1,41 @@
 # 데이터 센터와 클라우드 인프라
 
+## 목차
+
+- 데이터 센터와 서버
+- Headless 운영과 SSH
+- Bare Metal, VM, Cloud
+- Shared Responsibility
+
+## 기초 개념
+
+데이터 센터는 서버, 네트워크, 스토리지, 전력, 냉각 설비가 모여 있는 물리적 인프라 공간이다. 클라우드는 이런 인프라를 사용자가 직접 소유하지 않고 API와 콘솔로 빌려 쓰게 만든 서비스 모델이다.
+
+```text
+사용자
+-> 클라우드 API/콘솔
+-> 가상 서버, 네트워크, 스토리지
+-> 실제 데이터 센터
+```
+
+## 간단한 예시
+
+```text
+AWS EC2 생성
+-> VM 할당
+-> SSH 접속
+-> 애플리케이션 배포
+```
+
+## 반드시 알아야 할 질문
+
+- 데이터 센터 서버는 왜 보통 headless로 운영되는가?
+- Bare Metal과 Virtual Machine은 무엇이 다른가?
+- 클라우드에서 사용자가 책임지는 범위는 어디까지인가?
+- SSH 기반 운영과 자동화 운영은 어떻게 이어지는가?
+
+## 세부 노트
+
 ## 데이터 센터의 서버
 
 ### Headless Server
@@ -225,5 +261,5 @@ systemctl restart myapp
 
 ## Related Notes
 
-- [L4 vs L7 로드밸런싱](load-balancing.md)
-- [API Gateway](api-gateway.md)
+- [L4 vs L7 로드밸런싱](../load-balancing/overview.md)
+- [API Gateway](../api-gateway/overview.md)
