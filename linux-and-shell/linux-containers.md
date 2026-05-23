@@ -48,3 +48,54 @@ Docker      이미지와 컨테이너 실행을 관리하는 도구
 ```
 
 따라서 Docker와 프로세스의 관계를 잡을 때는 "컨테이너가 프로세스를 감싸 격리해서 실행한다"는 그림이 가장 중요하다.
+
+## Q&A: namespace와 cgroup은 무엇인가?
+
+### 질문
+namespace와 cgroup은 무엇인가?
+
+### 답변
+namespace와 cgroup은 리눅스 컨테이너를 이해할 때 핵심이 되는 커널 기능이다. Docker가 컨테이너를 만들 때도 이런 기능들을 이용한다.
+
+간단히 나누면 다음과 같다.
+
+```text
+namespace  프로세스가 보는 세계를 격리한다
+cgroup     프로세스가 쓰는 자원을 제한하고 측정한다
+```
+
+namespace는 컨테이너 안의 프로세스가 자기만의 환경을 보는 것처럼 만든다.
+
+예를 들어 컨테이너 안에서 `ps`를 실행하면 컨테이너 안 프로세스만 보이는 것처럼 느껴질 수 있다. 이것은 PID namespace와 관련 있다.
+
+```text
+PID namespace      프로세스 ID 공간 격리
+network namespace  네트워크 인터페이스, 라우팅 테이블 격리
+mount namespace    파일 시스템 마운트 관점 격리
+UTS namespace      hostname 같은 식별자 격리
+```
+
+cgroup은 자원 사용량을 관리한다.
+
+```text
+CPU 사용량 제한
+메모리 사용량 제한
+프로세스 수 제한
+I/O 사용량 제어
+```
+
+예를 들어 컨테이너에 메모리 제한을 걸면, 그 제한은 cgroup을 통해 적용된다.
+
+```bash
+docker run --memory 512m nginx
+```
+
+정리하면 다음과 같다.
+
+```text
+namespace  격리: 컨테이너가 자기만의 시스템처럼 보이게 함
+cgroup     제한: 컨테이너가 사용할 수 있는 자원을 관리함
+container  namespace와 cgroup 등으로 격리된 프로세스 실행 환경
+```
+
+따라서 컨테이너는 "작은 VM"이라기보다, 리눅스 커널 기능으로 격리되고 제한된 프로세스 집합에 가깝다.

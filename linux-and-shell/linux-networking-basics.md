@@ -350,3 +350,212 @@ localhost     자기 컴퓨터를 가리키는 이름
 ```text
 도메인 이름 -> DNS -> IP 주소 -> port -> socket -> 서버 프로세스
 ```
+
+## Q&A: nginx architecture는 어떻게 이해하면 되는가?
+
+### 질문
+nginx architecture는 무엇인가?
+
+### 답변
+nginx는 보통 **master process와 worker process 구조**로 동작한다.
+
+```text
+nginx master process
+├── nginx worker process
+├── nginx worker process
+└── nginx worker process
+```
+
+master process는 설정 파일을 읽고, worker process를 관리한다. 실제 클라이언트 요청 처리는 주로 worker process가 담당한다.
+
+```text
+master  설정 로드, worker 관리, graceful reload
+worker  클라이언트 연결 처리, 요청 처리, upstream 통신
+```
+
+nginx가 많은 연결을 효율적으로 처리할 수 있는 이유는 worker가 이벤트 기반으로 동작하기 때문이다. 연결마다 스레드를 하나씩 만드는 방식이 아니라, `epoll` 같은 이벤트 I/O를 사용해 많은 socket 이벤트를 처리한다.
+
+```text
+많은 클라이언트 socket
+-> worker의 이벤트 루프
+-> 준비된 요청만 처리
+```
+
+그래서 nginx는 정적 파일 서빙, 리버스 프록시, 로드 밸런싱에 자주 쓰인다.
+
+정리하면 다음과 같다.
+
+```text
+nginx master  관리 프로세스
+nginx worker  실제 요청 처리 프로세스
+event-driven  많은 연결을 효율적으로 다루는 구조
+```
+
+## Q&A: reverse proxy 흐름은 어떻게 되는가?
+
+### 질문
+reverse proxy 흐름은 어떻게 되는가?
+
+### 답변
+리버스 프록시는 클라이언트 요청을 실제 애플리케이션 서버 앞에서 먼저 받는 서버다.
+
+```text
+브라우저 -> nginx -> 애플리케이션 서버
+```
+
+예를 들어 사용자가 다음 주소로 접속한다고 하자.
+
+```text
+https://example.com
+```
+
+흐름은 대략 다음과 같다.
+
+```text
+1. DNS가 example.com을 서버 IP로 해석
+2. 브라우저가 서버 IP의 443 포트로 접속
+3. nginx가 HTTPS 요청을 받음
+4. nginx가 내부 앱 서버로 요청 전달
+5. 앱 서버가 응답 생성
+6. nginx가 응답을 브라우저에 반환
+```
+
+내부 앱은 다음처럼 외부에 직접 공개되지 않은 포트에서 실행될 수 있다.
+
+```text
+nginx       0.0.0.0:443
+app server  127.0.0.1:8080
+```
+
+이 구조의 장점은 다음과 같다.
+
+```text
+HTTPS 처리 집중
+내부 앱 포트 숨김
+여러 앱으로 라우팅
+로드 밸런싱
+정적 파일 처리
+보안 헤더와 rate limit 적용
+```
+
+핵심은 리버스 프록시가 "서버 앞에 서서 서버를 대신해 요청을 받는 중간 서버"라는 점이다.
+
+## Q&A: TCP handshake는 무엇인가?
+
+### 질문
+TCP handshake는 무엇인가?
+
+### 답변
+TCP handshake는 TCP 연결을 시작하기 전에 클라이언트와 서버가 서로 통신 준비를 확인하는 절차다. 보통 **3-way handshake**라고 부른다.
+
+```text
+1. 클라이언트 -> 서버: SYN
+2. 서버 -> 클라이언트: SYN-ACK
+3. 클라이언트 -> 서버: ACK
+```
+
+이 과정을 통해 양쪽은 "서로 데이터를 주고받을 준비가 됐다"고 확인한다.
+
+브라우저가 `https://example.com`에 접속할 때도 HTTP 요청을 보내기 전에 먼저 서버의 443 포트와 TCP 연결을 맺는다.
+
+```text
+DNS 조회
+-> TCP handshake
+-> TLS handshake
+-> HTTP 요청
+-> HTTP 응답
+```
+
+TCP handshake는 HTTP 자체가 아니라 HTTP 아래 계층의 TCP 연결 준비 과정이다.
+
+정리하면 다음과 같다.
+
+```text
+TCP handshake  TCP 연결을 시작하기 위한 준비 절차
+SYN            연결 시작 요청
+SYN-ACK        요청 수락과 응답
+ACK            확인
+```
+
+## Q&A: HTTP와 WebSocket은 어떻게 다른가?
+
+### 질문
+HTTP와 WebSocket은 어떻게 다른가?
+
+### 답변
+HTTP와 WebSocket은 둘 다 웹에서 많이 쓰이지만 통신 방식이 다르다.
+
+HTTP는 기본적으로 요청-응답 방식이다.
+
+```text
+브라우저 -> 서버: 요청
+서버 -> 브라우저: 응답
+```
+
+예를 들어 페이지를 가져오거나 API를 호출할 때 HTTP를 사용한다.
+
+```text
+GET /users
+POST /orders
+```
+
+WebSocket은 처음에는 HTTP 요청으로 시작하지만, 연결을 업그레이드한 뒤 하나의 연결을 유지하면서 양방향 메시지를 주고받는다.
+
+```text
+HTTP Upgrade
+-> WebSocket 연결 유지
+-> 클라이언트와 서버가 서로 메시지 전송
+```
+
+그래서 채팅, 실시간 알림, 게임, 실시간 대시보드처럼 서버가 즉시 메시지를 밀어줘야 하는 기능에서 WebSocket이 자주 쓰인다.
+
+정리하면 다음과 같다.
+
+```text
+HTTP       요청이 있어야 응답하는 방식에 적합
+WebSocket  연결을 유지하며 양방향 실시간 메시지에 적합
+```
+
+주의할 점은 WebSocket도 결국 아래에서는 TCP 연결 위에서 동작한다는 것이다. "socket"이라는 이름이 들어가지만 OS의 raw socket 개념과 완전히 같은 말은 아니다.
+
+## Q&A: NAT는 무엇인가?
+
+### 질문
+NAT는 무엇인가?
+
+### 답변
+NAT(Network Address Translation)는 네트워크 장비가 패킷의 IP 주소나 포트 정보를 바꿔서 전달하는 기능이다. 보통 사설 네트워크의 여러 기기가 하나의 공인 IP를 공유할 때 많이 쓴다.
+
+집이나 회사 내부의 기기는 보통 사설 IP를 가진다.
+
+```text
+192.168.0.10
+192.168.0.11
+192.168.0.12
+```
+
+이 기기들이 인터넷으로 나갈 때 공유기나 라우터가 외부에는 하나의 공인 IP처럼 보이게 바꿔준다.
+
+```text
+내 PC 192.168.0.10:53000
+-> 공유기 공인IP:40001
+-> 인터넷 서버
+```
+
+응답이 돌아오면 NAT 장비는 포트 매핑 테이블을 보고 원래 내부 기기로 돌려보낸다.
+
+```text
+공인IP:40001로 응답 도착
+-> 192.168.0.10:53000으로 전달
+```
+
+그래서 내부에서 외부로 나가는 연결은 자연스럽게 되지만, 외부에서 내부 서버로 직접 들어오려면 포트 포워딩이나 로드 밸런서 설정이 필요할 수 있다.
+
+```text
+NAT             주소/포트 변환
+사설 IP          내부 네트워크에서 쓰는 주소
+공인 IP          인터넷에서 라우팅 가능한 주소
+포트 포워딩       외부 포트를 내부 IP:port로 전달
+```
+
+정리하면 NAT는 "내부 네트워크와 외부 인터넷 사이에서 주소와 포트를 변환해 주는 장치 또는 기능"이다.
