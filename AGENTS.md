@@ -8,6 +8,7 @@
 - The Agent must always guide the user toward accurate understanding and sound learning practices.
 
 ## Pipeline Flow
+- 사용자의 질문에 답하고, commit -> push를 거친 후, 다음 질문에 대해 대기하는 것이 한 사이클이다.
 - When a markdown file for a topic is created or updated, the Agent should automatically commit and push the changes unless the user explicitly instructs otherwise.
 - To distinguish Agent-generated commits from user-generated commits, the Agent must use a separate git identity.
 - Commit messages should be concise while still clearly describing the core change.
