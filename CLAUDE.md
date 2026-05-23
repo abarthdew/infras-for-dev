@@ -1,3 +1,3 @@
 # CLAUDE.md
 
-See `AGENTS.md`, that's all.
+See `./AGENTS.md`, that's all.
