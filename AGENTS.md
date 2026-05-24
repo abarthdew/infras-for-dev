@@ -22,6 +22,11 @@
 - When deciding which file to append content to, the Agent must make the decision based only on file names and section headings whenever possible.
 The Agent should avoid unnecessary repository-wide scans or full-file inspections.
 
+## Read-Only Learning Mode
+- If the user explicitly requests read-only learning mode, the Agent must follow that request.
+- In read-only learning mode, the Agent must not modify files, create commits, or push changes.
+- The Agent should first inspect only the directory structure and section headings to propose a top-down learning path, or maximize learning effectiveness through an interactive question-and-answer dialogue with the user.
+
 ## Directory Structure
 ```bash
 programming-study/
