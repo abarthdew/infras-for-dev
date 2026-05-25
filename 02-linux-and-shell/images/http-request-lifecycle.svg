@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" role="img" aria-labelledby="title desc">
+  <title id="title">HTTP Request Lifecycle</title>
+  <desc id="desc">A learning diagram showing how a browser request flows through DNS, TCP, TLS, reverse proxy, app server, database, and back to browser rendering.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 18px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .lane { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 20; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; rx: 18; }
+      .browser { fill: #dbeafe; stroke: #60a5fa; }
+      .dns { fill: #fef3c7; stroke: #f59e0b; }
+      .proxy { fill: #dcfce7; stroke: #22c55e; }
+      .app { fill: #ede9fe; stroke: #8b5cf6; }
+      .db { fill: #ffe4e6; stroke: #f43f5e; }
+      .render { fill: #e0f2fe; stroke: #06b6d4; }
+      .label { font: 700 24px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .text { font: 500 18px 'Segoe UI', Arial, sans-serif; fill: #1e293b; }
+      .small { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #475569; }
+      .num { font: 700 18px 'Segoe UI', Arial, sans-serif; fill: #ffffff; }
+      .numCircle { fill: #0f172a; }
+      .arrow { stroke: #334155; stroke-width: 4; fill: none; marker-end: url(#arrowHead); }
+      .backArrow { stroke: #0f766e; stroke-width: 4; fill: none; marker-end: url(#greenArrowHead); }
+      .dashed { stroke-dasharray: 10 8; }
+      .note { fill: #eef2ff; stroke: #a5b4fc; stroke-width: 2; rx: 16; }
+    </style>
+    <marker id="arrowHead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#334155" />
+    </marker>
+    <marker id="greenArrowHead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#0f766e" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="980" />
+  <text class="title" x="70" y="70">HTTP Request Lifecycle</text>
+  <text class="subtitle" x="70" y="105">https://example.com/users 를 입력했을 때 브라우저에서 서버를 거쳐 다시 화면이 그려지기까지</text>
+
+  <rect class="lane" x="60" y="140" width="1480" height="700" />
+
+  <rect class="box browser" x="100" y="220" width="250" height="140" />
+  <text class="label" x="165" y="265">Browser</text>
+  <text class="text" x="125" y="300">1. URL 해석</text>
+  <text class="text" x="125" y="330">5. HTTP 요청 전송</text>
+
+  <rect class="box dns" x="430" y="120" width="240" height="120" />
+  <text class="label" x="510" y="170">DNS</text>
+  <text class="text" x="465" y="205">2. example.com -&gt; IP</text>
+
+  <rect class="box proxy" x="780" y="220" width="270" height="140" />
+  <text class="label" x="825" y="265">Reverse Proxy</text>
+  <text class="small" x="828" y="295">nginx, load balancer</text>
+  <text class="text" x="815" y="330">6. 요청 수신</text>
+  <text class="text" x="815" y="355">7. 내부 앱 서버로 전달</text>
+
+  <rect class="box app" x="1140" y="220" width="280" height="220" />
+  <text class="label" x="1215" y="265">App Server</text>
+  <text class="text" x="1175" y="305">8. 라우팅</text>
+  <text class="text" x="1175" y="335">인증</text>
+  <text class="text" x="1175" y="365">비즈니스 로직</text>
+  <text class="text" x="1175" y="395">9. HTTP 응답 생성</text>
+
+  <rect class="box db" x="1165" y="520" width="230" height="120" />
+  <text class="label" x="1255" y="565">Database</text>
+  <text class="text" x="1200" y="600">8. 필요한 데이터 조회</text>
+
+  <rect class="box render" x="100" y="610" width="300" height="150" />
+  <text class="label" x="170" y="660">Browser Render</text>
+  <text class="text" x="125" y="700">11. HTML / CSS / JS / 이미지 해석</text>
+  <text class="text" x="125" y="730">화면 구성</text>
+
+  <path class="arrow" d="M350 250 C390 250, 390 180, 430 180" />
+  <path class="arrow" d="M670 180 C740 180, 720 250, 780 250" />
+  <path class="arrow" d="M350 290 C560 290, 560 290, 780 290" />
+  <path class="arrow dashed" d="M350 335 C560 335, 560 335, 780 335" />
+  <path class="arrow" d="M1050 290 C1085 290, 1100 290, 1140 290" />
+  <path class="arrow" d="M1280 440 C1280 470, 1280 490, 1280 520" />
+
+  <path class="backArrow" d="M1140 390 C1075 390, 1085 390, 1050 390" />
+  <path class="backArrow" d="M780 390 C560 390, 560 390, 350 390" />
+  <path class="backArrow" d="M230 430 C230 500, 230 540, 230 610" />
+
+  <circle class="numCircle" cx="385" cy="238" r="18" />
+  <text class="num" x="380" y="244">2</text>
+  <circle class="numCircle" cx="560" cy="156" r="18" />
+  <text class="num" x="555" y="162">3</text>
+  <circle class="numCircle" cx="560" cy="317" r="18" />
+  <text class="num" x="555" y="323">4</text>
+  <circle class="numCircle" cx="1093" cy="277" r="18" />
+  <text class="num" x="1088" y="283">7</text>
+  <circle class="numCircle" cx="1280" cy="480" r="18" />
+  <text class="num" x="1275" y="486">8</text>
+  <circle class="numCircle" cx="1095" cy="377" r="18" />
+  <text class="num" x="1086" y="383">10</text>
+  <circle class="numCircle" cx="230" cy="520" r="18" />
+  <text class="num" x="221" y="526">11</text>
+
+  <rect class="note" x="110" y="420" width="410" height="120" />
+  <text class="label" x="140" y="460">Before HTTP data moves</text>
+  <text class="text" x="140" y="495">3. TCP connection to server:443</text>
+  <text class="text" x="140" y="525">4. TLS handshake if using HTTPS</text>
+
+  <rect class="note" x="560" y="640" width="830" height="140" />
+  <text class="label" x="590" y="680">What this picture is emphasizing</text>
+  <text class="text" x="590" y="715">DNS finds the server address first. TCP and TLS prepare the path. Then HTTP request/response moves through proxy and app.</text>
+  <text class="text" x="590" y="745">The user finally sees the result only after the browser parses the returned resources and renders the page.</text>
+</svg>

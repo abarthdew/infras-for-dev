@@ -665,6 +665,8 @@ URL 입력
 -> 브라우저 렌더링
 ```
 
+![HTTP request lifecycle](./images/http-request-lifecycle.svg)
+
 조금 더 풀어보면 다음과 같다.
 
 ```text
