@@ -27,6 +27,20 @@ The Agent should avoid unnecessary repository-wide scans or full-file inspection
 - In read-only learning mode, the Agent must not modify files, create commits, or push changes.
 - The Agent should first inspect only the directory structure and section headings to propose a top-down learning path, or maximize learning effectiveness through an interactive question-and-answer dialogue with the user.
 
+## git issue registration instructions
+- When the user requests it, the Agent must register the requested content as a git issue. This content will usually be what the user and the Agent discussed in a question-and-answer format while learning and refining the user's understanding of a concept.
+- The Agent must use the following template:
+    ```text
+    - git issue title: file path/file name/section name (usually a `##` subsection title)
+    - git issue body: the user's question and the Agent's answer. It must also mention what the user did not understand, where the user was confused, or what point the user was stuck on.
+    ```
+
+## User image generation requests
+- The user may ask the Agent to generate an image for concepts that have order, sequence, or interaction, so the relationship can be understood efficiently at a glance.
+- In that case, the user will request an image for content in a specific learning file. The Agent must generate a clear, concise learning image that explains the structure of the concept and how its parts interact, in order to support the user's understanding.
+- Image storage path: create an `images/` directory for the relevant file and place the generated image there.
+- The Agent must also attach the image directly below the relevant section in the file mentioned by the user so it can be viewed while studying, then commit and push the change.
+
 ## Directory Structure
 ```bash
 programming-study/
