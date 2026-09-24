@@ -9,12 +9,13 @@
 
 ## Pipeline Flow
 - One cycle consists of: the user asks a question, the Agent answers and creates a note, commits and pushes the changes, then awaits the next question.
+- For Jira-tracked reorganizations or cross-repository work, use an issue-key branch and a pull request; do not push changes directly to the default branch.
 - When a markdown file for a topic is created or updated, the Agent should automatically commit and push the changes unless the user explicitly instructs otherwise.
-- To distinguish Agent-generated commits from user-generated commits, the Agent must use a separate git identity.
+- To distinguish Agent-generated commits from user-generated commits, the Agent must use a separate git identity that includes its name and model.
 - Commit messages should be concise while still clearly describing the core change.
 - The Agent must commit using the following command format:
     ```bash
-    git commit --author="{agent_name: claude | codex} <{agent_name}@example.com>" -m "{commit_message}"
+    git commit --author="{agent_name}-{model_name} <{agent_name}@users.noreply.github.com>" -m "{commit_message}"
     ```
 - To minimize token consumption, the Agent must avoid reading the full contents of existing files whenever possible.
 - The Agent should primarily append new content to the bottom of files instead of rewriting or restructuring existing content.
@@ -43,81 +44,15 @@ The Agent should avoid unnecessary repository-wide scans or full-file inspection
 
 ## Directory Structure
 ```bash
-programming-study/
-├── 00-roadmap/
-│   ├── overview.md
-│   └── learning-log.md
-│
+infras-for-dev/
 ├── 01-computer-science/
-│   ├── operating-system.md
-│   ├── network.md
-│   ├── database-theory.md
-│   └── distributed-system.md
-│
 ├── 02-linux-and-shell/
-│   ├── linux.md
-│   ├── shell.md
-│   ├── process.md
-│   ├── file-system.md
-│   └── ssh.md
-│
-├── 03-programming-languages/
-│   ├── java/
-│   ├── javascript/
-│   ├── python/
-│   └── sql/
-│
-├── 04-backend-development/
-│   ├── spring/
-│   ├── api-design/
-│   ├── authentication/
-│   └── web-server/
-│
-├── 05-database/
-│   ├── sqlite/
-│   ├── postgresql/
-│   ├── redis/
-│   ├── elasticsearch/
-│   └── data-modeling/
-│
-├── 06-infrastructure/
-│   ├── nginx/
-│   ├── docker/
-│   ├── kubernetes/
-│   ├── networking/
-│   └── load-balancing/
-│
-├── 07-devops-and-cicd/
-│   ├── git/
-│   ├── github-actions/
-│   ├── codex-workflow/
-│   └── deployment/
-│
-├── 08-observability/
-│   ├── prometheus/
-│   ├── grafana/
-│   ├── datadog/
-│   ├── logging/
-│   ├── metrics/
-│   └── tracing/
-│
-├── 09-data-engineering/
-│   ├── hadoop/
-│   ├── batch-processing/
-│   ├── streaming/
-│   └── data-pipeline/
-│
-├── 10-ai-and-llm/
-│   ├── ai-basics/
-│   ├── machine-learning/
-│   ├── llm/
-│   ├── rag/
-│   ├── vector-database/
-│   └── prompt-engineering/
-│
-└── 99-projects/
-    ├── redis-with-docker/
-    ├── spring-postgresql-docker/
-    ├── nginx-reverse-proxy/
-    └── rag-demo/
+├── 03-infrastructure/
+├── 04-devops-and-cicd/
+├── 05-observability/
+├── 06-data-engineering/
+├── 07-ai-and-llm/
+└── 08-projects/
 ```
+
+Frontend and backend notes belong in `abarthdew/back-and-forth`; database and SQL notes belong in `abarthdew/dbms-for-dev`. Keep relative links and colocated images intact when moving notes.
