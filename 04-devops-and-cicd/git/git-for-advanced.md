@@ -1,10 +1,3 @@
----
-title: git for Advanced
-date: 2021-08-25
-categories: [git, gitHub]
-tags: [git, gitHub]
----
-
 ## gitHub → New Repository 생성 후 로컬 저장소에서 git 올리기
 
 - 환경 세팅
