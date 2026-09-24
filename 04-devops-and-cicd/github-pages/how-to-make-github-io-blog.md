@@ -1,10 +1,3 @@
----
-title: How to make github.io Blog
-date: 2022-07-27
-categories: [git, pages]
-tags: [git, pages]
----
-
 [gitHub & git](#github--git)   
 [- 1. abarthdew.github.io 리포지토리 생성](#1-abarthdewgithubio-리포지토리-생성)   
 [- 2. 리포지토리에 index.html 생성](#2-리포지토리에-indexhtml-생성)   
