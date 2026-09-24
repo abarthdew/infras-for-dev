@@ -115,7 +115,7 @@ Agent 작업:
 → permissions.md 파일의 Setuid 섹션에 추가
 
 질문: "Kubernetes operator pattern은?"
-→ 06-infrastructure/kubernetes/overview.md에 operator 섹션 추가
+→ 03-infrastructure/kubernetes/overview.md에 operator 섹션 추가
 ```
 
 ### 파일 정확도
@@ -324,8 +324,9 @@ git pull origin main  # 최신 변경사항 받기
 
 # 4. 사용자가 로컬에서 수정
 # git pull --rebase origin main
-# vi 05-database/redis/overview.md  # 수정
-# git add 05-database/redis/overview.md
+# dbms-for-dev 저장소에서:
+# vi 03-databases/redis/overview.md  # 수정
+# git add 03-databases/redis/overview.md
 # git commit -m "Add Redis pub/sub pattern explanation"
 # git push origin main
 
@@ -417,8 +418,8 @@ overview.md: Level 1-2
 - 기본 개념과 실무 활용
 
 심화 파일 (별도 생성): Level 2-3
-- 예: 05-database/redis/advanced-data-structures.md
-- 예: 06-infrastructure/kubernetes/advanced-scheduling.md
+- 예: dbms-for-dev/03-databases/redis/advanced-data-structures.md
+- 예: 03-infrastructure/kubernetes/advanced-scheduling.md
 ```
 
 ---
