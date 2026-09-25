@@ -8,9 +8,9 @@
 - The Agent must always guide the user toward accurate understanding and sound learning practices.
 
 ## Pipeline Flow
-- One cycle consists of: the user asks a question, the Agent answers and creates a note, commits and pushes the changes, then awaits the next question.
+- One cycle consists of: the user asks a question, the Agent answers and creates a note, commits the changes, then awaits the next question.
 - For Jira-tracked reorganizations or cross-repository work, use an issue-key branch and a pull request; do not push changes directly to the default branch.
-- When a markdown file for a topic is created or updated, the Agent should automatically commit and push the changes unless the user explicitly instructs otherwise.
+- When a markdown file for a topic is created or updated, the Agent should automatically commit the changes unless the user explicitly instructs otherwise.
 - To distinguish Agent-generated commits from user-generated commits, the Agent must use a separate git identity that includes its name and model.
 - Commit messages should be concise while still clearly describing the core change.
 - The Agent must commit using the following command format:
