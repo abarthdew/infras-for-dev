@@ -1,6 +1,6 @@
 # Service 실습 보충 — NodePort의 3-포트 모델과 예제
 
-> Service의 기본 개념(ClusterIP/NodePort/LoadBalancer 타입, 기본 YAML 구조)은 [overview.md](./overview.md#service)에 정리되어 있다. 이 문서는 NodePort 동작 원리와 실습에서 자주 막히는 포인트를 보충한다.
+> Service의 기본 개념(ClusterIP/NodePort/LoadBalancer 타입, 기본 YAML 구조)은 [overview.md](../overview.md#service)에 정리되어 있다. 이 문서는 NodePort 동작 원리와 실습에서 자주 막히는 포인트를 보충한다.
 
 ## 목차
 - [NodePort의 3개 포트](#nodeport의-3개-포트)

@@ -64,7 +64,7 @@ Kubernetes 클러스터는 **Master 노드**(제어 영역, control plane)와 **
 - 두 단계로 동작:
   1. **필터링**: 파드의 CPU/메모리 요구사항을 충족하지 못하는 노드를 제외.
   2. **순위 매기기**: 남은 노드에 우선순위 함수로 0~10점을 매겨(예: 파드 배치 후 남는 자원량) 가장 적합한 노드를 선택.
-- 커스터마이징이 가능하며 자체 스케줄러를 작성할 수도 있음(세부 내용은 [스케줄링](./scheduling.md) 참고).
+- 커스터마이징이 가능하며 자체 스케줄러를 작성할 수도 있음(세부 내용은 [스케줄링](../cka-with-practice-tests/scheduling.md) 참고).
 - kubeadm 클러스터에서는 `kube-system`의 파드로 배치된다.
 
 ## kubelet
@@ -77,7 +77,7 @@ Kubernetes 클러스터는 **Master 노드**(제어 영역, control plane)와 **
 
 - 클러스터 내 모든 파드가 서로 통신할 수 있게 하는 파드 네트워크(가상 네트워크)가 있지만, 파드 IP는 재시작 시 바뀔 수 있어 `Service`를 통해 접근하는 것이 안전하다.
 - Service는 실제 컨테이너/리스닝 프로세스가 없는 가상 컴포넌트로, 파드 네트워크에 직접 참여하지 않는다. **kube-proxy**가 각 노드에서 동작하며 새 서비스가 생성될 때마다 해당 서비스로의 트래픽을 백엔드 파드로 전달하는 규칙(주로 iptables 규칙)을 각 노드에 생성한다.
-- kubeadm은 kube-proxy를 각 노드에 **DaemonSet**으로 배포한다(DaemonSet 개념은 [스케줄링](./scheduling.md) 참고).
+- kubeadm은 kube-proxy를 각 노드에 **DaemonSet**으로 배포한다(DaemonSet 개념은 [스케줄링](../cka-with-practice-tests/scheduling.md) 참고).
 
 ## kubectl
 
