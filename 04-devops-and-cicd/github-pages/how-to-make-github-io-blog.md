@@ -194,7 +194,9 @@ gem install jekyll bundler // jekyll 설치
 ## 3. 테마 적용
 
 - local 리포지토리에 테마 내용 복사 + 붙여넣기
+
     ![http://jekyllthemes.org/themes/jekyll-theme-chirpy/](https://raw.githubusercontent.com/abarthdew/abarthdew.github.io/master/assets/img/2022/1%282%29.png)
+
     _http://jekyllthemes.org/themes/jekyll-theme-chirpy/_
     
 - 테마의 gem 파일 설치

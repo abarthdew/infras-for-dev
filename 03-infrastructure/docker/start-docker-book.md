@@ -26,6 +26,7 @@ docker run -i -t ubuntu:14.04
 // -i : 상호 입출력
 // -t : tty 활성화, bash 셸을 사용하도록 설정
 ```
+
 - ubuntu:14.04 이미지가 로컬 도커 엔진에 존재하지 않을 시, 도커 허브(도커 중앙 이미지 저장소)에서 자동으로 이미지를 내려받음
 - 이미지가 존재한다면 명령어 실행과 동시에 컨테이너 내부로 진입
 ### ls
@@ -62,6 +63,7 @@ C:\Users\auswo>docker create -i -t --name mycentos centos:7
 29b2df03f19f1cf653231b5a6bd9ed52fcfae4d8045e528746c5af96430ab620
 // --name 옵션에는 컨테이너 이름 설정(mycentos)
 ```
+
 - create 명령어는 컨테이너 내부로 들어가지 않고, 컨테이너를 생성하기만 함
 ### docker start, docker attach
 - 컨테이너를 시작하고, 내부로 들어가는 명령
@@ -72,7 +74,9 @@ mycentos
 C:\Users\auswo>docker attach mycentos
 [root@29b2df03f19f /]#
 ```
+
 ![](images/getting-started-01.png)
+
 ### docker ps
 - 정지되지 않은 컨테이너만 출력
 ```shell
@@ -98,6 +102,7 @@ c9b1a35d7429   ubuntu:14.04   "/bin/bash"   3 days ago       Exited (127) 2 days
 ```shell
 docker rm 
 ```
+
 - 실행중인 컨테이너 삭제 시, 컨테이너를 정지하거나, -f 옵션을 추가해 강제 삭제
 ```shell
 docker stop mycentos
@@ -113,6 +118,7 @@ WARNING! This will remove all stopped containers.
 Are you sure you want to continue? [y/N] y
 Total reclaimed space: 0B
 ```
+
 - docker ps -a -q를 사용하는 방법
 ```shell
 docker stop $(docker ps -a -q)
@@ -143,6 +149,7 @@ lo        Link encap:Local Loopback
 
 root@573a8a6d1bdf:/#
 ```
+
 - 도커의 NAT IP인 172.17.0.2할당받은 eth0 인터페이스, 로컬 호스트 lo인터페이스 존재
 - 아무런 설정 없이 외부에서 컨테이너로 접근할 수 없으며, 도커가 설치된 호스트에서만 접근 가능
 - 외부 컨테이너의 애플리케이션을 노출하기 위해 eth0의 IP와 포트를 호스트의 IP와 포트에 바인딩해야 함
@@ -151,12 +158,14 @@ root@573a8a6d1bdf:/#
 docker run -i -t --name mywebserver -p 80:80 ubuntu:14.04
 // -p : 컨테이너의 포트를 호스트의 포트와 바인딩해 연결할 수 있게 함
 ```
+
 - 컨테이너 진입 후 아파치 웹 서버 설치
 ```shell
 apt-get update
 apt-get install apache2 -y
 service apache2 start
 ```
+
 - 아파치 웹 서버 설치 및 실행 후, `[도커 엔진 호스트의 IP]:80`으로 접근
 ```shell
 C:\Users\auswo>ipconfig
@@ -207,17 +216,22 @@ Windows IP 구성
    서브넷 마스크 . . . . . . . : 255.255.240.0
    기본 게이트웨이 . . . . . . :
 ```
+
 ![](images/getting-started-02.png)
+
 - 192.168.56.1, 192.168.1.36, 172.20.16.1 다 됨
 - 실제 아파치 서버가 설치된 것은 컨테이너 내부이므로, 호스트에는 어떠한 영향도 주지 않음
 ### 호스트의 IP와 포트를 컨테이너의 IP와 포트로 연결한다는 개념
+
 ![](images/getting-started-03.png)
 
 - 아파치 웹 서버는 172 대역을 가진 컨테이너의 NAT IP와 80번 포트로 서비스
 - 여기 접근하려면 172.17.0.X:80의 주소로 접근해야 함
 - 도커의 포트 포워딩 옵션 -p를 사용해 호스트와 컨테이너 연결, 호스트의 IP와 포트를 통해 172.17.0.X:80으로 접근 가능
 ### 잘못된 -p 옵션의 사용
+
 ![](images/getting-started-04.png)
+
 - -p 옵션의 값으로 80:81과 같이 입력한 경우, 외부에서 웹 서버에 접근하지 못함
 - 호스트의 80번 포트와 연결된 컨테이너의 포트는 81번이 될 것이고, 81번 포트는 어떠한 서비스도 제공하도록 설정되어 있지 않음
 ## 2.2.5. 컨테이너 애플리케이션 구축
@@ -225,19 +239,23 @@ Windows IP 구성
 - 여러 에이전트, 데이터베이스 등과 연결되어 완전한 서비스로써 동작함
 - 이런 서비스를 `컨테이너화`라고 하며, 여러 개의 애플리케이션을 한 컨테이너에 설치할 수도 있음
 - 컨테이너에 애플리케이션을 하나만 동작시키면 컨테이너 간 독립성을 보장하며, 애플리케이션의 버전 관리, 소스코드 모듈화 등이 더욱 쉬워짐
+
 ![](images/getting-started-05.png)
+
 ### 데이터베이스와 워드프레스 웹 서버 컨테이너를 연동해 워드프레스 기반 블로그 서비스를 만들어 보자
 - mysql 이미지를 사용해 데이터베이스 컨테이너 생성
 ```shell
 C:\Users\auswo>docker run -d --name wordpressdb -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=wordpress mysql:5.7
 d3b7f1cf705892f06463a65b962e7b43e281deb62084691efce92d193132f2c4
 ```
+
 - 미리 준비된 워드프레스 이미지를 이용해 워드프레스 웹 서버 컨테이너 생성
 - 워드프레스 웹 서버 컨테이너의 -p 옵션에서 80을 입력했으므로 호스트의 포트 중 하나와 컨테이너의 80번 포트가 연결됨
 ```shell
 C:\Users\auswo>docker run -d -e WORDPRESS_DB_PASSWORD=password --name wordpress --link wordpressdb:mysql -p 80 wordpress
 0d9afae84b2cace93c7743f35b3b210aec47305959f74cd18559b6b1de6c1e54
 ```
+
 - 목록 출력
 ```shell
 C:\Users\auswo>docker ps
@@ -245,6 +263,7 @@ CONTAINER ID   IMAGE       COMMAND                  CREATED              STATUS 
 0d9afae84b2c   wordpress   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:53910->80/tcp   wordpress
 d3b7f1cf7058   mysql:5.7   "docker-entrypoint.s…"   2 minutes ago        Up 2 minutes        3306/tcp, 33060/tcp     wordpressdb
 ```
+
 - 호스트와 바인딩된 포트 확인
 ```shell
 C:\Users\auswo>docker port wordpress
@@ -256,7 +275,9 @@ C:\Users\auswo>docker port wordpress
 - 컨테이너 변경 사항만 별도로 저장해서 각 컨테이너 정보 보존
 - 예를 들어, 위에서 생성했던 mysql 컨테이너는 mysql:5.7이라는 이미지로 생성됐지만, 워드프레스 블로그를 위한 데이터베이스 등의 정보는 컨테이너가 가지고 있음
 - 즉, 다음과 같은 구조를 띔
+
 	![](images/getting-started-06.png)
+
 - 이미 생성된 이미지는 어떠한 경우로도 변경되지 않음
 - 컨테이너 계층에 원래 이미지에서 변경된 파일 시스템 등을 저장하기만 함
 - 이미지에 mysql을 실행하는 데 필요한 애플리케이션 파일이 들어있다면,

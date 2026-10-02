@@ -1,17 +1,25 @@
 # \[Section 3\]: Setup kubernetes
 # 8. Kubernetes Setup - Introduction and Minikube
 - 클러스터를 구성하는 데 다양한 옵션 확인
+
 ![](images/k8s-s03-01.png)
+
 ## Minikube
 - 가장 쉬운 방법인 로컬 시스템에 미니 쿠베 옵션 설치
 ### 🔰 설치 전, 작동 방식에 대해 자세히 알아보기
+
 ![](images/k8s-s03-02.png)
+
 - 다른 시스템에 다양한 요소들을 설치하고 구성하는 데는 시간이 많이 걸리므로, 아래와 같이 번들 패키지로 된 iso 이미지를 온라인에서 다운받아서 사용함.
+
 ![](images/k8s-s03-03.png)
+
 - 미니 쿠베는 실행 가능한 커맨드 라인 유틸리티를 제공하고, ISO 파일로 자동적으로 다운이 가능함.
 - 또한, 오라클 버추얼 박스나 REAM과 같은 가상화 플랫폼에 배치하면 됨.
 - Windows라면 Hipervisor가 설치되어 있어야 함.
+
 ![](images/k8s-s03-04.png)
+
 - 쿠버네티스 클러스터와 교류하기 위해서, kube ctl 툴이 설치되어 있어야 함.
 	1. 하이퍼바이저 설치
 	2. kubectl utility 설치

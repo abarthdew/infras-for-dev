@@ -3,51 +3,92 @@
 # 82. Download Presentation Deck
 Please note that some slides are animated so content may not have exported correctly. Kindly use the slides as a reference for commands.
 ### 이 강의 자료
+
 > ⚠️ 원본 첨부 파일 유실
+
 # 83. Monitor Cluster Components
+
 ![](images/cka-s04-01.png)
+
 - In this lecture, we talk about Monitoring a Kubernetes Cluster. How do you monitor resource consumption on Kubernetes? Or more importantly what would you like to monitor? I’d like to know Node level metrics such as the number of Nodes in the Cluster, how many of them are healthy as well as performance metrics such as CPU, Memory, Network and Disk Utilization.
+
 ![](images/cka-s04-02.png)
+
 - As well as Pod level metrics such as the number of Pods, and performance metrics of each Pod such as the CPU and Memory consumption on them.
+
 ![](images/cka-s04-03.gif)
+
 - So we need a solution that will monitor these metrics store them and provide analytics around this data.
+
 ![](images/cka-s04-04.png)
+
 - As of this recording, Kubernetes does not come with a full featured build-in monitoring solution. 
+
 ![](images/cka-s04-05.png)
+
 - However, there are a number of open-source solutions available today, such as the Metrics-Server, Prometheus, Elastic Stack, and proprietary solutions like Datadog and Dynatrace.
+
 ![](images/cka-s04-06.png)
+
 - Heapster was one of the original projects that enabled monitoring and analysis features for Kubernetes . You will see a lot of reference online when you like for reference architectures on monitoring Kubernetes.
+
 ![](images/cka-s04-07.png)
+
 - However, Heapster is now Deprecated and a slimmed down version was formed known as the Metrics Server.
+
 ![](images/cka-s04-08.png)
+
 - You can have 1 Matrics Server per Kubernetes Cluster. 
+
 ![](images/cka-s04-09.gif)
+
 - The Metrics Server retrieves Metrcis from each of the Kubernetes Nodes and Pods, aggregates them and stores them in memory. 
+
 ![](images/cka-s04-10.png)
+
 - Note that the Metric Server is only an in memory monitoring solution and does not store the Metrics on the desk and as a result you cannot see historical performance data. For that you must rely on one of the advanced monitoring solutions we talked about earlier in this lecture.
 ### 🔰 How are the MetrIcs generated for the Pods on these Nodes?
+
 ![](images/cka-s04-11.png)
+
 - Kubernetes runs an agent on each Node known as the `kubelet`, which is responsible for receiving instructions from the Kubernetes API Master Server and running Pods on the Nodes.
+
 ![](images/cka-s04-12.png)
+
 - The `kubelet` also contains a subcomponent known as a cAdvisor or Container Advisor. 
+
 ![](images/cka-s04-13.gif)
+
 - cAdvisor is responsible for retrieving performance Metrics from Pods, and exposing them through the `kubelet` API to make the Metrics available for the Metrics Server. 
+
 ![](images/cka-s04-14.png)
+
 - If you are using Minikube for your local Cluster, run the command `minikube addons enable metrics-server`. 
+
 ![](images/cka-s04-15.png)
+
 - For all other environments deploy the Metrics Server by cloning the Metrics-Server deployment files from the github repository. 
+
 ![](images/cka-s04-16.png)
+
 - And then deploying the required components, using the `kubectl create` command. This command deploys a set of Pods, Services and roles to enable Metrics Server to poll for performance Metrics from the Nodes in the Cluster.
+
 ![](images/cka-s04-17.png)
+
 - Once deployed, give the Metrics Server some time to collect and process data. Once processed, cluster performance can be viewed by running the command `kubectl top node`. This procides the CPU and Memory consumption of each of the Nodes. As you can see 8% of the CPU on my master Node is consumed, which is about 166 milli cores. 
+
 ![](images/cka-s04-18.png)
+
 - Use the `kubectl top pod` command to view performance Metrics of Pods in Kubernetes.
 # 84. Practice Test - Monitoring
 Note: In this test you will enable cluster monitoring. Once you do remember to wait for atleast 5 minutes to allow the metrics-server enough time to collect and report performance metrics.
+
 Practice Test - [https://uklabs.kodekloud.com/topic/practice-test-monitor-cluster-components-2/](https://uklabs.kodekloud.com/topic/practice-test-monitor-cluster-components-2/)
 # 85. Solution: Monitor Cluster Components : (Optional)
 1. Let us deploy metrics-server to monitor the PODs and Nodes. Pull the git repository for the deployment files.
+
 	Run: `git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git`
+
 	```shell
 	root@controlplane ~ ➜  git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git
 	Cloning into 'kubernetes-metrics-server'...
@@ -57,28 +98,33 @@ Practice Test - [https://uklabs.kodekloud.com/topic/practice-test-monitor-cluste
 	remote: Total 24 (delta 4), reused 0 (delta 0), pack-reused 12
 	Unpacking objects: 100% (24/24), done.
 	```
+
 2. Deploy the metrics-server by creating all the components downloaded. Run the `kubectl create -f .` command from within the downloaded repository.
 	```shell
 	root@controlplane kubernetes-metrics-server on  master ✖ kubectl create -f metrics-server-deployment.yaml
 	serviceaccount/metrics-server created
 	deployment.apps/metrics-server created
 	```
+
 3. It takes a few minutes for the metrics server to start gathering data. Run the `kubectl top node` command and wait for a valid output.
 4. Identify the node that consumes the `most` CPU. ⇒ **`node01`**
 	```shell
 	root@controlplane:~# kubectl top node --sort-by='cpu' --no-headers | head -1                   
 	node01         234m   2%    515Mi   2%   
 	```
+
 5. Identify the node that consumes the `most` Memory. ⇒ **`controlplane`**
 	```shell
 	root@controlplane:~# kubectl top node --sort-by='memory' --no-headers | head -1 
 	controlplane   183m   2%    662Mi   3%
 	```
+
 6. Identify the POD that consumes the `most` Memory. ⇒ **`rabbit`**
 	```shell
 	root@controlplane:~# kubectl top pod --sort-by='memory' --no-headers | head -1 
 	rabbit     134m   201Mi
 	```
+
 7. Identify the POD that consumes the `least` CPU. ⇒ **`lion`**
 	```shell
 	root@controlplane:~# kubectl top pod --sort-by='cpu' --no-headers | tail -1 
@@ -86,18 +132,30 @@ Practice Test - [https://uklabs.kodekloud.com/topic/practice-test-monitor-cluste
 	```
 # 86. Managing Application Logs
 - We will talk about various Logging mechanisms in Kubernetes. Let us start with logging in Docker. 
+
 ![](images/cka-s04-19.png)
+
 - I run  a Docker container called ‘event-simulator’ and all that it does is generate random events simulating a Web Server. These are events streamed to the standard output by the application. 
+
 ![](images/cka-s04-20.png)
+
 - Now, If I were to run the Docker Container in the background, in a detached mode using the -d option, I wouldn’t see the logs. 
+
 ![](images/cka-s04-21.png)
+
 - If I wanted to view the logs, I could use the `docker logs` command followed by the Container ID. The -f option helps us see the live log trail.
+
 ![](images/cka-s04-22.png)
+
 - Back to Kubernetes. We create a Pod with the same Docker Image using the pod-definition file. Once It’s the Pod is running, we can view the logs using the `kubectl logs` command with the Pod name. Use the ‘-f’ option to stream the logs live just like the Docker Command. 
 - Now these logs are specific to the container running inside the Pod. As we learned before, Kubernetes Pods can have multiple Docker Container in them. 
+
 ![](images/cka-s04-23.png)
+
 - In this case, I modify my pod-definition file to include an additional Container called image-processor. If you run the `kubectl logs` command, with the Pod name, which Container’s log would it show? If there are multiple Containers within a Pod, you must specify the name of the Container explicitly in the command. Otherwise It would fail asking you to specify a name.
+
 ![](images/cka-s04-24.png)
+
 - In this case I will specify the name of the first Container event-simulator and that prints the relevant log messages. Now, that is the simple logging functionality implemented within Kubernetes. And that is all that an application developer really needs to know to get started with Kubernetes. And that is all you really need to know as part of the certification program.
 - However in the next lecture, we will see more about some advanced logging configuration and third party support for logging in Kubernetes. We also have a nice demo that shows how a popular logging framework is integrated with Kubernetes.
 # 87. Practice Test - Monitor Application Logs
@@ -116,6 +174,7 @@ Practice Test - [https://uklabs.kodekloud.com/topic/practice-test-managing-appli
 	kube-system   traefik-6bb96f9bd8-jz4s2                  1/1     Running     0          3m38s
 	default       webapp-1                                  1/1     Running     0          34s
 	```
+
 2. A user - `USER5` - has expressed concerns accessing the application. Identify the cause of the issue. Inspect the logs of the POD. ⇒ **`Account Locked due to Many Failed Attempts`**
 	```shell
 	controlplane ~ ✖ kubectl get pods
@@ -300,6 +359,7 @@ Practice Test - [https://uklabs.kodekloud.com/topic/practice-test-managing-appli
 	[2022-08-26 08:09:07,587] INFO in event-simulator: USER2 is viewing page2
 	[2022-08-26 08:09:08,589] INFO in event-simulator: USER2 is viewing page2
 	```
+
 3. We have deployed a new POD - `webapp-2`  - hosting an application. Inspect it. Wait for it to start.
 	```shell
 	controlplane ~ ➜  kubectl get pods
@@ -307,8 +367,11 @@ Practice Test - [https://uklabs.kodekloud.com/topic/practice-test-managing-appli
 	webapp-1   1/1     Running   0          3m21s
 	webapp-2   2/2     Running   0          42s
 	```
+
 4. A user is reporting issues while trying to purchase an item. Identify the user and the cause of the issue. Inspect the logs of the webapp in the POD. ⇒ **`USER30 - Item Out of Stock`**
+
 	![](images/cka-s04-25.png)
+
 	```shell
 	controlplane ~ ✖ kubectl logs webapp-2 -c simple-webapp
 	[2022-08-26 08:09:31,648] INFO in event-simulator: USER1 is viewing page3
