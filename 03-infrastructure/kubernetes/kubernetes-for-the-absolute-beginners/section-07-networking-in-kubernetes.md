@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section 7\]: Networking in Kubernetes
 # 37. Basics of Networking in Kubernetes
 ## Basics of networking in Kubernetes

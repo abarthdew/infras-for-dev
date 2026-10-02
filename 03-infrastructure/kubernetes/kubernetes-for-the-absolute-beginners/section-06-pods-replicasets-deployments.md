@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section 6\]: Kubernetes Concepts - PODs, ReplicaSets, Deployments
 # 19. PODs with YAML
 ![](images/k8s-s06-01.png)
@@ -87,7 +86,7 @@ spec:
 ```bash
 # kubectl run nginx --image=nginx
 ```
-- What is the image used to create the new pods? You must look at one of the new pods in detail to figure this out. ⇒ <span color="pink_bg">`busybox`</span>
+- What is the image used to create the new pods? You must look at one of the new pods in detail to figure this out. ⇒ `busybox`
 ```shell
 # kubectl get pod
 -------------------------
@@ -153,7 +152,7 @@ Events:
   Normal  Created    113s   kubelet            Created container busybox
   Normal  Started    111s   kubelet            Started container busybox
 ```
-- Which nodes are these pods placed on? You must look at all the pods in detail to figure this out. ⇒ <span color="pink_bg">`controlplane`</span>
+- Which nodes are these pods placed on? You must look at all the pods in detail to figure this out. ⇒ `controlplane`
 ```shell
 # kubectl get pods -o wide
 --------------------------------
@@ -163,16 +162,16 @@ newpods-7l5bk   1/1     Running   0          5m11s   10.244.0.6   controlplane  
 newpods-qqhs2   1/1     Running   0          5m11s   10.244.0.5   controlplane   <none>           <none>
 nginx           1/1     Running   0          5m20s   10.244.0.4   controlplane   <none>           <none>
 ```
-- How many containers are part of the pod <span color="gray">`webapp`</span>? Note: We just created a new POD. Ignore the state of the POD for now. ⇒ <span color="pink_bg">`READY가 1/2이므로 2`</span>
+- How many containers are part of the pod `webapp`? Note: We just created a new POD. Ignore the state of the POD for now. ⇒ `READY가 1/2이므로 2`
 ```shell
 # kubectl get pod webapp
 --------------------------------
 NAME     READY   STATUS             RESTARTS   AGE
 webapp   1/2     ImagePullBackOff   0          2m24s
 ```
-- What images are used in the new <span color="gray">`webapp`</span> pod? You must look at all the pods in detail to figure this out. ⇒ <span color="pink_bg">`nginx & agentx`</span>
-- What is the state of the container <span color="gray">`agentx`</span> in the pod <span color="gray">`webapp`</span>? Wait for it to finish the <span color="gray">`ContainerCreating`</span> state. ⇒ <span color="pink_bg">`waiting`</span>
-- Why do you think the container <span color="gray">`agentx`</span> in pod <span color="gray">`webapp`</span> is in error? Try to figure it out from the events section of the pod. ⇒ <span color="pink_bg">`Error: ImagePullBackOff, A Docker image with this name doesn't exit on Docker HUb`</span>
+- What images are used in the new `webapp` pod? You must look at all the pods in detail to figure this out. ⇒ `nginx & agentx`
+- What is the state of the container `agentx` in the pod `webapp`? Wait for it to finish the `ContainerCreating` state. ⇒ `waiting`
+- Why do you think the container `agentx` in pod `webapp` is in error? Try to figure it out from the events section of the pod. ⇒ `Error: ImagePullBackOff, A Docker image with this name doesn't exit on Docker HUb`
 ```shell
 # kubectl describe pod webapp
 --------------------------------
@@ -244,20 +243,20 @@ Events:
   Normal   BackOff    2m48s (x6 over 4m7s)  kubelet            Back-off pulling image "agentx"
   Warning  Failed     2m48s (x6 over 4m7s)  kubelet            Error: ImagePullBackOff
 ```
-- What does the READY column in the output of the <span color="gray">`kubectl get pods`</span> command indicate? ⇒ <span color="pink_bg">`Running Containers in POD/Total Containers in POD`</span>
+- What does the READY column in the output of the `kubectl get pods` command indicate? ⇒ `Running Containers in POD/Total Containers in POD`
 ```shell
 # kubectl get pods webapp
 ---------------------------
 NAME     READY   STATUS             RESTARTS   AGE
 webapp   1/2     ImagePullBackOff   0          14m
 ```
-- Delete the <span color="gray">`webapp`</span> Pod. Once deleted, wait for the pod to fully terminate.
+- Delete the `webapp` Pod. Once deleted, wait for the pod to fully terminate.
 ```shell
 # kubectl delete pod webapp
 ---------------------------
 pod "webapp" deleted
 ```
-- Create a new pod with the name <span color="gray">`redis`</span> and with the image <span color="gray">`redis123`</span>. Use a pod-definition YAML file. And yes the image name is wrong!
+- Create a new pod with the name `redis` and with the image `redis123`. Use a pod-definition YAML file. And yes the image name is wrong!
 ```shell
 # kubectl run redis --image=redis123
 ---------------------------
@@ -286,7 +285,7 @@ status: {}
 ---------------------------
 pod/redis configured
 ```
-- Now change the image on this pod to <span color="gray">`redis`</span>. Once done, the pod should be in a <span color="gray">`running`</span> state. ⇒ <span color="pink_bg">`- image: redis 부분 변경`</span>
+- Now change the image on this pod to `redis`. Once done, the pod should be in a `running` state. ⇒ `- image: redis 부분 변경`
 ```shell
 
 # kubectl edit pod redis
@@ -410,7 +409,7 @@ kubectl create -f replicaset-definition.yml
 ```shell
 kubectl get replciaset
 ```
-- Delete `Replica Set` command followed by the name of the Replica Set to delete the Replica Set. (<span color="gray">`*Also, deletes all underying PODs`</span>)
+- Delete `Replica Set` command followed by the name of the Replica Set to delete the Replica Set. (`*Also, deletes all underying PODs`)
 ```shell
 kubectl delete replicaset myapp-replicaset
 ```
@@ -541,7 +540,7 @@ No resources found in default namespace.
 NAME              DESIRED   CURRENT   READY   AGE
 new-replica-set   4         4         0       6s
 ```
-- How many PODs are DESIRED in the <span color="gray">`new-replica-set`</span>? ⇒ `4`
+- How many PODs are DESIRED in the `new-replica-set`? ⇒ `4`
 ```yaml
 # kubectl get pods
 -------------------------------
@@ -551,8 +550,8 @@ new-replica-set-hz4j9   0/1     ErrImagePull   0          70s
 new-replica-set-qjd56   0/1     ErrImagePull   0          70s
 new-replica-set-wfgpl   0/1     ErrImagePull   0          70s
 ```
-- What is the image used to create the pods in the <span color="gray">`new-replica-set`</span>? ⇒ `busybox777`
-- How many PODs are READY in the <span color="gray">`new-replica-set`</span>? ⇒ `0 Running / 4 Waiting / 0 Succeeded / 0 Failed`
+- What is the image used to create the pods in the `new-replica-set`? ⇒ `busybox777`
+- How many PODs are READY in the `new-replica-set`? ⇒ `0 Running / 4 Waiting / 0 Succeeded / 0 Failed`
 ```yaml
 # kubectl describe replicasets.apps new-replica-set 
 -------------------------------

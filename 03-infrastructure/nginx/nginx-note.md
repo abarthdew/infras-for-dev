@@ -14,10 +14,7 @@ server {
             index  index.html index.htm;
         }
 ```
-<empty-block/>
-<empty-block/>
-<empty-block/>
-<empty-block/>
+
 # 색인과 출처
 - nginx 설치 및 구동 : [https://www.youtube.com/watch?v=Sc0nJtVtWSI](https://www.youtube.com/watch?v=Sc0nJtVtWSI)
 - 설정 : [https://grandj.tistory.com/246](https://grandj.tistory.com/246)

@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # 2.1. 도커 이미지와 컨테이너
 - 이미지, 컨테이너 : 도커 엔진에서 사용하는 기본 단위, 도커 엔진의 핵심
 ## 2.1.1. 도커 이미지
@@ -164,7 +163,6 @@ C:\Users\auswo>ipconfig
 
 Windows IP 구성
 
-
 이더넷 어댑터 이더넷:
 
    미디어 상태 . . . . . . . . : 미디어 연결 끊김
@@ -214,9 +212,7 @@ Windows IP 구성
 - 실제 아파치 서버가 설치된 것은 컨테이너 내부이므로, 호스트에는 어떠한 영향도 주지 않음
 ### 호스트의 IP와 포트를 컨테이너의 IP와 포트로 연결한다는 개념
 ![](images/getting-started-03.png)
-<empty-block/>
-<empty-block/>
-<empty-block/>
+
 - 아파치 웹 서버는 172 대역을 가진 컨테이너의 NAT IP와 80번 포트로 서비스
 - 여기 접근하려면 172.17.0.X:80의 주소로 접근해야 함
 - 도커의 포트 포워딩 옵션 -p를 사용해 호스트와 컨테이너 연결, 호스트의 IP와 포트를 통해 172.17.0.X:80으로 접근 가능
@@ -270,4 +266,4 @@ C:\Users\auswo>docker port wordpress
 # 색인과 출처
 - [https://yunbk.tistory.com/19](https://yunbk.tistory.com/19)
 - [https://velog.io/@king/private-docker-registry](https://velog.io/@king/private-docker-registry)
-<empty-block/>
+

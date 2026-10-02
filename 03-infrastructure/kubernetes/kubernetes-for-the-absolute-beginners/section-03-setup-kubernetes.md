@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section 3\]: Setup kubernetes
 # 8. Kubernetes Setup - Introduction and Minikube
 - 클러스터를 구성하는 데 다양한 옵션 확인

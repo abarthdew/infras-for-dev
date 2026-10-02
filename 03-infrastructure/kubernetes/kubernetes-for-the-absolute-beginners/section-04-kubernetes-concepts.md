@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section 4\]: Kubernetes Concepts
 # 12. PODs
 ## 쿠버네티스 클러스터가 세팅되고, 가동된다고 가정함

@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section2\]: Core COncepts
 # 8. Core Concepts Section Introduction
 ![](images/cka-s02-01.png)
@@ -7,9 +6,9 @@
 # 9. Download Presentation Deck for this section
 Please note that some slides are animated so content may not have exported correctly. Kindly use the slides as a reference for commands.
 ### 이 강의 자료
-<file src=""></file>
-<file src=""></file>
-<file src=""></file>
+> ⚠️ 원본 첨부 파일 유실
+> ⚠️ 원본 첨부 파일 유실
+> ⚠️ 원본 첨부 파일 유실
 # 10. Cluster Architecture
 ## Goal
 ![](images/cka-s02-02.png)
@@ -111,15 +110,9 @@ Please note that some slides are animated so content may not have exported corre
 ### 🔰 What is ETCD?
 - It is distributed, reliable, key value store, that is simple, secure and fast.
 ### 🔰 What is a key-value store?
-<columns>
-	<column ratio="50">
-		![](images/cka-s02-20.png)
-		- Traditional : the stored data in the form of rows and columns.
-	</column>
-	<column ratio="50">
-		![](images/cka-s02-21.png)
-	</column>
-</columns>
+![](images/cka-s02-20.png)
+- Traditional : the stored data in the form of rows and columns.
+![](images/cka-s02-21.png)
 - key-value : A key value store stores information in a key and a value format.
 	- You put a key and a value and it saves that in the database.
 	- And then you get the key and it returns the value and you cannot have duplicate keys.
@@ -398,14 +391,8 @@ So for the commands I showed in the previous video to work you must specify the 
 - Here we see the simplest of simplest cases where you have a single node, Kubernetes cluster with a single instance of your application running in a single Docher container encapsulated in a Pod.
 ![](images/cka-s02-107.png)
 - What if the number of users accessing your application increase and you need to scale your application, you need to add additional instances of your web application to share the load.
-<columns>
-	<column ratio="50">
-		![](images/cka-s02-108.png)
-	</column>
-	<column ratio="50">
-		![](images/cka-s02-109.png)
-	</column>
-</columns>
+![](images/cka-s02-108.png)
+![](images/cka-s02-109.png)
 - Now, where would you spin up additional instances? Do we bring up new container instance within the same Pod? ⇒ No, we create new Pod altogether with a new instance of the same application.
 ![](images/cka-s02-110.png)
 - As you can see, we now have two instances of our web application running on two separate Pods on the same Kubernetes system or node.
@@ -624,14 +611,8 @@ Apply the coupon code **udemystudent151113**
 - Move all the contents of the pod-definition file into the template section of the Replication Controller. Except for the first few lines which are apiVersion and kind.
 ![](images/cka-s02-162.png)
 - Remember, whatever we move must be under the template section meaning they should be intended to the right and have more spaces before them than the template line itself. They should be children of the template section.
-<columns>
-	<column ratio="50">
-		![](images/cka-s02-163.png)
-	</column>
-	<column ratio="50">
-		![](images/cka-s02-164.png)
-	</column>
-</columns>
+![](images/cka-s02-163.png)
+![](images/cka-s02-164.png)
 - Looking at our file now, we now have two metadata sections, one is for the Replication Controller and another for the Pod. And we have two aspects sections one for each.
 - We have nested two definition files together. The Replication Controller being the parent and the pod-definition being the child. Now there is something still missing. We haven;t mentioned how many replicas we need in the Replication Controller.
 ![](images/cka-s02-165.png)
@@ -729,14 +710,8 @@ Practice Test Link: [https://uklabs.kodekloud.com/topic/practice-test-replicase
 ![](images/cka-s02-199.png)
 - And then comes Deployment which is a Kubernetes object that comes higher in the hierarchy. The deployment provides us with the capability to upgrade the underlying instances seamlessly using rolling updates, undo changes, and pause and resume changes as required.
 ### 🔰 How do we create a Deployment?
-<columns>
-	<column ratio="50">
-		![](images/cka-s02-200.png)
-	</column>
-	<column ratio="50">
-		![](images/cka-s02-201.png)
-	</column>
-</columns>
+![](images/cka-s02-200.png)
+![](images/cka-s02-201.png)
 - We first create a deployment definition file. The contents of the deployment definition file are exactly similar to the Replica Set definition file, except for the kind, which is now going to be Deployment.
 - If we walk through the contents of the file it has an apiVersion which is ‘apps/v1’, metadata which has name and labels and a spec that has template, replicas and selector.
 ![](images/cka-s02-202.png)

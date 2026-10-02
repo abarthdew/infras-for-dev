@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section 10\]: Kubernetes on Cloud
 # 50. Kubernetes on Cloud - Introduction
 # 51. Kubernetes on GCP(CKE)

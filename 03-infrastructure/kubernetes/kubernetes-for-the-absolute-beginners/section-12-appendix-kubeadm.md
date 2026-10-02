@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section 12\]: Appendix - Setup Multi Node cluster using Kubeadm
 # 57. Reference
 - Oracle VirtualBox:  [https://www.virtualbox.org/](https://www.virtualbox.org/)
@@ -31,7 +30,7 @@
 		![](images/k8s-s12-07.png)
 	6. The last step is to join the worker nodes to the master node. Then all set to launch our application in the Kubernetes environment.
 # 59. Demo - Setup Lab - VirtualBox
-<callout icon="💡" color="gray_bg">
-	- vagrant오류 : Stderr: VBoxManage.exe: error: Could not rename the directory<br>  - [https://github.com/hashicorp/vagrant/issues/2813](https://github.com/hashicorp/vagrant/issues/2813)<br>- vagrant timeout 오류<br>  - [https://stackoverflow.com/questions/23293071/timed-out-while-waiting-for-the-machine-to-boot-when-vagrant-up](https://stackoverflow.com/questions/23293071/timed-out-while-waiting-for-the-machine-to-boot-when-vagrant-up)<br>- 바이오스 vm 설정<br>  - [https://lng1982.tistory.com/257](https://lng1982.tistory.com/257)
-</callout>
+
+> 💡 - vagrant오류 : Stderr: VBoxManage.exe: error: Could not rename the directory<br>  - [https://github.com/hashicorp/vagrant/issues/2813](https://github.com/hashicorp/vagrant/issues/2813)<br>- vagrant timeout 오류<br>  - [https://stackoverflow.com/questions/23293071/timed-out-while-waiting-for-the-machine-to-boot-when-vagrant-up](https://stackoverflow.com/questions/23293071/timed-out-while-waiting-for-the-machine-to-boot-when-vagrant-up)<br>- 바이오스 vm 설정<br>  - [https://lng1982.tistory.com/257](https://lng1982.tistory.com/257)
+
 # 60. Demo - Provision cluster using Kubeadm

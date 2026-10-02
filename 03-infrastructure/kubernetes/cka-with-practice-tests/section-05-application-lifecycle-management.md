@@ -3,7 +3,7 @@
 # 90. Download Slide Deck
 Please note that some slides are animated so content may not have exported correctly. Kindly use the slides as a reference for commands.
 이 강의 자료
-<file src=""></file>
+> ⚠️ 원본 첨부 파일 유실
 # 91. Rolling Updates and Rollbacks
 ![](images/cka-s05-01.png)
 - Before we look at how we upgrade our application, let;s try to understand Rollout and versioning in a Deployment.
@@ -73,53 +73,53 @@ Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-rolling-update
 2. What is the current color of the web application? Access the Webapp Portal. ⇒ **`blue`**
 3. Run the script named `curl-test.sh` to send multiple requests to test the web application. Take a note of the output. Execute the script at `/root/curl-test.sh`.
 	```shell
-controlplane ~ ➜  /root/curl-test.sh
-Hello, Application Version: v1 ; Color: blue OK
+	controlplane ~ ➜  /root/curl-test.sh
+	Hello, Application Version: v1 ; Color: blue OK
 
-Hello, Application Version: v1 ; Color: blue OK
+	Hello, Application Version: v1 ; Color: blue OK
 
-Hello, Application Version: v1 ; Color: blue OK
+	Hello, Application Version: v1 ; Color: blue OK
 	```
 4. Inspect the deployment and identify the number of PODs deployed by it. ⇒ **`4`**
 	```shell
-controlplane ~ ✖ kubectl get deploy
-NAME       READY   UP-TO-DATE   AVAILABLE   AGE
-frontend   4/4     4            4           3m33s
+	controlplane ~ ✖ kubectl get deploy
+	NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+	frontend   4/4     4            4           3m33s
 	```
 5. What container image is used to deploy the applications? ⇒ **`kodekloud/webapp-color:v1`**
 	```shell
-controlplane ~ ➜  kubectl describe deploy
-Name:                   frontend
-Namespace:              default
-CreationTimestamp:      Tue, 30 Aug 2022 05:39:59 +0000
-Labels:                 <none>
-Annotations:            deployment.kubernetes.io/revision: 1
-Selector:               name=webapp
-Replicas:               4 desired | 4 updated | 4 total | 4 available | 0 unavailable
-StrategyType:           RollingUpdate
-MinReadySeconds:        20
-RollingUpdateStrategy:  25% max unavailable, 25% max surge
-Pod Template:
-  Labels:  name=webapp
-  Containers:
-   simple-webapp:
-    Image:        kodekloud/webapp-color:v1
-    Port:         8080/TCP
-    Host Port:    0/TCP
-    Environment:  <none>
-    Mounts:       <none>
-  Volumes:        <none>
-Conditions:
-  Type           Status  Reason
-  ----           ------  ------
-  Available      True    MinimumReplicasAvailable
-  Progressing    True    NewReplicaSetAvailable
-OldReplicaSets:  <none>
-NewReplicaSet:   frontend-5c74c57d95 (4/4 replicas created)
-Events:
-  Type    Reason             Age   From                   Message
-  ----    ------             ----  ----                   -------
-  Normal  ScalingReplicaSet  4m7s  deployment-controller  Scaled up replica set frontend-5c74c57d95 to 4
+	controlplane ~ ➜  kubectl describe deploy
+	Name:                   frontend
+	Namespace:              default
+	CreationTimestamp:      Tue, 30 Aug 2022 05:39:59 +0000
+	Labels:                 <none>
+	Annotations:            deployment.kubernetes.io/revision: 1
+	Selector:               name=webapp
+	Replicas:               4 desired | 4 updated | 4 total | 4 available | 0 unavailable
+	StrategyType:           RollingUpdate
+	MinReadySeconds:        20
+	RollingUpdateStrategy:  25% max unavailable, 25% max surge
+	Pod Template:
+	  Labels:  name=webapp
+	  Containers:
+	   simple-webapp:
+	    Image:        kodekloud/webapp-color:v1
+	    Port:         8080/TCP
+	    Host Port:    0/TCP
+	    Environment:  <none>
+	    Mounts:       <none>
+	  Volumes:        <none>
+	Conditions:
+	  Type           Status  Reason
+	  ----           ------  ------
+	  Available      True    MinimumReplicasAvailable
+	  Progressing    True    NewReplicaSetAvailable
+	OldReplicaSets:  <none>
+	NewReplicaSet:   frontend-5c74c57d95 (4/4 replicas created)
+	Events:
+	  Type    Reason             Age   From                   Message
+	  ----    ------             ----  ----                   -------
+	  Normal  ScalingReplicaSet  4m7s  deployment-controller  Scaled up replica set frontend-5c74c57d95 to 4
 	```
 6. Inspect the deployment and identify the current strategy. ⇒ **`RollingUpdate`**
 7. If you were to upgrade the application now what would happen? ⇒ **`PODs are upgraded few at a time`**
@@ -134,31 +134,31 @@ Events:
 	- Deployment Image: kodekloud/webapp-color:v2
 	- Strategy: Recreate
 	```shell
-controlplane ~ ➜  kubectl edit deployment frontend
+	controlplane ~ ➜  kubectl edit deployment frontend
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-  namespace: default
-spec:
-  replicas: 4
-  selector:
-    matchLabels:
-      name: webapp
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        name: webapp
-    spec:
-      containers:
-      - image: kodekloud/webapp-color:v2
-        name: simple-webapp
-        ports:
-        - containerPort: 8080
-          protocol: TCP
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata:
+	  name: frontend
+	  namespace: default
+	spec:
+	  replicas: 4
+	  selector:
+	    matchLabels:
+	      name: webapp
+	  strategy:
+	    type: Recreate
+	  template:
+	    metadata:
+	      labels:
+	        name: webapp
+	    spec:
+	      containers:
+	      - image: kodekloud/webapp-color:v2
+	        name: simple-webapp
+	        ports:
+	        - containerPort: 8080
+	          protocol: TCP
 	```
 12. Upgrade the application by setting the image on the deployment to `kodekloud/webapp-color:v3`. Do not delete and re-create the deployment. Only set the new image name for the existing deployment.
 	- Deployment Name: frontend
@@ -251,232 +251,232 @@ Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-commands-and-a
 # 98. Solution - Commands and Arguments (Optional)
 1. How many PODs exist on the system? in the current(default) namespace. ⇒ **`1`**
 	```shell
-controlplane ~ ➜  kubectl get pods
-NAME             READY   STATUS    RESTARTS   AGE
-ubuntu-sleeper   1/1     Running   0          40s
+	controlplane ~ ➜  kubectl get pods
+	NAME             READY   STATUS    RESTARTS   AGE
+	ubuntu-sleeper   1/1     Running   0          40s
 	```
 2. What is the command used to run the pod `ubuntu-sleeper`? ⇒ **`sleep 4800`**
 	```shell
-controlplane ~ ➜  kubectl describe pod ubuntu-sleeper 
-Name:         ubuntu-sleeper
-Namespace:    default
-Priority:     0
-Node:         controlplane/172.25.1.69
-Start Time:   Tue, 30 Aug 2022 07:53:56 +0000
-Labels:       <none>
-Annotations:  <none>
-Status:       Running
-IP:           10.42.0.9
-IPs:
-  IP:  10.42.0.9
-Containers:
-  ubuntu:
-    Container ID:  containerd://958d55ca6223d6f7bd3aabed5461e10417eb3080b52b0df8b0fe1c141ce76701
-    Image:         ubuntu
-    Image ID:      docker.io/library/ubuntu@sha256:34fea4f31bf187bc915536831fd0afc9d214755bf700b5cdb1336c82516d154e
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sleep
-      4800
-    State:          Running
-      Started:      Tue, 30 Aug 2022 07:54:03 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-l64sn (ro)
-Conditions:
-  Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
-Volumes:
-  kube-api-access-l64sn:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  102s  default-scheduler  Successfully assigned default/ubuntu-sleeper to controlplane
-  Normal  Pulling    102s  kubelet            Pulling image "ubuntu"
-  Normal  Pulled     96s   kubelet            Successfully pulled image "ubuntu" in 5.328394516s
-  Normal  Created    96s   kubelet            Created container ubuntu
-  Normal  Started    96s   kubelet            Started container ubuntu
+	controlplane ~ ➜  kubectl describe pod ubuntu-sleeper 
+	Name:         ubuntu-sleeper
+	Namespace:    default
+	Priority:     0
+	Node:         controlplane/172.25.1.69
+	Start Time:   Tue, 30 Aug 2022 07:53:56 +0000
+	Labels:       <none>
+	Annotations:  <none>
+	Status:       Running
+	IP:           10.42.0.9
+	IPs:
+	  IP:  10.42.0.9
+	Containers:
+	  ubuntu:
+	    Container ID:  containerd://958d55ca6223d6f7bd3aabed5461e10417eb3080b52b0df8b0fe1c141ce76701
+	    Image:         ubuntu
+	    Image ID:      docker.io/library/ubuntu@sha256:34fea4f31bf187bc915536831fd0afc9d214755bf700b5cdb1336c82516d154e
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sleep
+	      4800
+	    State:          Running
+	      Started:      Tue, 30 Aug 2022 07:54:03 +0000
+	    Ready:          True
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-l64sn (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       True 
+	  Ready             True 
+	  ContainersReady   True 
+	  PodScheduled      True 
+	Volumes:
+	  kube-api-access-l64sn:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type    Reason     Age   From               Message
+	  ----    ------     ----  ----               -------
+	  Normal  Scheduled  102s  default-scheduler  Successfully assigned default/ubuntu-sleeper to controlplane
+	  Normal  Pulling    102s  kubelet            Pulling image "ubuntu"
+	  Normal  Pulled     96s   kubelet            Successfully pulled image "ubuntu" in 5.328394516s
+	  Normal  Created    96s   kubelet            Created container ubuntu
+	  Normal  Started    96s   kubelet            Started container ubuntu
 	```
 3. Create a pod with the ubuntu image to run a container to sleep for 5000 seconds. Modify the file `ubuntu-sleeper-2.yaml`. Note: Only make the necessary changes. Do not modify the name.
 	- Pod Name: ubuntu-sleeper-2
 	- Command: sleep 5000
 	```shell
-controlplane ~ ➜  vim ubuntu-sleeper-2.yaml
-controlplane ~ ✖ cat ubuntu-sleeper-2.yaml
-apiVersion: v1 
-kind: Pod 
-metadata:
-  name: ubuntu-sleeper-2 
-spec:
-  containers:
-  - name: ubuntu
-    image: ubuntu
-    command:
-      - "sleep"
-      - "5000"
+	controlplane ~ ➜  vim ubuntu-sleeper-2.yaml
+	controlplane ~ ✖ cat ubuntu-sleeper-2.yaml
+	apiVersion: v1 
+	kind: Pod 
+	metadata:
+	  name: ubuntu-sleeper-2 
+	spec:
+	  containers:
+	  - name: ubuntu
+	    image: ubuntu
+	    command:
+	      - "sleep"
+	      - "5000"
 
-controlplane ~ ➜  kubectl create -f ubuntu-sleeper-2.yaml 
-pod/ubuntu-sleeper-2 created
+	controlplane ~ ➜  kubectl create -f ubuntu-sleeper-2.yaml 
+	pod/ubuntu-sleeper-2 created
 	```
 4. Create a pod using the file named `ubuntu-sleeper-3.yaml`. There is something wrong with it. Try to fix it! Note: Only make the necessary changes. Do not modify the name.
 	- Pod Name: ubuntu-sleeper-3
 	- Command: sleep 1200
 	```shell
-controlplane ~ ➜  kubectl create -f ubuntu-sleeper-3.yaml 
-pod/ubuntu-sleeper-3 created
+	controlplane ~ ➜  kubectl create -f ubuntu-sleeper-3.yaml 
+	pod/ubuntu-sleeper-3 created
 	```
 5. Update pod `ubuntu-sleeper-3` to sleep for 2000 seconds. Note: Only make the necessary changes. Do not modify the name of the pod. Delete and recreate the pod if necessary.
 	- Pod Name: ubuntu-sleeper-3
 	- Command: sleep 2000
 	```shell
-controlplane ~ ➜  vim ubuntu-sleeper-3.yaml 
+	controlplane ~ ➜  vim ubuntu-sleeper-3.yaml 
 
-controlplane ~ ➜  kubectl create -f ubuntu-sleeper-3.yaml 
-pod/ubuntu-sleeper-3 created
+	controlplane ~ ➜  kubectl create -f ubuntu-sleeper-3.yaml 
+	pod/ubuntu-sleeper-3 created
 
-controlplane ~ ➜  cat ubuntu-sleeper-3.yaml 
-apiVersion: v1 
-kind: Pod 
-metadata:
-  name: ubuntu-sleeper-3 
-spec:
-  containers:
-  - name: ubuntu
-    image: ubuntu
-    command:
-      - "sleep"
-      - "2000"
+	controlplane ~ ➜  cat ubuntu-sleeper-3.yaml 
+	apiVersion: v1 
+	kind: Pod 
+	metadata:
+	  name: ubuntu-sleeper-3 
+	spec:
+	  containers:
+	  - name: ubuntu
+	    image: ubuntu
+	    command:
+	      - "sleep"
+	      - "2000"
 	```
 6. Inspect the file `Dockerfile` given at `/root/webapp-color` directory. What command is run at container startup? ⇒ **`python app.py`**
 	```shell
-controlplane ~ ➜  cd /root/webapp-color
+	controlplane ~ ➜  cd /root/webapp-color
 
-controlplane ~/webapp-color ➜  ls
-Dockerfile   Dockerfile2
+	controlplane ~/webapp-color ➜  ls
+	Dockerfile   Dockerfile2
 
-controlplane ~/webapp-color ➜  cat Dockerfile
-FROM python:3.6-alpine
+	controlplane ~/webapp-color ➜  cat Dockerfile
+	FROM python:3.6-alpine
 
-RUN pip install flask
+	RUN pip install flask
 
-COPY . /opt/
+	COPY . /opt/
 
-EXPOSE 8080
+	EXPOSE 8080
 
-WORKDIR /opt
+	WORKDIR /opt
 
-ENTRYPOINT ["python", "app.py"]
+	ENTRYPOINT ["python", "app.py"]
 	```
 7. Inspect the file `Dockerfile2` given at `/root/webapp-color` directory. What command is run at container startup? ⇒ **`python app.py --color red`**
 	```shell
-controlplane ~ ➜  cd /root/webapp-color
+	controlplane ~ ➜  cd /root/webapp-color
 
-controlplane ~/webapp-color ➜  ls
-Dockerfile   Dockerfile2
+	controlplane ~/webapp-color ➜  ls
+	Dockerfile   Dockerfile2
 
-controlplane ~/webapp-color ➜  cat Dockerfile2
-FROM python:3.6-alpine
+	controlplane ~/webapp-color ➜  cat Dockerfile2
+	FROM python:3.6-alpine
 
-RUN pip install flask
+	RUN pip install flask
 
-COPY . /opt/
+	COPY . /opt/
 
-EXPOSE 8080
+	EXPOSE 8080
 
-WORKDIR /opt
+	WORKDIR /opt
 
-ENTRYPOINT ["python", "app.py"]
+	ENTRYPOINT ["python", "app.py"]
 
-CMD ["--color", "red"]
+	CMD ["--color", "red"]
 	```
 8. Inspect the two files under directory `webapp-color-2`. What command is run at container startup? Assume the image was created from the Dockerfile in this folder. ⇒ **`--color green`**
 	```shell
-controlplane ~/webapp-color ✖ cd ..
+	controlplane ~/webapp-color ✖ cd ..
 
-controlplane ~ ➜  ls
-sample.yaml            webapp-color
-ubuntu-sleeper-2.yaml  webapp-color-2
-ubuntu-sleeper-3       webapp-color-3
-ubuntu-sleeper-3.yaml
+	controlplane ~ ➜  ls
+	sample.yaml            webapp-color
+	ubuntu-sleeper-2.yaml  webapp-color-2
+	ubuntu-sleeper-3       webapp-color-3
+	ubuntu-sleeper-3.yaml
 
-controlplane ~ ➜  cd webapp-color-2
+	controlplane ~ ➜  cd webapp-color-2
 
-controlplane ~/webapp-color-2 ➜  ls
-Dockerfile2            webapp-color-pod.yaml
+	controlplane ~/webapp-color-2 ➜  ls
+	Dockerfile2            webapp-color-pod.yaml
 
-controlplane ~/webapp-color-2 ➜  cat webapp-color-pod.yaml 
-apiVersion: v1 
-kind: Pod 
-metadata:
-  name: webapp-green
-  labels:
-      name: webapp-green 
-spec:
-  containers:
-  - name: simple-webapp
-    image: kodekloud/webapp-color
-    command: ["--color","green"]
+	controlplane ~/webapp-color-2 ➜  cat webapp-color-pod.yaml 
+	apiVersion: v1 
+	kind: Pod 
+	metadata:
+	  name: webapp-green
+	  labels:
+	      name: webapp-green 
+	spec:
+	  containers:
+	  - name: simple-webapp
+	    image: kodekloud/webapp-color
+	    command: ["--color","green"]
 	```
 9. Inspect the two files under directory `webapp-color-3`. What command is run at container startup? Assume the image was created from the Dockerfile in this folder. ⇒ **`python app.py --color pink`**
 	![](images/cka-s05-61.png)
 	```shell
-controlplane / ➜  cd /root/webapp-color-3
+	controlplane / ➜  cd /root/webapp-color-3
 
-controlplane ~/webapp-color-3 ➜  ls
-Dockerfile2              webapp-color-pod-2.yaml
+	controlplane ~/webapp-color-3 ➜  ls
+	Dockerfile2              webapp-color-pod-2.yaml
 
-controlplane ~/webapp-color-3 ➜  cat Dockerfile2 
-FROM python:3.6-alpine
+	controlplane ~/webapp-color-3 ➜  cat Dockerfile2 
+	FROM python:3.6-alpine
 
-RUN pip install flask
+	RUN pip install flask
 
-COPY . /opt/
+	COPY . /opt/
 
-EXPOSE 8080
+	EXPOSE 8080
 
-WORKDIR /opt
+	WORKDIR /opt
 
-ENTRYPOINT ["python", "app.py"]
+	ENTRYPOINT ["python", "app.py"]
 
-CMD ["--color", "red"]
+	CMD ["--color", "red"]
 	```
 10. Create a pod with the given specifications. By default it displays a `blue` background. Set the given command line arguments to change it to `green`.
 	- Pod Name: webapp-green
 	- Image: kodekloud/webapp-color
 	- Command line arguments: --color=green
 	```shell
-controlplane ~ ➜  vim pod.yaml
+	controlplane ~ ➜  vim pod.yaml
 
-controlplane ~ ➜  cat pod.yaml 
-apiVersion: v1 
-kind: Pod 
-metadata:
-  name: webapp-green
-  labels:
-      name: webapp-green 
-spec:
-  containers:
-  - name: simple-webapp
-    image: kodekloud/webapp-color
-    args: ["--color", "green"]
+	controlplane ~ ➜  cat pod.yaml 
+	apiVersion: v1 
+	kind: Pod 
+	metadata:
+	  name: webapp-green
+	  labels:
+	      name: webapp-green 
+	spec:
+	  containers:
+	  - name: simple-webapp
+	    image: kodekloud/webapp-color
+	    args: ["--color", "green"]
 
-controlplane ~ ➜  kubectl create -f pod.yaml 
-pod/webapp-green created
+	controlplane ~ ➜  kubectl create -f pod.yaml 
+	pod/webapp-green created
 	```
 # 99. Configure Environment Variables in Applications
 ![](images/cka-s05-62.png)
@@ -539,64 +539,64 @@ Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-env-variables-
 # 102. Solution - Environment Variables (Optional)
 1. How many PODs exist on the system? in the current(default) namespace. ⇒ **`1`**
 	```shell
-controlplane ~ ➜  kubectl get pods
-NAME           READY   STATUS    RESTARTS   AGE
-webapp-color   1/1     Running   0          68s
+	controlplane ~ ➜  kubectl get pods
+	NAME           READY   STATUS    RESTARTS   AGE
+	webapp-color   1/1     Running   0          68s
 	```
 2. What is the environment variable name set on the container in the pod? ⇒ **`APP_COLOR`**
 	```shell
-controlplane ~ ➜  kubectl describe pod webapp-color 
-Name:         webapp-color
-Namespace:    default
-Priority:     0
-Node:         controlplane/172.25.0.87
-Start Time:   Wed, 31 Aug 2022 07:10:04 +0000
-Labels:       name=webapp-color
-Annotations:  <none>
-Status:       Running
-IP:           10.42.0.9
-IPs:
-  IP:  10.42.0.9
-Containers:
-  webapp-color:
-    Container ID:   containerd://140ce66f48f7aa283e745372dfe84cc8db2d8b23d78bd2d38140e71f31a43ed9
-    Image:          kodekloud/webapp-color
-    Image ID:       docker.io/kodekloud/webapp-color@sha256:99c3821ea49b89c7a22d3eebab5c2e1ec651452e7675af243485034a72eb1423
-    Port:           <none>
-    Host Port:      <none>
-    State:          Running
-      Started:      Wed, 31 Aug 2022 07:10:11 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:
-      APP_COLOR:  pink
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-5fs9t (ro)
-Conditions:
-  Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
-Volumes:
-  kube-api-access-5fs9t:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  104s  default-scheduler  Successfully assigned default/webapp-color to controlplane
-  Normal  Pulling    104s  kubelet            Pulling image "kodekloud/webapp-color"
-  Normal  Pulled     98s   kubelet            Successfully pulled image "kodekloud/webapp-color" in 5.673276514s
-  Normal  Created    98s   kubelet            Created container webapp-color
-  Normal  Started    98s   kubelet            Started container webapp-color
+	controlplane ~ ➜  kubectl describe pod webapp-color 
+	Name:         webapp-color
+	Namespace:    default
+	Priority:     0
+	Node:         controlplane/172.25.0.87
+	Start Time:   Wed, 31 Aug 2022 07:10:04 +0000
+	Labels:       name=webapp-color
+	Annotations:  <none>
+	Status:       Running
+	IP:           10.42.0.9
+	IPs:
+	  IP:  10.42.0.9
+	Containers:
+	  webapp-color:
+	    Container ID:   containerd://140ce66f48f7aa283e745372dfe84cc8db2d8b23d78bd2d38140e71f31a43ed9
+	    Image:          kodekloud/webapp-color
+	    Image ID:       docker.io/kodekloud/webapp-color@sha256:99c3821ea49b89c7a22d3eebab5c2e1ec651452e7675af243485034a72eb1423
+	    Port:           <none>
+	    Host Port:      <none>
+	    State:          Running
+	      Started:      Wed, 31 Aug 2022 07:10:11 +0000
+	    Ready:          True
+	    Restart Count:  0
+	    Environment:
+	      APP_COLOR:  pink
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-5fs9t (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       True 
+	  Ready             True 
+	  ContainersReady   True 
+	  PodScheduled      True 
+	Volumes:
+	  kube-api-access-5fs9t:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type    Reason     Age   From               Message
+	  ----    ------     ----  ----               -------
+	  Normal  Scheduled  104s  default-scheduler  Successfully assigned default/webapp-color to controlplane
+	  Normal  Pulling    104s  kubelet            Pulling image "kodekloud/webapp-color"
+	  Normal  Pulled     98s   kubelet            Successfully pulled image "kodekloud/webapp-color" in 5.673276514s
+	  Normal  Created    98s   kubelet            Created container webapp-color
+	  Normal  Started    98s   kubelet            Started container webapp-color
 	```
 3. What is the value set on the environment variable `APP_COLOR` on the container in the pod? ⇒ **`pink`**
 4. View the web application UI by clicking on the `Webapp Color` Tab above your terminal. This is located on the right side.
@@ -606,130 +606,128 @@ Events:
 	- Label Name: webapp-color
 	- Env: APP_COLOR=green
 	```shell
-controlplane ~ ✖ kubectl delete pod webapp-color 
-pod "webapp-color" deleted
+	controlplane ~ ✖ kubectl delete pod webapp-color 
+	pod "webapp-color" deleted
 
-controlplane ~ ✖ vim webapp-color.yml
+	controlplane ~ ✖ vim webapp-color.yml
 
-controlplane ~ ➜  cat webapp-color.yml 
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    name: webapp-color
-  name: webapp-color
-  namespace: default
-spec:
-  containers:
-  - env:
-    - name: APP_COLOR
-      value: green
-    image: kodekloud/webapp-color
-    name: webapp-color
+	controlplane ~ ➜  cat webapp-color.yml 
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  labels:
+	    name: webapp-color
+	  name: webapp-color
+	  namespace: default
+	spec:
+	  containers:
+	  - env:
+	    - name: APP_COLOR
+	      value: green
+	    image: kodekloud/webapp-color
+	    name: webapp-color
 
-controlplane ~ ➜  kubectl create -f webapp-color.yml 
-pod/webapp-color created
+	controlplane ~ ➜  kubectl create -f webapp-color.yml 
+	pod/webapp-color created
 	```
 6. View the changes to the web application UI by clicking on the `Webapp Color` Tab above your terminal. If you already have it open, simply refresh the browser.
 	![](images/cka-s05-88.png)
 7. How many `ConfigMaps` exists in the `default` namespace? ⇒ **`2`**
 	```shell
-controlplane ~ ➜  kubectl get configmaps
-NAME               DATA   AGE
-kube-root-ca.crt   1      10m
-db-config          3      29s
+	controlplane ~ ➜  kubectl get configmaps
+	NAME               DATA   AGE
+	kube-root-ca.crt   1      10m
+	db-config          3      29s
 	```
 8. Identify the database host from the config map `db-config`. ⇒ **`SQL01.example.com`**
 	```shell
-controlplane ~ ➜  kubectl describe configmaps
-Name:         kube-root-ca.crt
-Namespace:    default
-Labels:       <none>
-Annotations:  kubernetes.io/description:
-                Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubern...
+	controlplane ~ ➜  kubectl describe configmaps
+	Name:         kube-root-ca.crt
+	Namespace:    default
+	Labels:       <none>
+	Annotations:  kubernetes.io/description:
+	                Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubern...
 
-Data
-====
-ca.crt:
-----
------BEGIN CERTIFICATE-----
-MIIBdjCCAR2gAwIBAgIBADAKBggqhkjOPQQDAjAjMSEwHwYDVQQDDBhrM3Mtc2Vy
-dmVyLWNhQDE2NjE5Mjk1NzYwHhcNMjIwODMxMDcwNjE2WhcNMzIwODI4MDcwNjE2
-WjAjMSEwHwYDVQQDDBhrM3Mtc2VydmVyLWNhQDE2NjE5Mjk1NzYwWTATBgcqhkjO
-PQIBBggqhkjOPQMBBwNCAASFM+OW6j/HUebBGyqH2SV/z+4ewmaNhEfRbRjBiuju
-Oo7DzDK8gKeSSVg9Vjfg2PhFybsmUaPBMo26RSujF14po0IwQDAOBgNVHQ8BAf8E
-BAMCAqQwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUx/NGLCfoFYCTwyZ5A1Th
-nc8kChkwCgYIKoZIzj0EAwIDRwAwRAIgYVcsPsyvIMS6fv3nDMmS7HC51IVzzkxL
-1zbmmX9gxLwCIFJc7d2sanjySeCjrPqDI3U2zLLgi32T5bqCk6nRGiei
------END CERTIFICATE-----
+	Data
+	====
+	ca.crt:
+	----
+	-----BEGIN CERTIFICATE-----
+	MIIBdjCCAR2gAwIBAgIBADAKBggqhkjOPQQDAjAjMSEwHwYDVQQDDBhrM3Mtc2Vy
+	dmVyLWNhQDE2NjE5Mjk1NzYwHhcNMjIwODMxMDcwNjE2WhcNMzIwODI4MDcwNjE2
+	WjAjMSEwHwYDVQQDDBhrM3Mtc2VydmVyLWNhQDE2NjE5Mjk1NzYwWTATBgcqhkjO
+	PQIBBggqhkjOPQMBBwNCAASFM+OW6j/HUebBGyqH2SV/z+4ewmaNhEfRbRjBiuju
+	Oo7DzDK8gKeSSVg9Vjfg2PhFybsmUaPBMo26RSujF14po0IwQDAOBgNVHQ8BAf8E
+	BAMCAqQwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUx/NGLCfoFYCTwyZ5A1Th
+	nc8kChkwCgYIKoZIzj0EAwIDRwAwRAIgYVcsPsyvIMS6fv3nDMmS7HC51IVzzkxL
+	1zbmmX9gxLwCIFJc7d2sanjySeCjrPqDI3U2zLLgi32T5bqCk6nRGiei
+	-----END CERTIFICATE-----
 
+	BinaryData
+	====
 
-BinaryData
-====
+	Events:  <none>
 
-Events:  <none>
+	Name:         db-config
+	Namespace:    default
+	Labels:       <none>
+	Annotations:  <none>
 
+	Data
+	====
+	DB_PORT:
+	----
+	3306
+	DB_HOST:
+	----
+	SQL01.example.com
+	DB_NAME:
+	----
+	SQL01
 
-Name:         db-config
-Namespace:    default
-Labels:       <none>
-Annotations:  <none>
+	BinaryData
+	====
 
-Data
-====
-DB_PORT:
-----
-3306
-DB_HOST:
-----
-SQL01.example.com
-DB_NAME:
-----
-SQL01
-
-BinaryData
-====
-
-Events:  <none>
+	Events:  <none>
 	```
 9. Create a new ConfigMap for the `webapp-color` POD. Use the spec given below.
 	(Hint) Run the command `kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue`
 	- ConfigName Name: webapp-config-map
 	- Data: APP_COLOR=darkblue
 	```shell
-controlplane ~ ✖ kubectl create -f webapp-config-map.yml 
-configmap/webapp-config-map created
+	controlplane ~ ✖ kubectl create -f webapp-config-map.yml 
+	configmap/webapp-config-map created
 
-controlplane ~ ➜  cat webapp-config-map.yml 
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: webapp-config-map
-data:
-  APP_COLOR: darkblue
+	controlplane ~ ➜  cat webapp-config-map.yml 
+	apiVersion: v1
+	kind: ConfigMap
+	metadata:
+	  name: webapp-config-map
+	data:
+	  APP_COLOR: darkblue
 	```
 10. Update the environment variable on the POD to use the newly created ConfigMap. Note: Delete and recreate the POD. Only make the necessary changes. Do not modify the name of the Pod.
 	- Pod Name: webapp-color
 	- EnvFrom: webapp-config-map
 	```shell
-controlplane ~ ➜  cat webapp-color.yml 
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    name: webapp-color
-  name: webapp-color
-  namespace: default
-spec:
-  containers:
-  - envFrom:
-    - configMapRef:
-         name: webapp-config-map
-    image: kodekloud/webapp-color
-    name: webapp-color
+	controlplane ~ ➜  cat webapp-color.yml 
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  labels:
+	    name: webapp-color
+	  name: webapp-color
+	  namespace: default
+	spec:
+	  containers:
+	  - envFrom:
+	    - configMapRef:
+	         name: webapp-config-map
+	    image: kodekloud/webapp-color
+	    name: webapp-color
 
-controlplane ~ ➜  kubectl create -f webapp-color.yml 
-pod/webapp-color created
+	controlplane ~ ➜  kubectl create -f webapp-color.yml 
+	pod/webapp-color created
 	```
 11. View the changes to the web application UI by clicking on the `Webapp Color` Tab above your terminal. If you already have it open, simply refresh the browser.
 	![](images/cka-s05-89.png)
@@ -808,26 +806,26 @@ Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-secrets-2/](ht
 # 106. Solution - Secrets (Optional)
 1. How many `Secrets` exist on the system? in the current(default) namespace. ⇒ **`1`**
 	```shell
-controlplane ~ ➜  kubectl get secrets
-NAME                  TYPE                                  DATA   AGE
-default-token-xn5z9   kubernetes.io/service-account-token   3      4m7s
+	controlplane ~ ➜  kubectl get secrets
+	NAME                  TYPE                                  DATA   AGE
+	default-token-xn5z9   kubernetes.io/service-account-token   3      4m7s
 	```
 2. How many secrets are defined in the `default-token` secret? ⇒ **`3`**
 	```shell
-controlplane ~ ➜  kubectl describe secret default-token-xn5z9 
-Name:         default-token-xn5z9
-Namespace:    default
-Labels:       <none>
-Annotations:  kubernetes.io/service-account.name: default
-              kubernetes.io/service-account.uid: 985769eb-b5f5-4a07-aeef-6be814b67fa9
+	controlplane ~ ➜  kubectl describe secret default-token-xn5z9 
+	Name:         default-token-xn5z9
+	Namespace:    default
+	Labels:       <none>
+	Annotations:  kubernetes.io/service-account.name: default
+	              kubernetes.io/service-account.uid: 985769eb-b5f5-4a07-aeef-6be814b67fa9
 
-Type:  kubernetes.io/service-account-token
+	Type:  kubernetes.io/service-account-token
 
-Data
-====
-ca.crt:     566 bytes
-namespace:  7 bytes
-token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IjJPOWVoMkhhZzU0UEkxMWhzWkNYUFQyZWYyUW8yeEw3WVNyQTNwXzY3dkkifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4teG41ejkiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6Ijk4NTc2OWViLWI1ZjUtNGEwNy1hZWVmLTZiZTgxNGI2N2ZhOSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.KqXUKOsASWY-IWk9zZc4eUitP8uFgwRh0BPl_HGm7Jo4J_V3qci8dtvbWqofbf5-k3t3Yq8Dxy5U9k3kadNAp6cT7-dpmd0twGh8CCLWZQ3aLd6em1ahbi96B1k8CbzcZ_8IrwuguAT3g3KP2Od8xRARE56Th4DdgKWhR-LoWNZupdrcvQUCADKkleL8Tm9Pk9SY4UQhTIlRDDbGjYJl96bvWNzSlMTxFl3FwPhfFkPbO-p31IsGUo_vCdXpCxmoPiNF7Qcd4kmxwHAo9MbUjlvEuadS7UeieHkQzplBRs42mh6kqGzIcn0TXAPV7f8v0LyiGCEC3HtOTR5vNKZEAg
+	Data
+	====
+	ca.crt:     566 bytes
+	namespace:  7 bytes
+	token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IjJPOWVoMkhhZzU0UEkxMWhzWkNYUFQyZWYyUW8yeEw3WVNyQTNwXzY3dkkifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4teG41ejkiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6Ijk4NTc2OWViLWI1ZjUtNGEwNy1hZWVmLTZiZTgxNGI2N2ZhOSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.KqXUKOsASWY-IWk9zZc4eUitP8uFgwRh0BPl_HGm7Jo4J_V3qci8dtvbWqofbf5-k3t3Yq8Dxy5U9k3kadNAp6cT7-dpmd0twGh8CCLWZQ3aLd6em1ahbi96B1k8CbzcZ_8IrwuguAT3g3KP2Od8xRARE56Th4DdgKWhR-LoWNZupdrcvQUCADKkleL8Tm9Pk9SY4UQhTIlRDDbGjYJl96bvWNzSlMTxFl3FwPhfFkPbO-p31IsGUo_vCdXpCxmoPiNF7Qcd4kmxwHAo9MbUjlvEuadS7UeieHkQzplBRs42mh6kqGzIcn0TXAPV7f8v0LyiGCEC3HtOTR5vNKZEAg
 	```
 3. What is the type of the `default-token` secret? ⇒ **`kubernetes.io/service-account-token`**
 4. Which of the following is not a secret data defined in `default-token` secret? ⇒ **`type`**
@@ -841,87 +839,87 @@ token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IjJPOWVoMkhhZzU0UEkxMWhzWkNYUFQyZWYyUW8y
 	- Secret 3: DB_Password=password123
 	![](images/cka-s05-119.png)
 	```shell
-controlplane ~ ➜  kubectl create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123
-secret/db-secret created
+	controlplane ~ ➜  kubectl create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123
+	secret/db-secret created
 
-controlplane ~ ➜  kubectl edit secret db-secret
+	controlplane ~ ➜  kubectl edit secret db-secret
 
-apiVersion: v1
-data:
-  DB_Host: c3FsMDE=
-  DB_Password: cGFzc3dvcmQxMjM=
-  DB_User: cm9vdA==
-kind: Secret
-metadata:
-  creationTimestamp: "2022-08-31T08:40:56Z"
-  name: db-secret
-  namespace: default
-  resourceVersion: "943"
-  uid: 47aba266-56d4-4950-b827-eaef5ff3803f
-type: Opaque
-...
+	apiVersion: v1
+	data:
+	  DB_Host: c3FsMDE=
+	  DB_Password: cGFzc3dvcmQxMjM=
+	  DB_User: cm9vdA==
+	kind: Secret
+	metadata:
+	  creationTimestamp: "2022-08-31T08:40:56Z"
+	  name: db-secret
+	  namespace: default
+	  resourceVersion: "943"
+	  uid: 47aba266-56d4-4950-b827-eaef5ff3803f
+	type: Opaque
+	...
 	```
 	```shell
-controlplane ~ ✖ cat db-secret.yml 
-apiVersion: v1
-kind: Secret
-metadata:
-  name: db-secret
-data:
-  DB_Host: sql01
-  DB_User: root
-  DB_Password: password123
+	controlplane ~ ✖ cat db-secret.yml 
+	apiVersion: v1
+	kind: Secret
+	metadata:
+	  name: db-secret
+	data:
+	  DB_Host: sql01
+	  DB_User: root
+	  DB_Password: password123
 
-controlplane ~ ➜  echo -n 'spq01' | base64
-c3BxMDE=
+	controlplane ~ ➜  echo -n 'spq01' | base64
+	c3BxMDE=
 
-controlplane ~ ➜  echo -n 'root' | base64
-cm9vdA==
+	controlplane ~ ➜  echo -n 'root' | base64
+	cm9vdA==
 
-controlplane ~ ➜  echo -n 'password123' | base64
-cGFzc3dvcmQxMjM=
+	controlplane ~ ➜  echo -n 'password123' | base64
+	cGFzc3dvcmQxMjM=
 
-controlplane ~ ➜  vim db-secret.yml
+	controlplane ~ ➜  vim db-secret.yml
 
-controlplane ~ ➜  cat db-secret.yml 
-apiVersion: v1
-kind: Secret
-metadata:
-  name: db-secret
-data:
-  DB_Host: c3BxMDE=
-  DB_User: cm9vdA==
-  DB_Password: cGFzc3dvcmQxMjM=C
+	controlplane ~ ➜  cat db-secret.yml 
+	apiVersion: v1
+	kind: Secret
+	metadata:
+	  name: db-secret
+	data:
+	  DB_Host: c3BxMDE=
+	  DB_User: cm9vdA==
+	  DB_Password: cGFzc3dvcmQxMjM=C
 	```
 7. Configure `webapp-pod` to load environment variables from the newly created secret. Delete and recreate the pod if required.
 	- Pod name: webapp-pod
 	- Image name: kodekloud/simple-webapp-mysql
 	- Env From: Secret=db-secret
 	```shell
-controlplane ~ ✖ kubectl delete pod webapp-pod 
-pod "webapp-pod" deleted
+	controlplane ~ ✖ kubectl delete pod webapp-pod 
+	pod "webapp-pod" deleted
 
-controlplane ~ ✖ vim webapp-pod.yml
+	controlplane ~ ✖ vim webapp-pod.yml
 
-controlplane ~ ➜  cat webapp-pod.yml 
-apiVersion: v1 
-kind: Pod 
-metadata:
-  labels:
-    name: webapp-pod
-  name: webapp-pod
-  namespace: default 
-spec:
-  containers:
-  - image: kodekloud/simple-webapp-mysql
-    imagePullPolicy: Always
-    name: webapp
-    envFrom:
-    - secretRef:
-        name: db-secret
+	controlplane ~ ➜  cat webapp-pod.yml 
+	apiVersion: v1 
+	kind: Pod 
+	metadata:
+	  labels:
+	    name: webapp-pod
+	  name: webapp-pod
+	  namespace: default 
+	spec:
+	  containers:
+	  - image: kodekloud/simple-webapp-mysql
+	    imagePullPolicy: Always
+	    name: webapp
+	    envFrom:
+	    - secretRef:
+	        name: db-secret
 
-controlplane ~ ➜  kubectl create -f webapp-pod.yml 
-pod/webapp-pod created
+	controlplane ~ ➜  kubectl create -f webapp-pod.yml 
+	pod/webapp-pod created
 	```
 8. View the web application to verify it can successfully connect to the database.
 	![](images/cka-s05-120.png)
@@ -954,80 +952,80 @@ Link to Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-multi-
 # 110. Solution - Multi-Container Pods (Optional)
 1. Identify the number of containers created in the `red` pod. ⇒ **`3`**
 	```javascript
-root@controlplane ~ ➜  kubectl get pods
-NAME        READY   STATUS              RESTARTS   AGE
-app         0/1     ContainerCreating   0          42s
-fluent-ui   0/1     ContainerCreating   0          42s
-red         0/3     ContainerCreating   0          26s
+	root@controlplane ~ ➜  kubectl get pods
+	NAME        READY   STATUS              RESTARTS   AGE
+	app         0/1     ContainerCreating   0          42s
+	fluent-ui   0/1     ContainerCreating   0          42s
+	red         0/3     ContainerCreating   0          26s
 	```
 2. Identify the name of the containers running in the `blue` pod. ⇒ **`teal & navy`**
 	```javascript
-root@controlplane ~ ➜  kubectl describe pod blue
-Name:         blue
-Namespace:    default
-Priority:     0
-Node:         controlplane/10.137.165.3
-Start Time:   Fri, 02 Sep 2022 01:10:24 +0000
-Labels:       <none>
-Annotations:  <none>
-Status:       Pending
-IP:           
-IPs:          <none>
-Containers:
-  teal:
-    Container ID:  
-    Image:         busybox
-    Image ID:      
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sleep
-      4500
-    State:          Waiting
-      Reason:       ContainerCreating
-    Ready:          False
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-r242z (ro)
-  navy:
-    Container ID:  
-    Image:         busybox
-    Image ID:      
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sleep
-      4500
-    State:          Waiting
-      Reason:       ContainerCreating
-    Ready:          False
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-r242z (ro)
-Conditions:
-  Type              Status
-  Initialized       True 
-  Ready             False 
-  ContainersReady   False 
-  PodScheduled      True 
-Volumes:
-  kube-api-access-r242z:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  44s   default-scheduler  Successfully assigned default/blue to controlplane
-  Normal  Pulling    40s   kubelet            Pulling image "busybox"
+	root@controlplane ~ ➜  kubectl describe pod blue
+	Name:         blue
+	Namespace:    default
+	Priority:     0
+	Node:         controlplane/10.137.165.3
+	Start Time:   Fri, 02 Sep 2022 01:10:24 +0000
+	Labels:       <none>
+	Annotations:  <none>
+	Status:       Pending
+	IP:           
+	IPs:          <none>
+	Containers:
+	  teal:
+	    Container ID:  
+	    Image:         busybox
+	    Image ID:      
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sleep
+	      4500
+	    State:          Waiting
+	      Reason:       ContainerCreating
+	    Ready:          False
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-r242z (ro)
+	  navy:
+	    Container ID:  
+	    Image:         busybox
+	    Image ID:      
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sleep
+	      4500
+	    State:          Waiting
+	      Reason:       ContainerCreating
+	    Ready:          False
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-r242z (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       True 
+	  Ready             False 
+	  ContainersReady   False 
+	  PodScheduled      True 
+	Volumes:
+	  kube-api-access-r242z:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type    Reason     Age   From               Message
+	  ----    ------     ----  ----               -------
+	  Normal  Scheduled  44s   default-scheduler  Successfully assigned default/blue to controlplane
+	  Normal  Pulling    40s   kubelet            Pulling image "busybox"
 	```
 3. Create a multi-container pod with 2 containers. Use the spec given below. If the pod goes into the `crashloopbackoff` then add the command `sleep 1000` in the `lemon` container.
 	- Name: yellow
@@ -1036,20 +1034,20 @@ Events:
 	- Container 2 Name: gold
 	- Container 2 Image: redis
 	```javascript
-apiVersion: v1
-kind: Pod
-metadata:
-  name: yellow
-spec:
-  containers:
-  - name: lemon
-    image: busybox
-    command:
-      - sleep
-      - "1000"
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: yellow
+	spec:
+	  containers:
+	  - name: lemon
+	    image: busybox
+	    command:
+	      - sleep
+	      - "1000"
 
-  - name: gold
-    image: redis
+	  - name: gold
+	    image: redis
 	```
 4. We have deployed an application logging stack in the `elastic-stack` namespace. Inspect it. Before proceeding with the next set of questions, please wait for all the pods in the `elastic-stack` namespace to be ready. This can take a few minutes.
 	![](images/cka-s05-131.png)
@@ -1057,185 +1055,185 @@ spec:
 	<details>
 	<summary>logs</summary>
 		```javascript
-root@controlplane ~ ✖ kubectl -n elastic-stack logs kibana
-{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:kibana@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:elasticsearch@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:xpack_main@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:searchprofiler@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:ml@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:41Z","tags":["status","plugin:tilemap@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:41Z","tags":["status","plugin:watcher@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:41Z","tags":["status","plugin:license_management@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:41Z","tags":["status","plugin:index_management@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:timelion@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:graph@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:monitoring@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["security","warning"],"pid":1,"message":"Generating a random key for xpack.security.encryptionKey. To prevent sessions from being invalidated on restart, please set xpack.security.encryptionKey in kibana.yml"}
-{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["security","warning"],"pid":1,"message":"Session cookies will be transmitted over insecure connections. This is not recommended."}
-{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:security@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:grokdebugger@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:dashboard_mode@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:logstash@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:apm@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:console@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:console_extensions@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:notifications@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:metrics@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["reporting","warning"],"pid":1,"message":"Generating a random key for xpack.reporting.encryptionKey. To prevent pending reports from failing on restart, please set xpack.reporting.encryptionKey in kibana.yml"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:reporting@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["error","elasticsearch","admin"],"pid":1,"message":"Request error, retrying\nHEAD http://elasticsearch:9200/ => connect ECONNREFUSED 10.104.211.75:9200"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:xpack_main@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:searchprofiler@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:ml@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:tilemap@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:watcher@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:index_management@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:graph@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:security@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:grokdebugger@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:logstash@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:reporting@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:elasticsearch@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["error","elasticsearch","data"],"pid":1,"message":"Request error, retrying\nGET http://elasticsearch:9200/_xpack => connect ECONNREFUSED 10.104.211.75:9200"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["warning","elasticsearch","data"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["warning","elasticsearch","data"],"pid":1,"message":"No living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["license","warning","xpack"],"pid":1,"message":"License information from the X-Pack plugin could not be obtained from Elasticsearch for the [data] cluster. Error: No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:xpack_main@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:searchprofiler@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:ml@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:tilemap@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:watcher@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:index_management@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:graph@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:security@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:grokdebugger@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:logstash@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:reporting@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"No living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:xpack_main@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:searchprofiler@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:ml@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:tilemap@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:watcher@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:index_management@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:graph@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:security@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:grokdebugger@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:logstash@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:reporting@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:elasticsearch@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["warning","elasticsearch","data"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["warning","elasticsearch","data"],"pid":1,"message":"No living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["license","warning","xpack"],"pid":1,"message":"License information from the X-Pack plugin could not be obtained from Elasticsearch for the [data] cluster. Error: No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:xpack_main@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:searchprofiler@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:ml@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:tilemap@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:watcher@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:index_management@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:graph@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:security@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:grokdebugger@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:logstash@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:reporting@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:12:56Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
-{"type":"log","@timestamp":"2022-09-02T01:12:56Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"No living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:01Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
-{"type":"log","@timestamp":"2022-09-02T01:13:01Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"No living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:11Z","tags":["status","plugin:elasticsearch@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["license","info","xpack"],"pid":1,"message":"Imported license information from Elasticsearch for the [data] cluster: mode: basic | status: active"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:xpack_main@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:searchprofiler@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:ml@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:tilemap@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:watcher@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:index_management@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:graph@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:grokdebugger@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:logstash@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:reporting@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["info","monitoring-ui","kibana-monitoring"],"pid":1,"message":"Starting monitoring stats collection"}
-{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:security@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
-{"type":"log","@timestamp":"2022-09-02T01:13:14Z","tags":["license","info","xpack"],"pid":1,"message":"Imported license information from Elasticsearch for the [monitoring] cluster: mode: basic | status: active"}
-{"type":"log","@timestamp":"2022-09-02T01:13:47Z","tags":["info","http","server","listening"],"pid":1,"message":"Server running at http://0:5601"}
-{"type":"response","@timestamp":"2022-09-02T01:13:48Z","tags":[],"pid":1,"method":"head","statusCode":200,"req":{"url":"/","method":"head","headers":{"host":"0.0.0.0:30601","user-agent":"curl/7.58.0","accept":"*/*"},"remoteAddress":"10.244.0.1","userAgent":"10.244.0.1"},"res":{"statusCode":200,"responseTime":107,"contentLength":9},"message":"HEAD / 200 107ms - 9.0B"}
-{"type":"response","@timestamp":"2022-09-02T01:13:58Z","tags":[],"pid":1,"method":"post","statusCode":200,"req":{"url":"/api/saved_objects/index-pattern/filebeat-*?overwrite=false","method":"post","headers":{"host":"0.0.0.0:30601","user-agent":"curl/7.58.0","accept":"*/*","content-type":"application/json","kbn-xsrf":"athing","content-length":"66"},"remoteAddress":"10.244.0.1","userAgent":"10.244.0.1"},"res":{"statusCode":200,"responseTime":2862,"contentLength":9},"message":"POST /api/saved_objects/index-pattern/filebeat-*?overwrite=false 200 2862ms - 9.0B"}
-{"type":"response","@timestamp":"2022-09-02T01:14:01Z","tags":[],"pid":1,"method":"post","statusCode":200,"req":{"url":"/api/kibana/settings/defaultIndex","method":"post","headers":{"host":"0.0.0.0:30601","user-agent":"curl/7.58.0","accept":"*/*","content-type":"application/json","kbn-xsrf":"anytng","content-length":"22"},"remoteAddress":"10.244.0.1","userAgent":"10.244.0.1"},"res":{"statusCode":200,"responseTime":2197,"contentLength":9},"message":"POST /api/kibana/settings/defaultIndex 200 2197ms - 9.0B"}
+		root@controlplane ~ ✖ kubectl -n elastic-stack logs kibana
+		{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:kibana@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:elasticsearch@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:xpack_main@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:searchprofiler@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:40Z","tags":["status","plugin:ml@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:41Z","tags":["status","plugin:tilemap@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:41Z","tags":["status","plugin:watcher@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:41Z","tags":["status","plugin:license_management@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:41Z","tags":["status","plugin:index_management@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:timelion@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:graph@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:monitoring@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["security","warning"],"pid":1,"message":"Generating a random key for xpack.security.encryptionKey. To prevent sessions from being invalidated on restart, please set xpack.security.encryptionKey in kibana.yml"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["security","warning"],"pid":1,"message":"Session cookies will be transmitted over insecure connections. This is not recommended."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:security@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:42Z","tags":["status","plugin:grokdebugger@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:dashboard_mode@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:logstash@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:apm@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:console@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:console_extensions@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:notifications@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:43Z","tags":["status","plugin:metrics@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from uninitialized to green - Ready","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["reporting","warning"],"pid":1,"message":"Generating a random key for xpack.reporting.encryptionKey. To prevent pending reports from failing on restart, please set xpack.reporting.encryptionKey in kibana.yml"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:reporting@6.4.2","info"],"pid":1,"state":"yellow","message":"Status changed from uninitialized to yellow - Waiting for Elasticsearch","prevState":"uninitialized","prevMsg":"uninitialized"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["error","elasticsearch","admin"],"pid":1,"message":"Request error, retrying\nHEAD http://elasticsearch:9200/ => connect ECONNREFUSED 10.104.211.75:9200"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:xpack_main@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:searchprofiler@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:ml@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:tilemap@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:watcher@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:index_management@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:graph@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:security@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:grokdebugger@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:logstash@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:reporting@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:elasticsearch@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from yellow to red - Request Timeout after 3000ms","prevState":"yellow","prevMsg":"Waiting for Elasticsearch"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["error","elasticsearch","data"],"pid":1,"message":"Request error, retrying\nGET http://elasticsearch:9200/_xpack => connect ECONNREFUSED 10.104.211.75:9200"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["warning","elasticsearch","data"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["warning","elasticsearch","data"],"pid":1,"message":"No living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["license","warning","xpack"],"pid":1,"message":"License information from the X-Pack plugin could not be obtained from Elasticsearch for the [data] cluster. Error: No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:xpack_main@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:searchprofiler@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:ml@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:tilemap@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:watcher@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:index_management@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:graph@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:security@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:grokdebugger@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:logstash@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:49Z","tags":["status","plugin:reporting@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"No living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:xpack_main@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:searchprofiler@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:ml@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:tilemap@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:watcher@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:index_management@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:graph@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:security@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:grokdebugger@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:logstash@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:reporting@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:elasticsearch@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - Unable to connect to Elasticsearch at http://elasticsearch:9200/.","prevState":"red","prevMsg":"Request Timeout after 3000ms"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["warning","elasticsearch","data"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["warning","elasticsearch","data"],"pid":1,"message":"No living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["license","warning","xpack"],"pid":1,"message":"License information from the X-Pack plugin could not be obtained from Elasticsearch for the [data] cluster. Error: No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:xpack_main@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:searchprofiler@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:ml@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:tilemap@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:watcher@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:index_management@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:graph@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:security@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:grokdebugger@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:logstash@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:52Z","tags":["status","plugin:reporting@6.4.2","error"],"pid":1,"state":"red","message":"Status changed from red to red - No Living connections","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:12:56Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
+		{"type":"log","@timestamp":"2022-09-02T01:12:56Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"No living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:01Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"Unable to revive connection: http://elasticsearch:9200/"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:01Z","tags":["warning","elasticsearch","admin"],"pid":1,"message":"No living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:11Z","tags":["status","plugin:elasticsearch@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"Unable to connect to Elasticsearch at http://elasticsearch:9200/."}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["license","info","xpack"],"pid":1,"message":"Imported license information from Elasticsearch for the [data] cluster: mode: basic | status: active"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:xpack_main@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:searchprofiler@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:ml@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:tilemap@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:watcher@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:index_management@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:graph@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:grokdebugger@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:logstash@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:reporting@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["info","monitoring-ui","kibana-monitoring"],"pid":1,"message":"Starting monitoring stats collection"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:13Z","tags":["status","plugin:security@6.4.2","info"],"pid":1,"state":"green","message":"Status changed from red to green - Ready","prevState":"red","prevMsg":"No Living connections"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:14Z","tags":["license","info","xpack"],"pid":1,"message":"Imported license information from Elasticsearch for the [monitoring] cluster: mode: basic | status: active"}
+		{"type":"log","@timestamp":"2022-09-02T01:13:47Z","tags":["info","http","server","listening"],"pid":1,"message":"Server running at http://0:5601"}
+		{"type":"response","@timestamp":"2022-09-02T01:13:48Z","tags":[],"pid":1,"method":"head","statusCode":200,"req":{"url":"/","method":"head","headers":{"host":"0.0.0.0:30601","user-agent":"curl/7.58.0","accept":"*/*"},"remoteAddress":"10.244.0.1","userAgent":"10.244.0.1"},"res":{"statusCode":200,"responseTime":107,"contentLength":9},"message":"HEAD / 200 107ms - 9.0B"}
+		{"type":"response","@timestamp":"2022-09-02T01:13:58Z","tags":[],"pid":1,"method":"post","statusCode":200,"req":{"url":"/api/saved_objects/index-pattern/filebeat-*?overwrite=false","method":"post","headers":{"host":"0.0.0.0:30601","user-agent":"curl/7.58.0","accept":"*/*","content-type":"application/json","kbn-xsrf":"athing","content-length":"66"},"remoteAddress":"10.244.0.1","userAgent":"10.244.0.1"},"res":{"statusCode":200,"responseTime":2862,"contentLength":9},"message":"POST /api/saved_objects/index-pattern/filebeat-*?overwrite=false 200 2862ms - 9.0B"}
+		{"type":"response","@timestamp":"2022-09-02T01:14:01Z","tags":[],"pid":1,"method":"post","statusCode":200,"req":{"url":"/api/kibana/settings/defaultIndex","method":"post","headers":{"host":"0.0.0.0:30601","user-agent":"curl/7.58.0","accept":"*/*","content-type":"application/json","kbn-xsrf":"anytng","content-length":"22"},"remoteAddress":"10.244.0.1","userAgent":"10.244.0.1"},"res":{"statusCode":200,"responseTime":2197,"contentLength":9},"message":"POST /api/kibana/settings/defaultIndex 200 2197ms - 9.0B"}
 		```
 	</details>
 6. Inspect the `app` pod and identify the number of containers in it. It is deployed in the `elastic-stack` namespace. ⇒ **`1`**
 	```javascript
-root@controlplane ~ ➜  kubectl describe pod app -n elastic-stack
-Name:         app
-Namespace:    elastic-stack
-Priority:     0
-Node:         controlplane/10.137.165.3
-Start Time:   Fri, 02 Sep 2022 01:09:35 +0000
-Labels:       name=app
-Annotations:  <none>
-Status:       Running
-IP:           10.244.0.4
-IPs:
-  IP:  10.244.0.4
-Containers:
-  app:
-    Container ID:   docker://17a82674c4333e957b5c11a78ffeb3938b5d592303140b3c32530a53f4c50566
-    Image:          kodekloud/event-simulator
-    Image ID:       docker-pullable://kodekloud/event-simulator@sha256:1e3e9c72136bbc76c96dd98f29c04f298c3ae241c7d44e2bf70bcc209b030bf9
-    Port:           <none>
-    Host Port:      <none>
-    State:          Running
-      Started:      Fri, 02 Sep 2022 01:09:56 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /log from log-volume (rw)
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hxnnh (ro)
-Conditions:
-  Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
-Volumes:
-  log-volume:
-    Type:          HostPath (bare host directory volume)
-    Path:          /var/log/webapp
-    HostPathType:  DirectoryOrCreate
-  kube-api-access-hxnnh:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason     Age    From               Message
-  ----    ------     ----   ----               -------
-  Normal  Scheduled  8m42s  default-scheduler  Successfully assigned elastic-stack/app to controlplane
-  Normal  Pulling    8m37s  kubelet            Pulling image "kodekloud/event-simulator"
-  Normal  Pulled     8m29s  kubelet            Successfully pulled image "kodekloud/event-simulator" in 7.720993844s
-  Normal  Created    8m25s  kubelet            Created container app
-  Normal  Started    8m21s  kubelet            Started container app
+	root@controlplane ~ ➜  kubectl describe pod app -n elastic-stack
+	Name:         app
+	Namespace:    elastic-stack
+	Priority:     0
+	Node:         controlplane/10.137.165.3
+	Start Time:   Fri, 02 Sep 2022 01:09:35 +0000
+	Labels:       name=app
+	Annotations:  <none>
+	Status:       Running
+	IP:           10.244.0.4
+	IPs:
+	  IP:  10.244.0.4
+	Containers:
+	  app:
+	    Container ID:   docker://17a82674c4333e957b5c11a78ffeb3938b5d592303140b3c32530a53f4c50566
+	    Image:          kodekloud/event-simulator
+	    Image ID:       docker-pullable://kodekloud/event-simulator@sha256:1e3e9c72136bbc76c96dd98f29c04f298c3ae241c7d44e2bf70bcc209b030bf9
+	    Port:           <none>
+	    Host Port:      <none>
+	    State:          Running
+	      Started:      Fri, 02 Sep 2022 01:09:56 +0000
+	    Ready:          True
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /log from log-volume (rw)
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hxnnh (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       True 
+	  Ready             True 
+	  ContainersReady   True 
+	  PodScheduled      True 
+	Volumes:
+	  log-volume:
+	    Type:          HostPath (bare host directory volume)
+	    Path:          /var/log/webapp
+	    HostPathType:  DirectoryOrCreate
+	  kube-api-access-hxnnh:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type    Reason     Age    From               Message
+	  ----    ------     ----   ----               -------
+	  Normal  Scheduled  8m42s  default-scheduler  Successfully assigned elastic-stack/app to controlplane
+	  Normal  Pulling    8m37s  kubelet            Pulling image "kodekloud/event-simulator"
+	  Normal  Pulled     8m29s  kubelet            Successfully pulled image "kodekloud/event-simulator" in 7.720993844s
+	  Normal  Created    8m25s  kubelet            Created container app
+	  Normal  Started    8m21s  kubelet            Started container app
 	```
 7. The application outputs logs to the file `/log/app.log`. View the logs and try to identify the user having issues with Login. Inspect the log file inside the pod. ⇒ **`USER5`**
 	```javascript
-$ kubectl -n elastic-stack exec -it app -- cat /log/app.log
+	$ kubectl -n elastic-stack exec -it app -- cat /log/app.log
 
-[2022-09-02 01:19:42,316] WARNING in event-simulator: USER7 Order failed as the item is OUT OF STOCK.
-[2022-09-02 01:19:42,316] INFO in event-simulator: USER4 is viewing page2
-[2022-09-02 01:19:42,466] INFO in event-simulator: USER1 is viewing page2
-[2022-09-02 01:19:43,318] WARNING in event-simulator: USER5 Failed to Login as the account is locked due to MANY FAILED ATTEMPTS.
-[2022-09-02 01:19:43,318] INFO in event-simulator: USER1 is viewing page1
-[2022-09-02 01:19:43,467] INFO in event-simulator: USER4 logged out
-[2022-09-02 01:19:44,366] INFO in event-simulator: USER4 logged out
-[2022-09-02 01:19:44,468] INFO in event-simulator: USER2 is viewing page1
+	[2022-09-02 01:19:42,316] WARNING in event-simulator: USER7 Order failed as the item is OUT OF STOCK.
+	[2022-09-02 01:19:42,316] INFO in event-simulator: USER4 is viewing page2
+	[2022-09-02 01:19:42,466] INFO in event-simulator: USER1 is viewing page2
+	[2022-09-02 01:19:43,318] WARNING in event-simulator: USER5 Failed to Login as the account is locked due to MANY FAILED ATTEMPTS.
+	[2022-09-02 01:19:43,318] INFO in event-simulator: USER1 is viewing page1
+	[2022-09-02 01:19:43,467] INFO in event-simulator: USER4 logged out
+	[2022-09-02 01:19:44,366] INFO in event-simulator: USER4 logged out
+	[2022-09-02 01:19:44,468] INFO in event-simulator: USER2 is viewing page1
 	```
 8. Edit the pod to add a sidecar container to send logs to Elastic Search. Mount the log volume to the sidecar container. Only add a new container. Do not modify anything else. Use the spec provided below.
 	- Name: app
@@ -1246,34 +1244,34 @@ $ kubectl -n elastic-stack exec -it app -- cat /log/app.log
 	- Existing Container Name: app
 	- Existing Container Image: kodekloud/event-simulator
 	```javascript
-apiVersion: v1
-kind: Pod
-metadata:
-  name: app
-  namespace: elastic-stack
-  labels:
-    name: app
-spec:
-  containers:
-  - name: app
-    image: kodekloud/event-simulator
-    volumeMounts:
-    - mountPath: /log
-      name: log-volume
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: app
+	  namespace: elastic-stack
+	  labels:
+	    name: app
+	spec:
+	  containers:
+	  - name: app
+	    image: kodekloud/event-simulator
+	    volumeMounts:
+	    - mountPath: /log
+	      name: log-volume
 
-  - name: sidecar
-    image: kodekloud/filebeat-configured
-    volumeMounts:
-    - mountPath: /var/log/event-simulator/
-      name: log-volume
+	  - name: sidecar
+	    image: kodekloud/filebeat-configured
+	    volumeMounts:
+	    - mountPath: /var/log/event-simulator/
+	      name: log-volume
 
-  volumes:
-  - name: log-volume
-    hostPath:
-      # directory location on host
-      path: /var/log/webapp
-      # this field is optional
-      type: DirectoryOrCreate
+	  volumes:
+	  - name: log-volume
+	    hostPath:
+	      # directory location on host
+	      path: /var/log/webapp
+	      # this field is optional
+	      type: DirectoryOrCreate
 	```
 9. Inspect the Kibana UI. You should now see logs appearing in the `Discover` section. You might have to wait for a couple of minutes for the logs to populate. You might have to create an index pattern to list the logs. If not sure check this video: `https://bit.ly/2EXYdHf`
 	⇒ Go to Kibaba UI.
@@ -1303,312 +1301,310 @@ Practice Test Link: [https://uklabs.kodekloud.com/topic/practice-test-init-cont
 # 114. Solution - Init Containers (Optional)
 1. Identify the pod that has an `initContainer` configured. ⇒ **`blue`**
 	```javascript
-controlplane ~ ➜  kubectl describe pods
-Name:         red
-Namespace:    default
-Priority:     0
-Node:         controlplane/172.25.0.24
-Start Time:   Fri, 02 Sep 2022 07:21:44 +0000
-Labels:       <none>
-Annotations:  <none>
-Status:       Running
-IP:           10.42.0.9
-IPs:
-  IP:  10.42.0.9
-Containers:
-  red-container:
-    Container ID:  containerd://21774882e9815a7047d58b308b52ec02d37fa31b5305db1beec4af26789632e7
-    Image:         busybox:1.28
-    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      echo The app is running! && sleep 3600
-    State:          Running
-      Started:      Fri, 02 Sep 2022 07:21:47 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-dp6cr (ro)
-Conditions:
-  Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
-Volumes:
-  kube-api-access-dp6cr:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  31s   default-scheduler  Successfully assigned default/red to controlplane
-  Normal  Pulling    30s   kubelet            Pulling image "busybox:1.28"
-  Normal  Pulled     30s   kubelet            Successfully pulled image "busybox:1.28" in 719.049093ms
-  Normal  Created    30s   kubelet            Created container red-container
-  Normal  Started    29s   kubelet            Started container red-container
+	controlplane ~ ➜  kubectl describe pods
+	Name:         red
+	Namespace:    default
+	Priority:     0
+	Node:         controlplane/172.25.0.24
+	Start Time:   Fri, 02 Sep 2022 07:21:44 +0000
+	Labels:       <none>
+	Annotations:  <none>
+	Status:       Running
+	IP:           10.42.0.9
+	IPs:
+	  IP:  10.42.0.9
+	Containers:
+	  red-container:
+	    Container ID:  containerd://21774882e9815a7047d58b308b52ec02d37fa31b5305db1beec4af26789632e7
+	    Image:         busybox:1.28
+	    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      echo The app is running! && sleep 3600
+	    State:          Running
+	      Started:      Fri, 02 Sep 2022 07:21:47 +0000
+	    Ready:          True
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-dp6cr (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       True 
+	  Ready             True 
+	  ContainersReady   True 
+	  PodScheduled      True 
+	Volumes:
+	  kube-api-access-dp6cr:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type    Reason     Age   From               Message
+	  ----    ------     ----  ----               -------
+	  Normal  Scheduled  31s   default-scheduler  Successfully assigned default/red to controlplane
+	  Normal  Pulling    30s   kubelet            Pulling image "busybox:1.28"
+	  Normal  Pulled     30s   kubelet            Successfully pulled image "busybox:1.28" in 719.049093ms
+	  Normal  Created    30s   kubelet            Created container red-container
+	  Normal  Started    29s   kubelet            Started container red-container
 
+	Name:         green
+	Namespace:    default
+	Priority:     0
+	Node:         controlplane/172.25.0.24
+	Start Time:   Fri, 02 Sep 2022 07:21:44 +0000
+	Labels:       <none>
+	Annotations:  <none>
+	Status:       Running
+	IP:           10.42.0.10
+	IPs:
+	  IP:  10.42.0.10
+	Containers:
+	  green-container-1:
+	    Container ID:  containerd://a2bfdf93454bf17c0afee51698e313ab221b60d3cb7f6b73fc8a5b89b2b880fa
+	    Image:         busybox:1.28
+	    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      echo The app is running! && sleep 3600
+	    State:          Running
+	      Started:      Fri, 02 Sep 2022 07:21:48 +0000
+	    Ready:          True
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-2qj46 (ro)
+	  green-container-2:
+	    Container ID:  containerd://8681667b9ac0965f32919dfabb144d17b862b67f179e7ef5aaa165c3a2750d91
+	    Image:         busybox:1.28
+	    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      echo The app is running! && sleep 3600
+	    State:          Running
+	      Started:      Fri, 02 Sep 2022 07:21:49 +0000
+	    Ready:          True
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-2qj46 (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       True 
+	  Ready             True 
+	  ContainersReady   True 
+	  PodScheduled      True 
+	Volumes:
+	  kube-api-access-2qj46:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type    Reason     Age   From               Message
+	  ----    ------     ----  ----               -------
+	  Normal  Scheduled  31s   default-scheduler  Successfully assigned default/green to controlplane
+	  Normal  Pulling    30s   kubelet            Pulling image "busybox:1.28"
+	  Normal  Pulled     30s   kubelet            Successfully pulled image "busybox:1.28" in 684.379195ms
+	  Normal  Created    29s   kubelet            Created container green-container-1
+	  Normal  Started    28s   kubelet            Started container green-container-1
+	  Normal  Pulled     28s   kubelet            Container image "busybox:1.28" already present on machine
+	  Normal  Created    28s   kubelet            Created container green-container-2
+	  Normal  Started    27s   kubelet            Started container green-container-2
 
-Name:         green
-Namespace:    default
-Priority:     0
-Node:         controlplane/172.25.0.24
-Start Time:   Fri, 02 Sep 2022 07:21:44 +0000
-Labels:       <none>
-Annotations:  <none>
-Status:       Running
-IP:           10.42.0.10
-IPs:
-  IP:  10.42.0.10
-Containers:
-  green-container-1:
-    Container ID:  containerd://a2bfdf93454bf17c0afee51698e313ab221b60d3cb7f6b73fc8a5b89b2b880fa
-    Image:         busybox:1.28
-    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      echo The app is running! && sleep 3600
-    State:          Running
-      Started:      Fri, 02 Sep 2022 07:21:48 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-2qj46 (ro)
-  green-container-2:
-    Container ID:  containerd://8681667b9ac0965f32919dfabb144d17b862b67f179e7ef5aaa165c3a2750d91
-    Image:         busybox:1.28
-    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      echo The app is running! && sleep 3600
-    State:          Running
-      Started:      Fri, 02 Sep 2022 07:21:49 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-2qj46 (ro)
-Conditions:
-  Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
-Volumes:
-  kube-api-access-2qj46:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  31s   default-scheduler  Successfully assigned default/green to controlplane
-  Normal  Pulling    30s   kubelet            Pulling image "busybox:1.28"
-  Normal  Pulled     30s   kubelet            Successfully pulled image "busybox:1.28" in 684.379195ms
-  Normal  Created    29s   kubelet            Created container green-container-1
-  Normal  Started    28s   kubelet            Started container green-container-1
-  Normal  Pulled     28s   kubelet            Container image "busybox:1.28" already present on machine
-  Normal  Created    28s   kubelet            Created container green-container-2
-  Normal  Started    27s   kubelet            Started container green-container-2
-
-
-Name:         blue
-Namespace:    default
-Priority:     0
-Node:         controlplane/172.25.0.24
-Start Time:   Fri, 02 Sep 2022 07:21:44 +0000
-Labels:       <none>
-Annotations:  <none>
-Status:       Running
-IP:           10.42.0.11
-IPs:
-  IP:  10.42.0.11
-Init Containers:
-  init-myservice:
-    Container ID:  containerd://dc446b5bcd0061b087b9ccd47c5227646e833bbad3d6e253bf5c613b96e0aa2f
-    Image:         busybox
-    Image ID:      docker.io/library/busybox@sha256:20142e89dab967c01765b0aea3be4cec3a5957cc330f061e5503ef6168ae6613
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      sleep 5
-    State:          Terminated
-      Reason:       Completed
-      Exit Code:    0
-      Started:      Fri, 02 Sep 2022 07:21:49 +0000
-      Finished:     Fri, 02 Sep 2022 07:21:54 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jjz7r (ro)
-Containers:
-  green-container-1:
-    Container ID:  containerd://4718f6aec5eef4161300adf063bd0c4a06a1f75345ff8e486edcdc096d5d148d
-    Image:         busybox:1.28
-    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      echo The app is running! && sleep 3600
-    State:          Running
-      Started:      Fri, 02 Sep 2022 07:21:55 +0000
-    Ready:          True
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jjz7r (ro)
-Conditions:
-  Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
-Volumes:
-  kube-api-access-jjz7r:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  31s   default-scheduler  Successfully assigned default/blue to controlplane
-  Normal  Pulling    30s   kubelet            Pulling image "busybox"
-  Normal  Pulled     28s   kubelet            Successfully pulled image "busybox" in 2.688520996s
-  Normal  Created    27s   kubelet            Created container init-myservice
-  Normal  Started    27s   kubelet            Started container init-myservice
-  Normal  Pulled     22s   kubelet            Container image "busybox:1.28" already present on machine
-  Normal  Created    22s   kubelet            Created container green-container-1
-  Normal  Started    21s   kubelet            Started container green-container-1
+	Name:         blue
+	Namespace:    default
+	Priority:     0
+	Node:         controlplane/172.25.0.24
+	Start Time:   Fri, 02 Sep 2022 07:21:44 +0000
+	Labels:       <none>
+	Annotations:  <none>
+	Status:       Running
+	IP:           10.42.0.11
+	IPs:
+	  IP:  10.42.0.11
+	Init Containers:
+	  init-myservice:
+	    Container ID:  containerd://dc446b5bcd0061b087b9ccd47c5227646e833bbad3d6e253bf5c613b96e0aa2f
+	    Image:         busybox
+	    Image ID:      docker.io/library/busybox@sha256:20142e89dab967c01765b0aea3be4cec3a5957cc330f061e5503ef6168ae6613
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      sleep 5
+	    State:          Terminated
+	      Reason:       Completed
+	      Exit Code:    0
+	      Started:      Fri, 02 Sep 2022 07:21:49 +0000
+	      Finished:     Fri, 02 Sep 2022 07:21:54 +0000
+	    Ready:          True
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jjz7r (ro)
+	Containers:
+	  green-container-1:
+	    Container ID:  containerd://4718f6aec5eef4161300adf063bd0c4a06a1f75345ff8e486edcdc096d5d148d
+	    Image:         busybox:1.28
+	    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      echo The app is running! && sleep 3600
+	    State:          Running
+	      Started:      Fri, 02 Sep 2022 07:21:55 +0000
+	    Ready:          True
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jjz7r (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       True 
+	  Ready             True 
+	  ContainersReady   True 
+	  PodScheduled      True 
+	Volumes:
+	  kube-api-access-jjz7r:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type    Reason     Age   From               Message
+	  ----    ------     ----  ----               -------
+	  Normal  Scheduled  31s   default-scheduler  Successfully assigned default/blue to controlplane
+	  Normal  Pulling    30s   kubelet            Pulling image "busybox"
+	  Normal  Pulled     28s   kubelet            Successfully pulled image "busybox" in 2.688520996s
+	  Normal  Created    27s   kubelet            Created container init-myservice
+	  Normal  Started    27s   kubelet            Started container init-myservice
+	  Normal  Pulled     22s   kubelet            Container image "busybox:1.28" already present on machine
+	  Normal  Created    22s   kubelet            Created container green-container-1
+	  Normal  Started    21s   kubelet            Started container green-container-1
 	```
 2. What is the image used by the `initContainer` on the `blue` pod? ⇒ **`busybox`**
 3. What is the state of the `initContainer` on pod `blue`? ⇒ **`Terminated`**
 4. Why is the `initContainer` terminated? What is the reason? ⇒ **`The process completed successfully`**
 5. We just created a new app named `purple`. How many `initContainers` does it have? ⇒ **`2`**
 	```javascript
-controlplane ~ ✖ kubectl describe pod purple 
-Name:         purple
-Namespace:    default
-Priority:     0
-Node:         controlplane/172.25.0.24
-Start Time:   Fri, 02 Sep 2022 07:26:53 +0000
-Labels:       <none>
-Annotations:  <none>
-Status:       Pending
-IP:           10.42.0.12
-IPs:
-  IP:  10.42.0.12
-Init Containers:
-  warm-up-1:
-    Container ID:  containerd://33f045e4542d8f876409ac938ee0ed2a39c5a9f5c59c28b6eeded27de378e661
-    Image:         busybox:1.28
-    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      sleep 600
-    State:          Running
-      Started:      Fri, 02 Sep 2022 07:26:55 +0000
-    Ready:          False
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-655f2 (ro)
-  warm-up-2:
-    Container ID:  
-    Image:         busybox:1.28
-    Image ID:      
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      sleep 1200
-    State:          Waiting
-      Reason:       PodInitializing
-    Ready:          False
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-655f2 (ro)
-Containers:
-  purple-container:
-    Container ID:  
-    Image:         busybox:1.28
-    Image ID:      
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      echo The app is running! && sleep 3600
-    State:          Waiting
-      Reason:       PodInitializing
-    Ready:          False
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-655f2 (ro)
-Conditions:
-  Type              Status
-  Initialized       False 
-  Ready             False 
-  ContainersReady   False 
-  PodScheduled      True 
-Volumes:
-  kube-api-access-655f2:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  25s   default-scheduler  Successfully assigned default/purple to controlplane
-  Normal  Pulled     24s   kubelet            Container image "busybox:1.28" already present on machine
-  Normal  Created    24s   kubelet            Created container warm-up-1
-  Normal  Started    23s   kubelet            Started container warm-up-1
+	controlplane ~ ✖ kubectl describe pod purple 
+	Name:         purple
+	Namespace:    default
+	Priority:     0
+	Node:         controlplane/172.25.0.24
+	Start Time:   Fri, 02 Sep 2022 07:26:53 +0000
+	Labels:       <none>
+	Annotations:  <none>
+	Status:       Pending
+	IP:           10.42.0.12
+	IPs:
+	  IP:  10.42.0.12
+	Init Containers:
+	  warm-up-1:
+	    Container ID:  containerd://33f045e4542d8f876409ac938ee0ed2a39c5a9f5c59c28b6eeded27de378e661
+	    Image:         busybox:1.28
+	    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      sleep 600
+	    State:          Running
+	      Started:      Fri, 02 Sep 2022 07:26:55 +0000
+	    Ready:          False
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-655f2 (ro)
+	  warm-up-2:
+	    Container ID:  
+	    Image:         busybox:1.28
+	    Image ID:      
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      sleep 1200
+	    State:          Waiting
+	      Reason:       PodInitializing
+	    Ready:          False
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-655f2 (ro)
+	Containers:
+	  purple-container:
+	    Container ID:  
+	    Image:         busybox:1.28
+	    Image ID:      
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      echo The app is running! && sleep 3600
+	    State:          Waiting
+	      Reason:       PodInitializing
+	    Ready:          False
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-655f2 (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       False 
+	  Ready             False 
+	  ContainersReady   False 
+	  PodScheduled      True 
+	Volumes:
+	  kube-api-access-655f2:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type    Reason     Age   From               Message
+	  ----    ------     ----  ----               -------
+	  Normal  Scheduled  25s   default-scheduler  Successfully assigned default/purple to controlplane
+	  Normal  Pulled     24s   kubelet            Container image "busybox:1.28" already present on machine
+	  Normal  Created    24s   kubelet            Created container warm-up-1
+	  Normal  Started    23s   kubelet            Started container warm-up-1
 	```
 6. What is the state of the POD? ⇒ **`Pending`**
 7. How long after the creation of the POD will the application come up and be available to users? ⇒ **`30 Minutes`**
@@ -1616,121 +1612,121 @@ Events:
 	- Pod: red
 	- initContainer Configured Correctly
 	```javascript
-apiVersion: v1
-kind: Pod
-metadata:
-  name: red
-  namespace: default
-spec:
-  containers:
-  - command:
-    - sh
-    - -c
-    - echo The app is running! && sleep 3600
-    image: busybox:1.28
-    name: red-container
-  initContainers:
-  - image: busybox
-    name: red-initcontainer
-    command: 
-      - "sleep"
-      - "20"
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: red
+	  namespace: default
+	spec:
+	  containers:
+	  - command:
+	    - sh
+	    - -c
+	    - echo The app is running! && sleep 3600
+	    image: busybox:1.28
+	    name: red-container
+	  initContainers:
+	  - image: busybox
+	    name: red-initcontainer
+	    command: 
+	      - "sleep"
+	      - "20"
 	```
 9. A new application `orange` is deployed. There is something wrong with it. Identify and fix the issue. Once fixed, wait for the application to run before checking solution.
 	(Hint) There is a typo in the command used by the initContainer. To fix this, first get the pod definition file by running `kubectl get pod orange -o yaml > /root/orange.yaml`. Next, edit the command and fix the typo. Then, delete the old pod by running `kubectl delete pod orange` Finally, create the pod again by running `kubectl create -f /root/orange.yaml`.
 	```javascript
-controlplane ~ ➜  kubectl get pods
-NAME     READY   STATUS                  RESTARTS      AGE
-green    2/2     Running                 0             11m
-blue     1/1     Running                 0             11m
-purple   0/1     Init:0/2                0             6m8s
-orange   0/1     Init:CrashLoopBackOff   1 (11s ago)   14s
-red      1/1     Running                 0             25s
+	controlplane ~ ➜  kubectl get pods
+	NAME     READY   STATUS                  RESTARTS      AGE
+	green    2/2     Running                 0             11m
+	blue     1/1     Running                 0             11m
+	purple   0/1     Init:0/2                0             6m8s
+	orange   0/1     Init:CrashLoopBackOff   1 (11s ago)   14s
+	red      1/1     Running                 0             25s
 
-controlplane ~ ➜  kubectl describe pod orange 
-Name:         orange
-Namespace:    default
-Priority:     0
-Node:         controlplane/172.25.0.24
-Start Time:   Fri, 02 Sep 2022 07:32:47 +0000
-Labels:       <none>
-Annotations:  <none>
-Status:       Pending
-IP:           10.42.0.14
-IPs:
-  IP:  10.42.0.14
-Init Containers:
-  init-myservice:
-    Container ID:  containerd://c02ee3f5e96e226d9f93cb607227b27bf26c53db80d776c5190970f5c5c43da3
-    Image:         busybox
-    Image ID:      docker.io/library/busybox@sha256:20142e89dab967c01765b0aea3be4cec3a5957cc330f061e5503ef6168ae6613
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      sleeeep 2;
-    State:          Terminated
-      Reason:       Error
-      Exit Code:    127
-      Started:      Fri, 02 Sep 2022 07:33:03 +0000
-      Finished:     Fri, 02 Sep 2022 07:33:03 +0000
-    Last State:     Terminated
-      Reason:       Error
-      Exit Code:    127
-      Started:      Fri, 02 Sep 2022 07:32:50 +0000
-      Finished:     Fri, 02 Sep 2022 07:32:50 +0000
-    Ready:          False
-    Restart Count:  2
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xlttj (ro)
-Containers:
-  orange-container:
-    Container ID:  
-    Image:         busybox:1.28
-    Image ID:      
-    Port:          <none>
-    Host Port:     <none>
-    Command:
-      sh
-      -c
-      echo The app is running! && sleep 3600
-    State:          Waiting
-      Reason:       PodInitializing
-    Ready:          False
-    Restart Count:  0
-    Environment:    <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xlttj (ro)
-Conditions:
-  Type              Status
-  Initialized       False 
-  Ready             False 
-  ContainersReady   False 
-  PodScheduled      True 
-Volumes:
-  kube-api-access-xlttj:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type     Reason     Age                From               Message
-  ----     ------     ----               ----               -------
-  Normal   Scheduled  28s                default-scheduler  Successfully assigned default/orange to controlplane
-  Normal   Pulled     27s                kubelet            Successfully pulled image "busybox" in 500.253686ms
-  Normal   Pulled     25s                kubelet            Successfully pulled image "busybox" in 497.301972ms
-  Normal   Pulling    13s (x3 over 27s)  kubelet            Pulling image "busybox"
-  Normal   Pulled     13s                kubelet            Successfully pulled image "busybox" in 506.277072ms
-  Normal   Created    13s (x3 over 27s)  kubelet            Created container init-myservice
-  Normal   Started    12s (x3 over 26s)  kubelet            Started container init-myservice
-  Warning  BackOff    12s (x3 over 25s)  kubelet            Back-off restarting failed container
+	controlplane ~ ➜  kubectl describe pod orange 
+	Name:         orange
+	Namespace:    default
+	Priority:     0
+	Node:         controlplane/172.25.0.24
+	Start Time:   Fri, 02 Sep 2022 07:32:47 +0000
+	Labels:       <none>
+	Annotations:  <none>
+	Status:       Pending
+	IP:           10.42.0.14
+	IPs:
+	  IP:  10.42.0.14
+	Init Containers:
+	  init-myservice:
+	    Container ID:  containerd://c02ee3f5e96e226d9f93cb607227b27bf26c53db80d776c5190970f5c5c43da3
+	    Image:         busybox
+	    Image ID:      docker.io/library/busybox@sha256:20142e89dab967c01765b0aea3be4cec3a5957cc330f061e5503ef6168ae6613
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      sleeeep 2;
+	    State:          Terminated
+	      Reason:       Error
+	      Exit Code:    127
+	      Started:      Fri, 02 Sep 2022 07:33:03 +0000
+	      Finished:     Fri, 02 Sep 2022 07:33:03 +0000
+	    Last State:     Terminated
+	      Reason:       Error
+	      Exit Code:    127
+	      Started:      Fri, 02 Sep 2022 07:32:50 +0000
+	      Finished:     Fri, 02 Sep 2022 07:32:50 +0000
+	    Ready:          False
+	    Restart Count:  2
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xlttj (ro)
+	Containers:
+	  orange-container:
+	    Container ID:  
+	    Image:         busybox:1.28
+	    Image ID:      
+	    Port:          <none>
+	    Host Port:     <none>
+	    Command:
+	      sh
+	      -c
+	      echo The app is running! && sleep 3600
+	    State:          Waiting
+	      Reason:       PodInitializing
+	    Ready:          False
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xlttj (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       False 
+	  Ready             False 
+	  ContainersReady   False 
+	  PodScheduled      True 
+	Volumes:
+	  kube-api-access-xlttj:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:
+	  Type     Reason     Age                From               Message
+	  ----     ------     ----               ----               -------
+	  Normal   Scheduled  28s                default-scheduler  Successfully assigned default/orange to controlplane
+	  Normal   Pulled     27s                kubelet            Successfully pulled image "busybox" in 500.253686ms
+	  Normal   Pulled     25s                kubelet            Successfully pulled image "busybox" in 497.301972ms
+	  Normal   Pulling    13s (x3 over 27s)  kubelet            Pulling image "busybox"
+	  Normal   Pulled     13s                kubelet            Successfully pulled image "busybox" in 506.277072ms
+	  Normal   Created    13s (x3 over 27s)  kubelet            Created container init-myservice
+	  Normal   Started    12s (x3 over 26s)  kubelet            Started container init-myservice
+	  Warning  BackOff    12s (x3 over 25s)  kubelet            Back-off restarting failed container
 	```
 # 115. Self Healing Applications
 Kubernetes supports self-healing applications through ReplicaSets and Replication Controllers. The replication controller helps in ensuring that a POD is re-created automatically when the application within the POD crashes. It helps in ensuring enough replicas of the application are running at all times.

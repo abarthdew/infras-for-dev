@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section 5\]: YAML Introduction
 # 16. Introduction to YAML
 ### 🔰 서버 리스트를 담은 세 가지 다른 포맷
