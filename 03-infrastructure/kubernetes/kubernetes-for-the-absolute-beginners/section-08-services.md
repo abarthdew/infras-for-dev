@@ -360,7 +360,7 @@ Events:
     Image:        kodekloud/simple-webapp:red
 ```
 - Are you able to accesss the Web App UI? Try to access the Web Application UI using the tab simple-webapp-ui above the terminal. ⇒ `NO`
-![[https://30080-port-b8ed481b7a5741e6.labs.kodekloud.com/](https://30080-port-b8ed481b7a5741e6.labs.kodekloud.com/)]()
+![[https://30080-port-b8ed481b7a5741e6.labs.kodekloud.com/](https://30080-port-b8ed481b7a5741e6.labs.kodekloud.com/)](images/k8s-s08-44.png)
 ![](images/k8s-s08-45.png)
 
 > 💡 ⇒ Now we have to create a new service to access the Web Application, so the reason we are not able to access is because we do not have a proper service configured for the deployment. So, Let's create a new deployment with these specs provided below.
