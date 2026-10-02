@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section 8\]: Services
 # 38. Services - NodePort
 ![](images/k8s-s08-01.png)
@@ -38,9 +37,9 @@
 2. `ClusterIP`, in this case the service creates a virtual IP inside the cluster to enable communication between different services such as a set of frontend servers to a set of backend servers.
 3. `LoadBalacer` where it provisions a load balancer for our application in supported cloud providers.
 - A good example of that will be to distribute load across to different web servers in your frontend tier.
-<callout icon="💡" color="gray_bg">
-	We will now look at each of these in a bit more detail along with some demos. In this lecture, we will discuss about the node port Kubernetes service. Getting back to Node port few slide back.
-</callout>
+
+> 💡 We will now look at each of these in a bit more detail along with some demos. In this lecture, we will discuss about the node port Kubernetes service. Getting back to Node port few slide back.
+
 ## Node port
 ![](images/k8s-s08-10.png)
 - We discussed about external access to the application. We said that a service can help us by mapping a port on the node to a port on the pod.
@@ -62,9 +61,9 @@
 		- `port`: Simply port, which is a port on the service object, And we will set that to 80 as well.
 		![](images/k8s-s08-14.png)
 		- `nodePort`: Which we will set to 30008 or any number in the valid range.
-<callout icon="💡" color="gray_bg">
-	**Remember, that out of these the only mandatory field is ****`port`****.<br>**If you don't provide a target port it is assumed to be the same as port. And If you don't provide Node port, a free port in the valid range between 30000\~32767 is automatically allocated.
-</callout>
+
+> 💡 **Remember, that out of these the only mandatory field is ****`port`.<br>**If you don't provide a target port it is assumed to be the same as port. And If you don't provide Node port, a free port in the valid range between 30000\~32767 is automatically allocated.
+
 ### 🔰 Something missing
 - There is nothing here in the definition file that connects the service to the pod.
 - We have simply specified the target port but we didn't mention the target port on which pod.
@@ -187,9 +186,9 @@ Now, setting all of that external load balancing and then maintaining and managi
 - Kubernetes has support for integrating with the native LoadBalancer of certain Cloud Providers and configuring and configuring that for us.
 ![](images/k8s-s08-43.png)
 - So all you need to do is set the service type for the Frontend services to LoadBalancer instead of NodePort.
-<callout icon="💡" color="gray_bg">
-	Now remember that this only works with support Cloud Platforms. So GCP, AWS or AZURE are definitely supported.
-</callout>
+
+> 💡 Now remember that this only works with support Cloud Platforms. So GCP, AWS or AZURE are definitely supported.
+
 - So If you set the type of service to LoadBalancer, In an unsupportive environment like a virtual box, or you know, any other environment, then it would have the same effect as setting a two NodePort, where you know, the services are exposed on a high end port on the nodes. It just won't do any kind of external LoadBalancer configuration.
 - So later on, when we walked through the demos of deploying our application on Cloud Platforms, we will see this in action.
 # 42. Hands-On Labs
@@ -361,11 +360,11 @@ Events:
     Image:        kodekloud/simple-webapp:red
 ```
 - Are you able to accesss the Web App UI? Try to access the Web Application UI using the tab simple-webapp-ui above the terminal. ⇒ `NO`
-![[https://30080-port-b8ed481b7a5741e6.labs.kodekloud.com/](https://30080-port-b8ed481b7a5741e6.labs.kodekloud.com/)]()
+![[https://30080-port-b8ed481b7a5741e6.labs.kodekloud.com/](https://30080-port-b8ed481b7a5741e6.labs.kodekloud.com/)](images/k8s-s08-44.png)
 ![](images/k8s-s08-45.png)
-<callout icon="💡" color="gray_bg">
-	⇒ Now we have to create a new service to access the Web Application, so the reason we are not able to access is because we do not have a proper service configured for the deployment. So, Let's create a new deployment with these specs provided below.
-</callout>
+
+> 💡 ⇒ Now we have to create a new service to access the Web Application, so the reason we are not able to access is because we do not have a proper service configured for the deployment. So, Let's create a new deployment with these specs provided below.
+
 - Create a new service to access the web application using the `service-definition-1.yaml` file
 	- `Name:` webapp-service / `Type:` NodePort / `targetPort:` 8080 / `port:` 8080 / `nodePort:` 30080 / `selector:` simple-webapp
 ```shell

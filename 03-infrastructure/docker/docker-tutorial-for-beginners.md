@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # Docker Overview
 ## Why do you need docker?
 ![](images/tutorial-01.png)
@@ -21,4 +20,4 @@
 - Docker can run any flavor of OS on top of it, as long as they're all based on the same Kernel.
 # 색인과 출처
 - [https://www.youtube.com/watch?v=fqMOX6JJhGo](https://www.youtube.com/watch?v=fqMOX6JJhGo)
-<empty-block/>
+

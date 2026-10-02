@@ -1,4 +1,3 @@
-<table_of_contents color="gray"/>
 # \[Section 9\]: MicroServices Architecture
 # 45. Microservices Application
 ## Try & Understand Microservices Architecture using a simple Web Application
