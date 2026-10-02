@@ -45,6 +45,7 @@ API Gateway는 **여러 내부 서비스 앞에서 외부 요청을 먼저 받�
 ### 개념적 차이
 
 **Reverse Proxy (리버스 프록시):**
+
 - 클라이언트와 백엔드 사이에 위치
 - **HTTP 레벨**에서 작동
 - 캐싱, TLS 종료, 요청/응답 변환 등
@@ -52,6 +53,7 @@ API Gateway는 **여러 내부 서비스 앞에서 외부 요청을 먼저 받�
 - 예: Nginx, Apache
 
 **API Gateway:**
+
 - 클라이언트와 마이크로서비스들 사이에 위치
 - **API 레벨**에서 작동
 - 인증, 라우팅, Rate limiting, API 버전 관리 등
@@ -276,17 +278,20 @@ User Service → [Sidecar Proxy] → Order Service
 ### 인증/인가를 Gateway에서 처리하는 장단점
 
 **장점:**
+
 - 모든 서비스에서 중복 구현 불필요
 - 보안 정책 일관성 보장
 - 인증 로직 업데이트가 한 곳만 필요
 - 느린 인증 처리가 백엔드에 영향 안 함
 
 **단점:**
+
 - Gateway가 모든 인증 요청을 처리 (병목 가능성)
 - Gateway와 백엔드의 인증 방식이 다르면 복잡
 - 내부 서비스 간 통신에는 별도 인증 필요 (Service-to-Service Auth)
 
 **권장:**
+
 - 외부 API용 인증: Gateway에서
 - 내부 서비스 간: Mutual TLS, API Key, Service Mesh 등 별도로
 

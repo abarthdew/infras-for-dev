@@ -36,6 +36,7 @@ client
 | L1 | Physical | 실제 신호/케이블 | - |
 
 **"L4와 L7은 어떤 계층 정보를 보고 분산하는가?"**
+
 - **L4**: IP 주소와 포트 번호만 봄 (Transport 계층)
 - **L7**: URL, HTTP 헤더, 쿠키 등 애플리케이션 정보까지 분석 (Application 계층)
 
@@ -189,15 +190,18 @@ Sticky session은 같은 클라이언트의 모든 요청을 **같은 서버로 
 ```
 
 **필요한 경우:**
+
 - 서버 메모리에 세션 데이터 저장 (로그인 정보 등)
 - 클라이언트별 상태 유지가 필요
 
 **문제가 되는 경우:**
+
 - 로드 분산이 제대로 안 됨 (특정 서버에 요청이 몰림)
 - 서버 1이 장애나면 세션 데이터 유실 (Sticky session이 도움이 안 됨)
 - 서버 증설/감축이 어려움
 
 **대안:**
+
 - 세션을 Redis 같은 별도 저장소에 저장 → Sticky session 필요 없음
 - Session affinity 대신 **Session sharing** 사용
 
@@ -212,11 +216,13 @@ Sticky session은 같은 클라이언트의 모든 요청을 **같은 서버로 
 ### 정의
 
 **Reverse Proxy (리버스 프록시):**
+
 - 클라이언트와 백엔드 서버 사이에 위치
 - 캐싱, TLS 종료, 요청/응답 변환 등 **HTTP 레벨**에서 작동
 - 주로 **Nginx, Apache**
 
 **Load Balancer (로드밸런서):**
+
 - 여러 서버에 **요청을 분산**하는 것이 주 목적
 - L4, L7 모두 가능
 
@@ -250,6 +256,7 @@ HAProxy (Load Balancer & Reverse Proxy)
 | 예시 | Nginx, Apache | AWS NLB, ALB, HAProxy |
 
 **실제 사용:**
+
 - Nginx를 리버스 프록시 + 간단한 로드 밸런서로 사용
 - AWS ALB/NLB를 로드 밸런서로 사용하고, 각 서버에 Nginx를 리버스 프록시로 둔다
 - 둘의 기능이 겹치므로 상황에 맞게 선택

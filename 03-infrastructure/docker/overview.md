@@ -72,6 +72,7 @@ Guest OS 포함                  Host OS 공유
 ```
 
 **흐름:**
+
 ```text
 Host OS
 ├─ VM (Ubuntu OS 포함 - 자체 커널)

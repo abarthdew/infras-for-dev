@@ -136,6 +136,7 @@ GNU 시스템의 기본 셸로 채택되어 있으며, GNU/Linux 를 포함한 �
 최근 동향
 2025 년 기준 자유 소프트웨어 재단은 Bash 5.3 릴리스 후보판을 발표했으며, 계속해서 POSIX 호환성 향상과 성능 개선을 진행 중이다. Bash 는 시스템 관리, 소프트웨어 개발, 네트워크 운영 등 다양한 환경에서 가장 널리 사용되는 CLI 셸 중 하나로 자리 잡고 있다.
 ```
+
 - Z shell
 ```text
 Z shell(Zsh)는 1990년 Paul Falstad가 개발한 고급 유닉스 셸이자 명령 인터프리터다. Bourne shell의 확장판으로, Bash·KornShell·C shell의 기능을 결합해 자동 완성, 오타 교정, 플러그인 시스템 등 다양한 고급 기능을 제공한다. 2019년 macOS Catalina부터 macOS의 기본 셸로 채택되며 널리 알려졌다.
@@ -166,7 +167,6 @@ Zsh는 macOS, Linux, BSD 계열 운영체제에서 기본 혹은 선택 셸로 �
 man ls
 man grep
 ```
-
 
 ## Related Notes
 - [파일시스템과 사용자](linux-filesystem-and-users.md)
