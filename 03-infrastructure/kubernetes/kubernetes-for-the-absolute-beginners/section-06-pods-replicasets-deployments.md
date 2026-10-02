@@ -1,22 +1,22 @@
 <table_of_contents color="gray"/>
 # \[Section 6\]: Kubernetes Concepts - PODs, ReplicaSets, Deployments
 # 19. PODs with YAML
-![]()
+![](images/k8s-s06-01.png)
 - top 또는 root 레벨 프로퍼티
 	1. `apiVersion` : 생성해서 사용할 객체의 쿠버네티스 api 버전. 만들고자 하는 것에 따라 올바른 api version을 사용해야 함. 
 	2. `kind` : 만드려고 하는 객체의 참조 타입. 여기선 pod.
 	3. `metadata` : name, labels 같은 객체의 데이터.
 	4. `spec` : 만들고자 하는 객체에 대한 설명서. 객체와 관련된 쿠버네티스에 대한 추가적 정보를 제공. dictionary 형태.
-![]()
+![](images/k8s-s06-02.png)
 - matadata는 name, label과 같은 속성을 가지는 dictionary 형식으로 되어 있음. name과 labels는 형제 관계이므로 들여쓰기 잘 지킬 것.
-![]()
+![](images/k8s-s06-03.png)
 - labels는 metadata의 dictionary이며, 키-밸류 값을 가짐. 나중에 이 값을 보고 이 객체들을 식별할 수 있음.
 ### 🔰 수백개의 파드가 프론트엔드, 백엔드, 데이터베이스에서 실행된다면?
 - 배치된 후엔 이것들을 그룹화하기 어려움. ⇒ 프론트엔드, 백엔드, 데이터베이스로 라벨링하면 필터가 용이.
 - metadata 아래에는 name, labels, 쿠버네티스가 메타데이터 아래에 있을 것으로 예상하는 기타 항목 등과 같은 것들만 지정할 수 있음.
-![]()
+![](images/k8s-s06-04.png)
 - 다른 프로퍼티나 임의 프로퍼티는 추가할 수 없으나, 라벨 밑에는 키-밸류 같은 것들을 쓸 수 있음.
-![]()
+![](images/k8s-s06-05.png)
 - container는 list 또는 array. ⇒ 파드가 여러 컨테이너를 포함할 수 있기 때문.
 - -(dash)는 첫번째 아이템을 나타냄. name과 image 속성을 추가할 수 있음.
 ```bash
@@ -59,7 +59,7 @@ kubectl describe pod nginx
 ```
 # 21. Tips & Tricks - Developing Kubernetes Manifest files with Visual Studio Code
 - visual studio YAML 확장프로그램 깔기
-![]()
+![](images/k8s-s06-06.png)
 # 22. Demo - How to Access the Labs?
 - Introduction: Set an environment variable for the docker container. `POSTGRES_PASSWORD` with a value `mysecretpassword`. I know we haven't discussed this in the lecture, but it is easy. To pass in an environment variable add a new property `env` to the container object. It is a sibling of image and name. `env` is an array/list. So add a new item under it. The item will have properties `name` and `value`. `name` should be the name of the environment variable - `POSTGRES_PASSWORD`. And `value` should be the password - `mysecretpassword`.
 ```bash
@@ -302,21 +302,21 @@ pod/redis configured
 - 쿠버네티스를 모니터하는 프로세스(객체, 반응형)
 ### 🔰 Replica 그리고 왜 Replication Controller가 필요한가?
 - 싱글 파드 어플리케이션이 구동되는 시나리오로 돌아가 보자.
-![]()
+![](images/k8s-s06-07.png)
 - 어떠한 이유로 어플리케이션이 망가졌을 때, 사용자는 더 이상 접근할 수 없음.
 - 고객 접근이 실패하는 것을 막기 위해, 동시간에 작동하는 인스턴스나 파드가 더 필요하게 됨. ⇒ 하나가 망가지더라도 다른 하나로 구동 가능.
 - 레플리케이션 컨트롤러는 클러스터 내 다수의 인스턴스(single pod)를 구동할 수 있도록 도와 줌.
 - 그러므로, 이는 높은 유용성을 지님.
-![]()
+![](images/k8s-s06-08.png)
 - 그렇다면, 싱글 파드는 레플리케이션 컨트롤러를 적용할 수 없을까? ⇒ 아님.
 - 싱글 파드 구조라도, 어플리케이션이 망가졌을 때 레플리케이션 컨트롤러는 자동적으로 새로운 파드를 불러 옴.
 - 레플리케이션 컨트롤러는 항상 특정 수의 파드가 실행되게 하며, 파드가 하나든 100개든 레플리케이션 컨트롤러가 필요한 이유는 다수의 파드가 서로 노드를 공유해야 하기 때문. 
-![]()
+![](images/k8s-s06-09.png)
 - 사용자가 늘어날 때, 두 개의 파드 간 로드 밸런싱을 위해 추가적인 파드를 배치시킴. 혹은 첫번째 노드의 자원이 초과됐을 때, 클러스터 내 다른 노드에 추가적으로 파드를 배치시킴.
 - 그림과 같이, 레플리케이션 컨트롤러는 클러스터 내 다수의 노드를 가로지르며 사용함.
 - 이는 어플리케이션 확장을 위한 다른 노드의 다수 파드의 로드 밸런싱을 도움.
 ### 🔰 Replication Controller / Replica Set
-![]()
+![](images/k8s-s06-10.png)
 - Replication Controller : Older Technology. 레플리카 셋으로 바뀜.
 - Replica Set : 레플리케이션을 구성하는 새로운 방법.
 ### 🔰 Replication Controller 만들기
@@ -332,12 +332,12 @@ metadata:
 spec:
 ```
 - 이 경우, 레플리케이션 컨트롤러는 다수의 인스턴스 파드를 생성함. spec의 template 부분에 레플리케이션 컨트롤러에서 사용할 파드 템플릿을 적음. (레플리카를 생성하기 위해)
-![]()
+![](images/k8s-s06-11.png)
 - POD 템플릿은 어떻게 정의할 것인가? ⇒ 파드에 작성했던 내용을 template 아래 옮기면 됨.
-![]()
+![](images/k8s-s06-12.png)
 - 레플리카의 갯수를 레플리케이션 컨트롤러에 기재하는 것이 필요함.
 - replicas 프로퍼티는 template 프로퍼티와 동일한 칸에 옴.
-![]()
+![](images/k8s-s06-13.png)
 ```shell
 kubectl create -f rc-definition.yml // 레플리케이션 컨트롤러 생성
 kubectl get replicationcontroller // 레플리케이션 컨트롤러 목록 조회
@@ -345,15 +345,15 @@ kubectl get pods // 레플리케이션 컨트롤러에 의해 생성된 파드 �
 ```
 ### 🔰 Replica Set 만들기
 - Replication Controller와 유사함
-![]()
+![](images/k8s-s06-14.png)
 - apiVersion에는 v1이 아닌 apps/v1이 옴. 그냥 v1을 쓰게 되면 오류가 뜸.
-![]()
+![](images/k8s-s06-15.png)
 - 레플리케이션 컨트롤러와 다른 점 : selector가 있음.
-![]()
+![](images/k8s-s06-16.png)
 - selector: 어떤 파드가 아래 위치하는지.
 - 레플리카 셋은 생성 시 레플리카의 파드로 생성되지 않은 파드도 관리함.
 - selector의 labels와 일치하고, 레플리카 셋이 생성되기 전 생성된 파드를 예를 들면, 레플리카 셋은 생성될 때 이 파드들 또한 고려함.
-![]()
+![](images/k8s-s06-17.png)
 - matchLabels는 간단히 파드의 labels를 명시된 labels에 매칭시킴. 
 - 또한, labels 매칭에 대한 많은 옵션을 제공함.
 ```shell
@@ -364,19 +364,19 @@ kubectl get pods // 레플리카 셋에 의해 생성된 파드 목록 조회
 ## Lables and Selector
 ### 🔰 왜 파드와 쿠버네티스 객체에 라벨을 붙이는가?
 - 세 개의 파드를 보증하는 레플리케이션 컨트롤러 또는 레플리카 셋을 만들었다고 가정함.
-![]()
+![](images/k8s-s06-18.png)
 - 레플리케 셋 use case : 존재하는 파드를 모니터링 하는 데 사용할 수 있음.
 - 이 사례에서 이미 파드를 생성했다면, 이들은 추후 생성될 레플리카 셋으로부터 만들어진 게 아님.
 - 레플리카 셋의 역할은 파드를 모니터하고, 만약 이들이 망가졌을 때 새로운 것을 배치하는 것.
 - 레플리카 셋은 파드를 모니터링하는 process 임.
 ### 🔰 어떻게 레플리카 셋이 어떤 파드를 모니터링하는지 알까?
-![]()
+![](images/k8s-s06-19.png)
 - 서로 다른 애플리케이션에서 수백 개의 다른 클러스터 내 파드가 실행된다고 생각해 보자.
 - 생성할 때 지정한 라벨(selector)이 필터링 역할을 해 줌. 
 - selector에 지정한 라벨 이름과, 파드에 지정한 라벨이 일치하는지 확인.
 - 이 경우, 레플리카 셋은 어떤 파드가 같은 컨셉의 labels와 selector를 가지고 있는지, 모니터링 할건지 알 수 있음. 
 ### 🔰 같은 시나리오 : 3개의 파드가 있고, 항상 최소 3개의 파드를 모니터링할 것을 보장하는 레플리카 셋을 만들 예정
-![]()
+![](images/k8s-s06-20.png)
 - 레플리카 컨트롤러가 만들어졌을 때, 이는 새로운 인스턴스 파드(labels가 매칭된 세 개의 파드)를 배치시키지 않음.
 - 이 경우, 레플리카 셋 설명서의 template session을 제공하는 것이 필요함.
 - 레플리카 셋이 배치에 새로운 파드를 생성하는 것을 예상하지 않기 때문에, 파드들 중 하나가 망가지게 되면, 레플리카 셋은 파드의 수를 충족하기 위해 새로운 파드를 생성하고 유지하는 것이 필요하게 됨.
@@ -384,7 +384,7 @@ kubectl get pods // 레플리카 셋에 의해 생성된 파드 목록 조회
 ### 🔰 Let's now look at how we scaled the `Replica Set`
 - Say we stared with three replicas in the future we decided to scale to six.
 - How do we update our `Replica Set` to scale to six replicas?
-![]()
+![](images/k8s-s06-21.png)
 1. First: To update the number of `Replicas` in the definition file to 6.
 ```shell
 // sclale replicas
@@ -804,7 +804,7 @@ new-replica-set-jlnxp   1/1     Running       0          5m6s
 ```
 # 30. Deployments
 ### 🔰 How you might want to deploy your application in a production envrionment?
-![]()
+![](images/k8s-s06-22.png)
 - For example, you have a web server that needs to be deployed in a production environment.
 	1. You need not one, but many such instances of the web server running.
 	2. Whenever newer versions of application builds become available on the docker registry, you would like to upgrade your docker instances seamlessly.
@@ -814,13 +814,13 @@ new-replica-set-jlnxp   1/1     Running       0          5m6s
 	6. You don't want to apply each change immediately after the command is run, instead you like to apply a pause to your environment.
 	7. Make the changes and then resumes so that all the changes are rolled out together.
 	8. All of these capabilities are available with the Kubernetes deployments.
-![]()
+![](images/k8s-s06-23.png)
 - We discussed about pods which deploy single instances of our application such as the web application in this case. Each container is encapsulated in pods.
-![]()
+![](images/k8s-s06-24.png)
 - Multiple such pods are deployed using replication controllers or Replica Set and then comes deployment which is a Kubernetes object that comes higher in the hierarchy.
 - The deployment provides us with the capability to upgrade the underlying instances seamlessly using rolling updates, undo changes and pause and resume changes as required.
 ### 🔰 How do we create a deployment?
-![]()
+![](images/k8s-s06-25.png)
 - As with the previous components we first create the deployment definition file, the contents of the deployment definition file are exactly similar to the Replica Set definition file, except for the kink which is now going to be deployment.
 ```yaml
 kubectl create -f deployment-definition.yml
@@ -841,7 +841,7 @@ kubectl get pods
 - So far pods hasn't been much of a difference between replica set and deployments, except for the fact that deployment created a new Kubernetes object called deployments. 
 - We will see how to take advantage of the deployment using the use cases we discussed in the previous slide in the upcoming lectures.
 ### 🔰 Commands
-![]()
+![](images/k8s-s06-26.png)
 ```yaml
 kubectl get all
 ```
@@ -1086,7 +1086,7 @@ deployment.apps/deployment-1 created
 ```
 - Create a new Deployment with the below attributes using your own deployment definition file.
 Name: `httpd-frontend`; Replicas: `3`; Image: `httpd:2.4-alpine`.
-![]()
+![](images/k8s-s06-27.png)
 ```shell
 # kubectl create deployment httpd-frontend --image=httpd:2.4-alpine
 ------------------------------
@@ -1099,14 +1099,14 @@ deployment.apps/httpd-frontend scaled
 # 34. Deployments - Update and Rollback
 ### 🔰 Rollout and Versioning
 - Before we look at how we upgrade our application, let's try to understand rollouts and versioning in a deployment.
-![]()
+![](images/k8s-s06-28.png)
 - When you first create a deployment, it triggers a rollout, a new rollout creates a new deployment revision(`Revision 1`).
-![]()
+![](images/k8s-s06-29.png)
 - In the future, when the application is upgraded, meaning when the container version is updated to a new one.
 - A new rollout is triggered and a new deployment revision is created named `Revision 2`.
 - This helps us keep track of the changes made to our deployment and enables us to roll back to a previous version of deployment if necessary.
 ### 🔰 Rollout Command
-![]()
+![](images/k8s-s06-30.png)
 ```shell
 kubectl rollout status deployment/myapp-deploym
 ```
@@ -1117,20 +1117,20 @@ kybectl rollout history deployment/myapp-deployment
 - And this will show you the revisions and history of our deployment.
 ### 🔰 Deployment Strategy
 - For example, you have five replicas of your Web application instance deployed.
-	![]()
+	![](images/k8s-s06-31.png)
 	1. First Strategy: To upgrade these to a newer version is to destroy all of these and then create newer version of application instances, meaning first destroy the five running instances and then deploy five new instances of the new application version.
 		- The problem with this, as you can imagine, is that during the period after the older versions are down and before any newer version is up, the application is down and inaccessible to users.
 		- This strategy is known as the recreate strategy and thankfully this is not the default deployment strategy.
-	![]()
+	![](images/k8s-s06-32.png)
 	2.  Second Strategy: Where we did not destroy all of them at once.
 		Instead, we take down the older version and bring up a newer version, one by one.
 		- This way, the application never goes down and the upgrade is seamless.
 		- Remember, if you do not specify a strategy while creating the deployment, it will assume it to be rolling update.
 		- In other words, rolling update is the default deployment strategy.
 ### 🔰kubectl apply
-![]()
+![](images/k8s-s06-33.png)
 - How exactly do you update your deployment when I say update, it could be different things, such as updating your application version by updating the version of docker containers used, updating their labels or updating the number of replicas, etc.
-![]()
+![](images/k8s-s06-34.png)
 - Since we already have a deployment definition file, it is easy for us to modify this file.
 ```shell
 kybectl apply -f deployment-definition.yml
@@ -1145,40 +1145,40 @@ kubectl set image deployment/myapp-deployment \
 - But remember, doing it this way will result in the deployment definition file having a different configuration.
 - So, you must be careful when using the same definition file to make changes in the future.
 ### 🔰 Recreate vs RollingUpdate
-![]()
+![](images/k8s-s06-35.png)
 - The difference between the recreate and rolling update strategies can also be seen when you view the deployments in detail.
 - From the `kubectl`, describe deployment command to see the detailed information regarding the deployments.
-![]()
+![](images/k8s-s06-36.png)
 - You will notice when the recreated strategy was used, the events indicate that the old Replica Set scaled down to zero first and then the new Replica Sets scaled up to five.
 - However, when the rolling update strategy was used, the old Replica Set was scaled down one at a time, simultaneously scaling up the new Replica Set, on at a time.
 ## How a deployment performs an upgrade under the hood?
 ### 🔰 Upgrades
-![]()
+![](images/k8s-s06-37.png)
 - When a new deployment is created, to deploy five replicas, it first created a Replica Set automatically, which in turn creates the number of pods required to meet the number of replicas.
-![]()
+![](images/k8s-s06-38.gif)
 - When you upgrade your application, as we saw in the previous slide, the kubernetes deployment object creates a new Replica Set under the hood and starts deploying the containers there.
 - At the same time, taking down the pods(Red Color) int the old Replica Set following a rolling update strategy.
 ```javascript
 kubectl get replicasets
 ```
 - This can be seen when you try to list the Replica Sets using the `kubectl get replicasets` Command. 
-![]()
+![](images/k8s-s06-39.png)
 - Here we see the `old Replica Set` with `zero pod` and the `new Replica Set` with `five pods`.
 ### 🔰 Rollback
 - For instance, once you upgrade your application, you realize something isn't very right. Something's wrong with the new version of build you used to upgrade.
 - So, you would like to roll back your update.
-![]()
+![](images/k8s-s06-40.png)
 ```javascript
 kubectl rollout undo deployment/myapp-deployment
 ```
 - Kubernetes deployments allow you to roll back to a previous revision to undo a change, run the `kubectl rollout undo` Command followed by the deployment name.
-![]()
+![](images/k8s-s06-41.gif)
 - The deployment will then destroy the pod in the new Replica Set and bring the older ones up in the old Replica Set.
 - When you compare the output of the `kubectl get replicaset` Command, before and after the roll back, you will be able to notice the difference.
-![]()
+![](images/k8s-s06-42.png)
 - Before the roll back, the first Replica Set had zero pod, and new Replica Set had fice pods. And this is reversed after the rollback is finished.
 ## Summerize Commands
-![]()
+![](images/k8s-s06-43.png)
 - `kubectl create`: to create the deployment
 - `kubectl get deployments`: to list the deployments
 - `kubectl apply`, `kubectl set image`: to update the deployments

@@ -10,32 +10,32 @@ Please note that some slides are animated so content may not have exported corre
 <file src=""></file>
 # 119. OS Upgrades
 - We will discuss about scenarios where you might have to take down Node as part of your Cluster say for maintenance purposes like upgrading a base software or applying patches like security patches, etc, on your Cluster. 
-![]()
+![](images/cka-s06-01.png)
 - In this lecture , we will see the options available to handle such cases. So you have a Cluster with a few Nodes and Pods serving Applications.
-![]()
+![](images/cka-s06-02.png)
 - What happens when one of these Nodes go down? Of course the Pod on them are not accessible. Now depending upon how you deployed those Pods your users may be impacted. For example, since you have multiple Replicas of the Blue Pod, the users accessing the Blue Application are not impacted. As they are being served through the other Blue Pod that’s on line. However users accessing the Green Pod, are impacted as that was the only Pod running the Green Application.
-![]()
+![](images/cka-s06-03.gif)
 - Now, what does Kubernetes do in this case? If the Node came back online immediately, then the `kubelet` process starts and the Pods come back online.
-![]()
+![](images/cka-s06-04.png)
 - However, If the Node was down for more than 5 minutes, then the Pods are terminated from that Node. Well, Kubernetes considers them as dead.
-![]()
+![](images/cka-s06-05.png)
 - If the Pods where part of a ReplicaSet then they are recreated on other Nodes.
-![]()
+![](images/cka-s06-06.png)
 - The time it waits for a Pod to come back online is known as the Pod eviction timeout and is set on the Controller Manager with a default value of 5 minutes. So whenever a Node goes offline, the Master Node waits for up to 5 minutes before considering the Node dead.
-![]()
+![](images/cka-s06-07.png)
 - When the Node comes back on line after the Pod eviction timeout, it comes up blank without any Pods scheduled on it. Since the Blue Pod was part of a ReplicaSet, it had a new Pod created on another Node. However since the Green Pod was not part of the ReplicaSet it’s just gone.
-![]()
+![](images/cka-s06-08.png)
 - Thus, If you have maintenance tasks to be performed on a Node, If you know that the workloads running on the Node have other Replicas and if it’s okay that they go down for a short period of time. And If you’re sure the Node will come back on line within 5 minutes you can make a quick upgrade and reboot. However, you do not for sure know if a Node is going to be back on line in five minutes. Well, you cannot for sure say it is going to be back at all. So there is a safer way to do it.
-![]()
+![](images/cka-s06-09.gif)
 - you can purposefully drain the Node of all the workloads, so that the workloads are moved to other Nodes in the Cluster. Technically, they are not moved. When you drain the Node the Pods are gracefully terminated from the Node that they’re on and recreated on another.
 - The Node is also cordoned or marked as unschedulable. Meaning no Pods can be scheduled on this Node until you specifically remove the restriction.
-![]()
+![](images/cka-s06-10.png)
 - Now that the Pods are safe on the others Nodes, you can reboot the first Node. 
-![]()
+![](images/cka-s06-11.png)
 - When it comes back online , it is still unschedulable.
-![]()
+![](images/cka-s06-12.png)
 - You then need to uncordon it, so that Pods can be scheduled on it again. Remember, the Pods that were moved to the other Nodes, don’t automatically fall back. If any of those Pods where deleted or if new Pods were created in the Cluster, then they would be created on this Node.
-![]()
+![](images/cka-s06-13.png)
 - Apart from drain and uncordon, there is also another command called cordon. Cordon simply marks a Node unschedulable. Unlike drain, it does not terminate or move the Pods on an existing Node. It simply makes sure that new Pods are not scheduled on that Node.
 # 120. Practice Test - OS Upgrades
 Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-os-upgrades-2/](https://uklabs.kodekloud.com/topic/practice-test-os-upgrades-2/)
@@ -234,25 +234,25 @@ node/node01 cordoned
 - We will discuss about the various Kubernetes releases an versions.
 - What do we know about API versions in Kubernetes so far? We know that when we install a Kubernetes Cluster, we install a specific version of Kubernetes.
 - We can see that when we run the `kubectl get nodes` command. In this case its v1.11.3.
-![]()
+![](images/cka-s06-14.png)
 - In this lecture, we will see how Kubernetes project manages software releases.
-![]()
+![](images/cka-s06-15.png)
 - Let’s take a closer look at that version number. The Kubernetes release versions consists of 3 parts. The first is the major version, followed by the minor version and then the patch version. 
-![]()
+![](images/cka-s06-16.png)
 - One minor versions are released every few month with new features and functionalities, patches are released more often with critical bug fixes. 
-![]()
+![](images/cka-s06-17.png)
 - Just like many other popular applications out there, Kubernetes follows a standard software release versioning procedure. Every few month It comes out with new features and functionalities through a minor release.
-![]()
+![](images/cka-s06-18.png)
 - The first major version 1.0 was released in July of 2015. As of this recording the latest stable version is 1.13.0. Whatever we have seen here are stable releases of Kubernetes.
-![]()
+![](images/cka-s06-19.png)
 - Apart from this you will also see alpha and beta releases. All the bug fixes and improvements first go into an alpha release tagged alpha, in this release, the features are disabled by default and maybe buggy.
-![]()
+![](images/cka-s06-20.png)
 - Then from there they make their way to beta release, where the code is well tested, the new features are enabled by default.
-![]()
+![](images/cka-s06-21.png)
 - And finally they make their way to the main stable release.
-![]()
+![](images/cka-s06-22.png)
 - You can find all the releases in the releases page of the Kubernetes Github repository. Download the Kubernetes.tar.gz file and extract it to find executables for all the Kubernetes components.
-![]()
+![](images/cka-s06-23.png)
 - The downloaded package when extracted has all the control plane components in it. All of them of the same version. Remember, that there are other components within the control plane that do not have the same version numbers.
 - The ETCD Cluster and CoreDNS Servers have their own versions as they are separate projects. The release notes of each release provides information about the supported versions of externally dependent applications like ETCD and CoreDNS etc.
 # 123. References
@@ -261,94 +261,94 @@ Here is a link to kubernetes documentation if you want to learn more about this 
 [https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md)
 [https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api_changes.md](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api_changes.md)
 # 124. Cluster Upgrade Process
-![]()
+![](images/cka-s06-24.png)
 - In this lecture we discuss about Cluster Upgrade process in Kubernetes. In the previous lecture, we saw how Kubernetes manages its software releases and how different components have their versions. 
-![]()
+![](images/cka-s06-25.png)
 - We will keep dependency on external component like ETCD and CoreDNS aside for now, and focus on the core control plane components. Is t mandatory for all of these to have the same version? ⇒ No. The components can be at different release versions since the Kube API Server is the primary component in the control plane and that is the component that all other components talk to. None of the other components should ever be at a version higher than the Kube API Server. 
-![]()
+![](images/cka-s06-26.png)
 - The Controller, manager and scheduler can be at one version lower, so if API Server was at X, Controller Manager and Kube Schedulers can be at X-1 and the Kubelet and Kube-Proxy compoenets can be 2 versions lower X-2. So If Kube API Server was at 1.10, the Controller Manager and scheduler could be at 1.10 or 1.9, and the Kubelet and Kube-Proxy could be at 1.8. None of them could be at a version higher than the API Server like 1.11. 
 - Now this is not the case with Kubectl. The Kubectl utility could be at 1.11 a version higher than the API Server, 1.10 the same version as the API Server or at 1.9 a version than the API Server. Now this permissible skew in versions allows us to carry out live upgrades. We can upgrade component by component if required.
-![]()
+![](images/cka-s06-27.png)
 - So when should you upgrade? So you were at 1.10 and Kubernetes releases versions 1.11 and 1.12, at any time, Kubernetes supports only up to the recent 3 minor versions. So with 1.12 being the latest release, Kubernetes supports versions 1.12, 1.11, and 1.10.
-![]()
+![](images/cka-s06-28.png)
 - So when 1.13 is released, only versions 1.13, 1.12 and 1.11 are supported. Before the release of 1.13 would be a good time to upgrade your Cluster to the next release.
-![]()
+![](images/cka-s06-29.png)
 - So how do we upgrade? Do we upgrade directly from 1.10 to 1.13? ⇒ No. 
-![]()
+![](images/cka-s06-30.png)
 - The recommended approach is to upgrade one minor version at a time version 1.10 to 1.11, then 1.11 to 1.12 and then 1.12 to 1.13.
-![]()
+![](images/cka-s06-31.png)
 - The upgrade process depends on how your Cluster is set up. For example, If your Cluster is a managed Kubernetes Cluster deployed on cloud service providers like Google, for instance, Google Kubernetes engine lets you upgrade your Cluster easily with just a few clicks.
-![]()
+![](images/cka-s06-32.png)
 - If you deploy your Cluster using tools like `kubeadm`, then the tool can help you plan and upgrade the Cluster.
-![]()
+![](images/cka-s06-33.png)
 - If you deploy your Cluster from scratch, then you manually upgrade the different components of the Cluster yourself.
-![]()
+![](images/cka-s06-34.png)
 - In this lecture, we will look at the options by `kubeadm`. So you have a Cluster with Master and Worker Nodes running in production, hosting Pods, serving users.
-![]()
+![](images/cka-s06-35.png)
 - The Nodes and Components are at version 1.10. Upgrading a Cluster involves 2 major steps. First, you upgrade your Master Nodes and then upgrade to Worker Nodes. While the Master is being upgraded. 
-![]()
+![](images/cka-s06-36.png)
 - The control plane components such as the API Server, Scheduler and Controller Managers go down briefly.
 - The Master going down does not mean your Worker Nodes and applications on the Cluster are impacted. All workloads hosted on the Worker Nodes continue to serve users as normal since the Master is down, all management functions are down. You cannot access the Cluster using Kubectl or other Kubernetes API. You cannot deploy new applications or delete or modify existing ones. The Controller Managers don’t function either. If a Pod was to fail, a new Pod won’t be automatically created. But as long as the Nodes and the Pod are up, your applications should be up and users will not be impacted.
-![]()
+![](images/cka-s06-37.png)
 - Once the upgrade is compete and the Cluster is back up, it should function normally. We now have the Master and the Master component at version 1.11 and the Worker Nodes at version 1.10. As we saw earlier, this is a supported configuration. It is now time to upgrade the Worker Nodes. 
-![]()
+![](images/cka-s06-38.png)
 - There are different strategies available to upgrade the Worker Nodes. One is to upgrade all of them at once, but then your Pods are down and users are no longer able to access the applications.
-![]()
+![](images/cka-s06-39.png)
 - Once the upgrade is complete, the Nodes are back up. New Pods are scheduled and users can resume access. That’s one strategy that requires downtime.
-![]()
+![](images/cka-s06-40.gif)
 - The second strategy is to upgrade one Node at a time. So going back to the state where we have our Master upgraded and Nodes waiting to be upgraded, we first upgrade the first Node where the workloads move to the second and third Node and users are served from there. 
-![]()
+![](images/cka-s06-41.gif)
 - Once the first Node is upgraded and back up, we then update the second Node where the workloads move to the first and third Nodes.
-![]()
+![](images/cka-s06-42.gif)
 - And finally, the third Node where the workloads are shared between the first two.
-![]()
+![](images/cka-s06-43.png)
 - Until we have all Nodes upgraded to a newer version, we then follow the same procedure to upgrade the Nodes from 1.11 to 1.12 and then 1.13.
-![]()
+![](images/cka-s06-44.png)
 - A third strategy would be to add new Nodes to the Cluster. Nodes with newer software version. This is especially convenient if you’re on a Cloud Environment where you can easily provision new Nodes and decommission old ones. 
-![]()
+![](images/cka-s06-45.gif)
 - Nodes with the newer software version can be added to the Cluster, move the workload over to the new, and remove the old Node.
-![]()
+![](images/cka-s06-46.png)
 - Until you finally have all new Nodes with the new software version. 
-![]()
+![](images/cka-s06-47.png)
 - Let us new see how it is done. So if we were to upgrade this Cluster from 1.11 to 1.13. `kubeadm` has an upgrade command that helps in upgrading Cluster. With `kubeadm` run the `kubeadm upgrade plan` command and will give you a lot of good information. 
-![]()
+![](images/cka-s06-48.png)
 - The current Cluster version, the `kubeadm` tool version, the latest stable version of Kubernetes. 
-![]()
+![](images/cka-s06-49.png)
 - Then it lists all the Control Plane Components and their versions and what version these can be upgraded to. 
-![]()
+![](images/cka-s06-50.png)
 - It also tells you that after we upgrade the Control Plane Components, you must manually upgrade the Kubelet versions on each Node. Remember, Kubeadm does not install or upgrade Kubelets.
-![]()
+![](images/cka-s06-51.png)
 - Finally, it gives you the command to upgrade the Cluster, also note that you must upgrade the `kubeadm` tool itself before you can upgrade the Cluster. The `kubeadm` tool also follows the same software version as Kubernetes. So we are at 1.11 and we want to go to 1.13. 
-![]()
+![](images/cka-s06-52.png)
 - But remember, we can only go one minor version at a time. So we first go to 1.12, first upgrade the `kubeadm` tool itself to version 1.12, then upgrade the Cluster using the command from the upgrade plan output `kubeadm upgrade apply`. It pulls the necessary images and upgrades the Cluster Components. Once complete your Control Plane Components are now at 1.12.
-![]()
+![](images/cka-s06-53.png)
 - If you run the `kubectl et nodes` command, you will still see the Master Node at 1.11. This is because in the output of this command it is showing the versions of Kubelet on each of these Nodes registered with the API Server. And not the version of the API Server itself.
 - The next step is to upgrade the Kubelet. remember, depending on your setup, you may or may not have Kubernetes running on your master Node. In this case, the Cluster deployed with Kubeadm has Kubelets on the Master Node which are used to run the Control Plane Components as part of the Master Nodes.
 - When we set up a Kubernetes Cluster from scratch later during this course, we did not install Kubelet on the Master Nodes. You will not see the Master Node in the output of this command in that case.
-![]()
+![](images/cka-s06-54.png)
 - So the next step is to upgrade Kubelet on the Master Node. If you have Kubelets on them, run the `apt-get` Kubelet command for this.
-![]()
+![](images/cka-s06-55.png)
 - Once the package is upgraded, restart the Kubelet Service.
-![]()
+![](images/cka-s06-56.png)
 - Running the `kubectl get nodes` command now shows that the Master has been upgraded to 1.12. The Worker Nodes are still at 1.11.
-![]()
+![](images/cka-s06-57.png)
 - So next, the Worker Nodes, let us start one at a time. We need to first move the workload from the first Worker Node to the other Nodes. The `kubectl drain` command lets you safely terminate all the Pods from a Node and reduce them on the other Nodes.
-![]()
+![](images/cka-s06-58.gif)
 - It also cordons the Node and marks it unpredictable. That way, no new Pods are scheduled on it.
-![]()
+![](images/cka-s06-59.png)
 - Then upgrade the `kubeadm` and Kubelet pachages on the Worker Nodes, as we did on the Master Node.
-![]()
+![](images/cka-s06-60.png)
 - Then using the kubeadm tool upgrade command, update the node configuration for the new kubelet version.
-![]()
+![](images/cka-s06-61.png)
 - then restart the Kubelet Service.
-![]()
+![](images/cka-s06-62.gif)
 - The Node should now be up with the new software version. However, when we frain the Node, we actually marked it on unschedulable. 
-![]()
+![](images/cka-s06-63.png)
 - So we need to unmark it by running the command `kubectl uncordon node-1`.
 - The Node is now schedulable, but remember that it is not necessary that the Pods come right back to this Node. It is only marked as schedulable only when the Pods are deleted from the other Nodes or when new Pods are scheduled, do they really come back to this first Node? 
-![]()
+![](images/cka-s06-64.gif)
 - Well, it will soon come when we take down the second Node to perform the same steps to upgrade it.
-![]()
+![](images/cka-s06-65.png)
 - And finally, the third Node.
 - We now have all Nodes upgraded.
 - Head over to the practice test where you will practice upgrading a live Cluster with applications running on it without taking the applications down.

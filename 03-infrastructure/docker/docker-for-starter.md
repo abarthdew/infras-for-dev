@@ -1,7 +1,7 @@
 <table_of_contents color="gray"/>
 # Docker for Starter
 ## 서비스 정의
-![]()
+![](images/starter-01.png)
 - input에 입력하면 list에서 확인할 수 있는 서비스
 ## 스펙
 - `back`: Python 언어로 된 Flask 프레임워크
@@ -11,32 +11,32 @@
 - `db`: MySQL
 ## 개발
 - 개발용 컴퓨터에서 개발, 테스트 → 서버용 컴퓨터에 배포
-	![]()
+	![](images/starter-02.png)
 - 개발용/서버용 컴퓨터 모두 어플리케이션을 돌릴 수 있는 환경이 필요
 - 즉, 동일한 버전의 node.js, python, mysql이 두 컴퓨터에 깔려 있어야 함
-	![]()
+	![](images/starter-03.png)
 ## 하나의 컴퓨터에 여러 어플리케이션을 개발하는 경우
 - 예를 들어, 여러 버전의 node.js가 깔린 경우, 관리가 번거로움
 ## 위 문제에 대한 해결책
 ### 🧩 VM = 가상 환경? 
-![]()
+![](images/starter-04.png)
 - OS 안에 또 다른 OS를 설치해서 여러 개의 서비스를 개발하는 방식
 	⇒ 집 안에 집을 또 짓는 것과 같음
-	![]()
+	![](images/starter-05.png)
 	⇒ 하지만 컴퓨터 자원/OS 기능들이 한정적이므로 성능 면에서 불리
-	![]()
+	![](images/starter-06.png)
 ### 🧩 도커 컨테이너 활용
 - 집 안에 업무 공간으로 활용할 수 있는 컨테이너가 들어가는 것과 같음
 - `다수 + 1컨테이너`를 함께 사용하거나 or `1인 + 1컨테이너`들이 서로 연결될 수도 있음
 - 필요한 공간만 차지하므로 컴퓨터 자원 낭비가 적고, 공간이 확실히 분리되어 버전 충돌 혼란이 적음
-	![]()
+	![](images/starter-07.png)
 ## 기존 방식의 또 다른 문제: 서버 배포
 - 여러 근무자들이 함께하는 복잡한 서버일수록 서버환경 = 개발환경을 동일하게 맞추는 게 번거로움
-	![]()
+	![](images/starter-08.png)
 	⇒ 도커 컨테이너로 해결
 - 개발자는 각 컨테이너들이 어떻게 설계/설치/서로 연결/업무를 수행할지 설계도에 명시해 놓을 수 있음
 - 작성한 설계도만 보내면 동일한 개발환경 구성 가능
-	![]()
+	![](images/starter-09.png)
 ## 실습
 - Docker 데스크탑 설치
 - shell에서 버전 확인
@@ -46,7 +46,7 @@ $ docker -v
 Docker version 19.03.5, build 633a0ea
 	```
 - 필요한 소프트웨어
-	![]()
+	![](images/starter-10.png)
 - git 리포지토리 clone
 	```javascript
 git clone https://gitlab.com/yalco/practice-docker.git
@@ -88,7 +88,7 @@ undefined
 	```
 	- 이 node.js 환경은 DockerHub에서 이미지로 존재
 - 도커 이미지: 리눅스 컴퓨터의 특정 상태를 캡쳐해서 박제해놓은 것
-	![]()
+	![](images/starter-11.png)
 	⇒ node 이미지: 리눅스에 node.js가 설치된 상태를 그대로 급속 냉동해서 클라우드에 올려놓은 것
 - 도커는 이미지를 내 컴퓨터에서 찾아본 뒤, 없으면 Docker Hub로부터 해당 이름으로 등록된 이미지를 다운받음
 - `run`: 이미지를 내 컴퓨터에서 해동, 컨테이너로 만드는 명령어
@@ -122,7 +122,7 @@ root@0ced7dcabd9b:/#
 	```
 	- 해당 컨테이너 내에서 bash shell을 실행
 		⇒ windows 에서 powershell로 CLI 명령어를 입력할 수 있듯이, 맥이나 리눅스 등에는 bash shell이 있음
-		![]()
+		![](images/starter-12.png)
 		⇒ 컨테이너 내부를 통해 가상의 리눅스 환경으로 들어간 것
 		```shell
 root@0ced7dcabd9b:/# ls
@@ -133,7 +133,7 @@ boot  etc  lib   lib64  media   opt  root  sbin  sys  usr
 		⇒ 컨테이너마다 각각 이 파일 시스템과 네트워크가 있음
 	<callout icon="💡" color="gray_bg">
 		주의: 컨테이너 안에 리눅스가 전부 들어있는 것은 아님
-		![]()
+		![](images/starter-13.png)
 		- 이 리눅스 환경은 도커 데스크탑 프로그램으로 구현되고 있음
 		- 어떤 OS에서 도커를 돌리든, 도커의 컨테이너들은 리눅스 가상환경의 형태로 돌아감
 	</callout>
@@ -194,14 +194,14 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 	- 도커 컨테이너 일괄 정지 및 삭제
 ## 실제 사용
 - 컨테이너를 생성한 다음, 그 안의 근로자에게, 창문을 통해서, 할 일들을 구두로 알려주는 것 만으로는 복잡한 작업이 어려움
-	![]()
+	![](images/starter-14.png)
 - 보다 섬세한 컨테이너 활용을 위해, `Dockerfile`이 사용됨
-	![]()
+	![](images/starter-15.png)
 	- front, back, db 디렉토리 모두 `Dockerfile` 하나 씩 가지고 있음
 - Dockerfile: 나만의 이미지를 만들기 위한 설계도
 - node 이미지가 이미 있는데 왜 나만의 이미지를 만듦?
 	⇒ 컴퓨터에서 http-server 프로그램을 돌리려면 node.js 뿐만 아니라, npm 등으로 http-server가 전역으로 깔려 있어야 함
-	![]()
+	![](images/starter-16.png)
 	⇒ 즉, node.js에 http-server까지 깔린 상태가 이미지로 있어야 컨테이너로 서비스를 실행하기 수월함
 ### Dockerfile 살펴보기
 1. frontend/Dockerfile 이미지를 만들기
@@ -302,25 +302,25 @@ Hit CTRL-C to stop the server
 	- 생성될 컨테이너 이름 지정
 	- `-v`: Volumn의 약자며, 컨테이너와 특정 폴더를 공유하는 것을 뜻함
 		⇒ 코드는 내 컴퓨터에서 짜는 거니까 이 컴퓨터, 즉 집에 있음
-		![]()
+		![](images/starter-17.png)
 		⇒ 집에서 코드를 짜서 그 파일을 거실 탁자에 놓으면, 
-		![]()
+		![](images/starter-18.png)
 		⇒ 그 거실 탁자는 node.js가 일하는 컨테이너의 home 칸 node 책상의 app 서랍과 연결되어 있는 것
-		![]()
+		![](images/starter-19.png)
 		⇒ 그럼 컨테이너가 언제, 몇 개가 만들어지든 각 컨테이너의 app 서랍에는 거실에 둔 파일들로 얼마든지 서비스를 실행할 수 있음
 	- `pwd`: 현 위치 출력. 지금 위치한 이 폴더 안의 내용들이 컨테이너의 home/node/app 폴더에 들어간다는 의미.
 		⇒ 때문에, 컨테이너에서 `CMD ["http-server", "-p", "8080", "./public"]` 명령어로 파일들을 실행할 수 있음
 	- `-p`: 포트. 집의 내선번호를 컨테이너의 것과 연결하는 것.
 		⇒ 이미지 단에서 `CMD ["http-server", "-p", "8080", "./public"]`로 미리 설정해 둔 것처럼, 컨테이너는 실행 시 이 사이트를 8080번으로 송출할 거니까,
-		![]()
+		![](images/starter-20.png)
 		⇒ 그게 집에서도 같은 번호로 송출될 거면, 이처럼 집의 8080번을 컨테이너의 8080번과 연결한다고 명시
-		![]()
+		![](images/starter-21.png)
 		⇒ 만약 컨테이너를 두 개 이상 만든다면, 집의 내선번호를 공유할 수 없으므로 충돌이 남
-		![]()
+		![](images/starter-22.png)
 		⇒ 그래서 같은 이미지의 다른 컨테이너를 실행할 때는 집의 8081번을 컨테이너의 8080번과 연결한다고 변화를 주면 됨
 3. 2번의 컨테이너 실행 시, 결과
 	- [localhost:8080](http://localhost:8080) 접속
-		![]()
+		![](images/starter-23.png)
 4. `frontend` 컨테이너와 이미지 전부 삭제
 5. backend, database의 Dockerfile도 실행
 	- database/Dockerfile
@@ -414,7 +414,7 @@ Server 5.7.42-1.el7 started.
 		- 실전에서는 데이터를 유지해야 하므로 데이터 폴더를 -v 옵션으로 집의 데이터 창고랑 볼륨 공유를 할 것
 		- mysql은 3306 포트가 기본이므로, 집에도 3306으로 연결
 	- db 프로그램으로 접속하면 database 정보를 볼 수 있음
-		![]()
+		![](images/starter-24.png)
 	- 하지만, 이 컨테이너가 돌아가는 동안 터미널을 못 씀
 		⇒ 현재는 내가 보는 앞에서만, 근무자들이 컨테이너에서 일을 할 수 있도록 되어있음
 		⇒ 현재 실행되는 컨테이너는 명령어를 받지 않음
@@ -529,10 +529,10 @@ environment: # backend 환경변수 설정
 app.config['MYSQL_DATABASE_HOST'] = os.getenv('DBHOST', 'localhost')
 		```
 	- compose로 구성될 이 컨테이너들 간의 네트워크에서, 
-		![]()
+		![](images/starter-25.png)
 	- 데이터베이스에 접속할 때 이 호스트명을 사용해서 데이터베이스 컨테이너의 mysql에 접속
-		![]()
-		![]()
+		![](images/starter-26.png)
+		![](images/starter-27.png)
 3. 거시적 설계대로 서비스 실행
 	- docker-compose.yml 파일이 있는 위치에서 명령어 실행
 		```shell
@@ -540,7 +540,7 @@ PS C:\Users\auswo\Downloads\test\docker-for-starter\practice-docker> docker-comp
 		```
 		- 각 이미지 빌드 → 컨테이너로 실행됨
 	- localhost:8080으로 접속
-		![]()
+		![](images/starter-28.png)
 		- back, front, db 세 모듈이 연동되어 성공적으로 서비스 화면이 보여지는 걸 확인할 수 있음
 		- 입력, 저장, 조회 전부 가능
 	- 이미지 생성 후 뒤에서 알아서 일하도록 하기

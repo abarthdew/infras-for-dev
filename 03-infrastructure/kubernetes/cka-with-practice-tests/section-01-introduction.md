@@ -1,7 +1,7 @@
 <table_of_contents color="gray"/>
 # \[Section1\]: Introdection
 # 1. Course Introduction
-![]()
+![](images/cka-s01-01.png)
 # 2. Certification
 - 생략
 # 3. Certification Details

@@ -5,71 +5,71 @@ Please note that some slides are animated so content may not have exported corre
 이 강의 자료
 <file src=""></file>
 # 91. Rolling Updates and Rollbacks
-![]()
+![](images/cka-s05-01.png)
 - Before we look at how we upgrade our application, let;s try to understand Rollout and versioning in a Deployment.
-![]()
+![](images/cka-s05-02.png)
 - When you first create a Deployment, It triggers a Rollout. A new Rollout creates a new Deployment revision. Let’s call it Revision 1.
-![]()
+![](images/cka-s05-03.png)
 - In the future when the Application is upgraded, meaning when the container version is updated to a new one, a new Rollout is triggered and a new Deployment Revision is cretaed named Revision 2.
 - This helps us keep track of the changes made to our Deployment and enables us to Rollback to a previous version of Deployment if necessary.
-![]()
+![](images/cka-s05-04.png)
 - You can see the status of your Rollout by running the command `kubectl rollout status` followed by the name of the Deployment to see the Revisions and history of Rollout.
-![]()
+![](images/cka-s05-05.png)
 - Run the `kubectl rollout history` command followed by the Deployment name and this will show you the Revision and history of our Deployment.
 ### 🔰 Two Types of Deployment Strategies
 - There is 2 types of Deployment strategies. For example, you have 5 Replicas of your Web Application instance deployed. One way to upgrade these to a newer version is to destroy all of these and then create newer versions of Application instances. 
-![]()
+![](images/cka-s05-06.png)
 - Meaning first, destroy the 5 running instances and then deploy 5 new instances of the new application version. 
-![]()
+![](images/cka-s05-07.png)
 - The problem with this, as you can imagine, is that during the period after the older versions are down and before any newer version is up, the application is down and inaccessible to users.
-![]()
+![](images/cka-s05-08.png)
 - This strategy is known as the recreate strategy, and thankfully this is not the default deployment strategy. 
-![]()
+![](images/cka-s05-09.gif)
 - The second strategy is where we do not destroy all of them at once. Instead, we take down the older version and bring up a newer version one by one. This way the application never goes down and the upgrade is seamless.
-![]()
+![](images/cka-s05-10.png)
 - Remember, If you do not specify a strategy while creating the Deployment, It will assume it to be Rolling Update. In other words, Rolling Update is the default Deployment strategy.
 ### 🔰 About Upgrade
-![]()
+![](images/cka-s05-11.png)
 - How exactly do you update your Deployment? When I say update, It could be different things such as updating your Application version by updating the version of Docker containers used, updating their labels or updating the number of Replicas, etc.
-![]()
+![](images/cka-s05-12.png)
 - Since we already have a deployment definition file, it is easy for us to modify this file. 
-![]()
+![](images/cka-s05-13.png)
 - Once we make the necessary changes, we run the `kubectl apply` command to apply the changes. 
-![]()
+![](images/cka-s05-14.png)
 - A new Rollout is triggered and a new Revision of the Deployment is created. But there is another way to do the same thing. You could use the `kubectl set image` command to update the image of your Application, but remember doing it this way will result in the deployment-definition file having a different configuration. So you must be careful when using the same definition file to make changes in the future.
 ### 🔰 Difference between the recreate and Rolling Update strategies
-![]()
+![](images/cka-s05-15.png)
 - The difference between the recreate and rolling update strategies can also be seen when you view the deployments in detail. Run the `kubectl describe deployment` command to see the detailed information regarding the Deployments.
-![]()
+![](images/cka-s05-16.png)
 - You will notice when the Recreate strategy was used. The events indicate that the old Replica Set was scaled down to 0/1, and then the new Replica Set scaled up to 5.
-![]()
+![](images/cka-s05-17.png)
 - However, when the Rolling  Update strategy was used, the old Replica Set was scaled down one at a time, simultaneously scaling up the new Replica Set one at a time. 
 ### 🔰 How a Deployment performs an upgrade under the hood
 - Let’s look at how a Deployment performs an upgrade under the hoods. 
-![]()
+![](images/cka-s05-18.png)
 - When a new Deployment is created, to deploy 5 Replicas. It first creates a Replica Set automatically, which in turn creates the number of Pods required to meet the number of Replicas.
 - When you upgrade your Application, as we saw in the previous slide, the Kubernetes Deployment object creates a new Replica Set under the hoods and starts deploying the Containers there. 
-![]()
+![](images/cka-s05-19.gif)
 - At the same time, taking down the Pods in the old Replica Set, following a Rolling update strategy.
-![]()
+![](images/cka-s05-20.png)
 - This can be seen when you try yo list the Replica Set using the `kubectl get replicasets` command. Here we see the old Replica Set with 0 Pod and the new Replica Set with 5 Pods.
 - For instance, once you upgrade your Application, you realize something isn’t very right. Something’s wrong with the new version of build you use to upgrade. So you would like to Rollback your Update.
-![]()
+![](images/cka-s05-21.gif)
 - Kubernetes Deployments allow you to Rollback to a previous revision to undo a change, run the `kubectl rollout undo` command followed by the name of the Deployment. 
-![]()
+![](images/cka-s05-22.png)
 - The Deployment will then destroy the Pods in the new Replica Set and bring the older ones up in the old Replica Set and your Application is back to its older format.
-![]()
+![](images/cka-s05-23.png)
 - When you compare the output of the `kubectl get replicasets` command, before and after the Rollback, you will be able to notice this difference. 
-![]()
+![](images/cka-s05-24.png)
 - Before the Rollback, the first Replica Set had 0 Pods and new Replica Set had 5 Pods and this is reversed after the Rollback is finished.
 ### 🔰 Summarize Commands
-![]()
+![](images/cka-s05-25.png)
 - To summarize the commands real quick, use the `kubectl create` command to create the Deployment, `get deployments` command to list the Deployments, `apply` and `set image` commands to update the Deployments and `rollout status` command to see the status of Rollouts and `rollout undo` command to roll back a Deployment operation.
 # 92. Practice Test - Rolling Updates and Rollbacks
 Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-rolling-updates-and-rollbacks-2/](https://uklabs.kodekloud.com/topic/practice-test-rolling-updates-and-rollbacks-2/)
 # 93. Solution: Rolling update : (Optional)
 1. We have deployed a simple web application. Inspect the PODs and the Services Wait for the application to fully deploy and view the application using the link called `Webapp Portal` above your terminal.
-	![]()
+	![](images/cka-s05-26.png)
 2. What is the current color of the web application? Access the Webapp Portal. ⇒ **`blue`**
 3. Run the script named `curl-test.sh` to send multiple requests to test the web application. Take a note of the output. Execute the script at `/root/curl-test.sh`.
 	```shell
@@ -173,78 +173,78 @@ Configuring applications comprises of understanding the following concepts:
 We will see these next
 # 95. Commands
 - In this section, we will talk about Command and Arguments in a pod-definition file. This is not listed as a required topic in the certification curriculum, but I think it’s important to explain as it is a topic that is usually overlooked. Let us first refresh our memory on Commands in Containers and Docker. We will then translate this into Pods in the next lecture.
-![]()
+![](images/cka-s05-27.png)
 - In this lecture, we will look at Commands arguments and entry points in Docker. For example, Say you were to run a Docker Container from an Ubuntu image. When you run the `docker run ubuntu` command, it runs an instance of Ubuntu image and exits immediately. If you were to list the running containers, you wouldn’t see the container running.
-![]()
+![](images/cka-s05-28.png)
 - If you list all Containers including those that are stopped you will see that the new Container you ran is in an exited state.
-![]()
+![](images/cka-s05-29.png)
 - Now, why is that? Unlike Virtual Machines, Containers are not meant to host an operating system. Containers are meant to run a specific task or process such as to host an instance of a Web Server or Application Server or a Database or simply to carry out some kind of computation or analysis. Once the task is complete, the Container exits, a Container only lives as long as the process inside it is alive.
-![]()
+![](images/cka-s05-30.gif)
 - If the Web Service inside the Container is stopped or crashes the Container exits. So who defines what process is run within the Container.
-![]()
+![](images/cka-s05-31.png)
 - If you look at the Docker file for poplar Docker images like Nginx you will see an instruction called CMD which stands for command that defines the program that will be run within the container when it starts. 
-![]()
+![](images/cka-s05-32.png)
 - For the Nginx image, it is the Nginx command, for the MySQL image, it is the MySQL command.
-![]()
+![](images/cka-s05-33.png)
 - What we tried to do earlier was to run a Container with a plain Ubuntu Operating System. Let us look at the Docker file for this image you will see that it uses bash as the default command. Now bash is now really a process like a Web Server or Database Server. It is a shell that listens for inputs from a terminal if it cannot find a terminal it exits.
-![]()
+![](images/cka-s05-34.png)
 - When we ran the Ubuntu Container earlier, Docker created a Container from the Ubuntu image and launched the bash program. By default Docker does not attach a terminal to a Container when it is run.
-![]()
+![](images/cka-s05-35.png)
 - And so the bash program does not find the terminal and so it exits since the process that was started when the Container was created, finished, the Container exits as well.
 - So how do you specify a different command to start the Container? 
-	![]()
+	![](images/cka-s05-36.png)
 - Option 1: To append a command to the `docker run` command and that way it overrides the default command specified within the image. In this case, I run the `docker run ubuntu` command with the ‘sleep 5’ command as the added option.
-	![]()
+	![](images/cka-s05-37.gif)
 - This way when the Container starts it runs the sleep program, waits for 5 seconds and then exits. But how do you make that change permanent?
-![]()
+![](images/cka-s05-38.png)
 - Say you want the image to always run the sleep command when it starts. You would then create your own image from the base Ubuntu image and specify a new command.
-![]()
+![](images/cka-s05-39.png)
 - There are different ways of specifying the command either the command simply as is in a shell form or in a JSON array format like this. But remember, when you specify in a JSON array format, the first element in the array should be the executable. 
-![]()
+![](images/cka-s05-40.png)
 - In this case, the sleep program do not specify the command and parameters together like this. The command and its parameters should be separate elements in the list.
-![]()
+![](images/cka-s05-41.png)
 - So I now build by new image using the `docker build` command, and name it as ubuntu-sleeper.
-![]()
+![](images/cka-s05-42.gif)
 - I could now simply run the Docker Ubuntu sleeper command and get the same results. It always sleeps for 5 seconds and exits.
 - But what if I wish to change the number of seconds it sleeps. Currently, It is hard coded to 5 seconds. As we learned before, one option is to run the `docker run` command with the new command appended to it.
-![]()
+![](images/cka-s05-43.png)
 - In this case, sleep 10 and so the command that will be run at startup will be sleep 10. But it doesn’t look very good. The name of the image Ubuntu sleeper in itself implies that the Container will sleep. So we shouldn’t have to specify the sleep command again.
-![]()
+![](images/cka-s05-44.png)
 - Instead we would like it to be something like this `docker run ubuntu-sleeper 10`. We only want to pass in the number of seconds the Containers should sleep and sleep command should be invoked automatically.
-![]()
+![](images/cka-s05-45.png)
 - And that is where the entry point instruction comes into play. 
-![]()
+![](images/cka-s05-46.gif)
 - The entry point instruction is like the command instruction as in you can specify the program that will be run when the Container starts and whatever you specify on the Command line, in this case, 10 will be appended to the entry point so the command that will be run when the Container starts is sleep 10. So that’s the difference between the two. In case of the CMD instruction, the command line parameters passed will get replaced entirely, whereas in case of entry point, the command line parameters will get appended.
-![]()
+![](images/cka-s05-47.png)
 - Now, in the second case, what if I run the ubuntu-sleeper without appending the number of seconds. 
-![]()
+![](images/cka-s05-48.gif)
 - Then the command at startup will be just sleep and you get the error that the operant is missing. So how do you configure a default value for the command?
-![]()
+![](images/cka-s05-49.png)
 - If one was not specified in the command line. That’s where you would use both entry point as well as the command instruction.
-![]()
+![](images/cka-s05-50.gif)
 - In this case, the command instruction will be appended to the entry point instruction. So at startup the command would be sleep 5, if you didn’t specify any parameters in the command line. 
-![]()
+![](images/cka-s05-51.gif)
 - If you did then that will override the command instruction. And remember for this, to happen you should always specify the entry point and command instructions in a JSON format. 
 - Finally, what If you really want to modify the entry point during runtime. Say from sleep to an imaginary sleep 2.0 command.
-![]()
+![](images/cka-s05-52.gif)
 - In that case, you can override it by using the entry point option in the `docker run` command. The final command at startup would then be sleep 2.0 10.
 # 96. Commands and Arguments
 - We will look at Command and Arguments in a Kubernetes Pod. In previous lecture, we create a simple Docker image that sleeps for a given number of seconds.
-![]()
+![](images/cka-s05-53.png)
 - We name it ubuntu-sleeper and we ran it using the docker command `docker run ubuntu-sleeper`. By default, it sleeps for 5 seconds, but you can override it by passing a command line argument.
-![]()
+![](images/cka-s05-54.png)
 - We will now create a Pod using this image.
-![]()
+![](images/cka-s05-55.png)
 - We start with a blank pod-definition template, input the name of the Pod and specify the image name. When the Pod is created, it creates a container from the specified image, and the Container sleeps for 5 seconds before exiting.
-![]()
+![](images/cka-s05-56.png)
 - Now if you need the Container to sleep for 10 seconds as in the second command, how do you specify the additional argument in the pod-definition file? Anything that is appended to the `docker run` command will go into the “args” property of the pod-definition file in the form of an array like this.
-![]()
+![](images/cka-s05-57.png)
 - Let us try to relate that to the Docker file we created earlier. The Dockerfile has an entrypoint as well as a CMD instruction specified. The entrypoint is thecommand that is run at startup, and the CMD is the default parameter passed to the command. With the args option in the pod-definition file, we override the CMD instruction in the Dockerfile.
-![]()
+![](images/cka-s05-58.png)
 - But what if you need to override the entrypoint? Say from sleep to a hypothetical sleep 2.0 command? 
-![]()
+![](images/cka-s05-59.gif)
 - In the Docker world, we would run the `docker run` command with the entrypoint option set to the new command the corresponding entry in the pod-definition file would be using a command field. The command field corresponds to entry point instruction in the Docker file.
-![]()
+![](images/cka-s05-60.png)
 - So to summarize, there are two fields that correspond to two instructions in the Docker file. The command field overrides the entry point instruction and the args field overrides the command instruction in the Docker file. Remember, it is not the command field that overrides the CMD instruction in the Docker file.
 # 97. Practice Test - Commands and Arguments
 Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-commands-and-arguments-2/](https://uklabs.kodekloud.com/topic/practice-test-commands-and-arguments-2/)
@@ -433,7 +433,7 @@ spec:
     command: ["--color","green"]
 	```
 9. Inspect the two files under directory `webapp-color-3`. What command is run at container startup? Assume the image was created from the Dockerfile in this folder. ⇒ **`python app.py --color pink`**
-	![]()
+	![](images/cka-s05-61.png)
 	```shell
 controlplane / ➜  cd /root/webapp-color-3
 
@@ -479,60 +479,60 @@ controlplane ~ ➜  kubectl create -f pod.yaml
 pod/webapp-green created
 	```
 # 99. Configure Environment Variables in Applications
-![]()
+![](images/cka-s05-62.png)
 - In this lecture, we will see how to set an environment variable in Kubernetes. Given a pod-definition file which uses the same image as the Docker command we ran in the last lecture. To set an environment variable, use the `env` property. `env` is an array. So every item under the env property starts with a dash, indicating an item in the array.
-![]()
+![](images/cka-s05-63.png)
 - Each item has a name and a value property. 
-![]()
+![](images/cka-s05-64.gif)
 - The name is the name of the environment variable made available with the container and the value is its value.
-![]()
+![](images/cka-s05-65.png)
 - What we just saw was a direct way of specifying the environment variables using a plain key value pair format.
 - However, there are other ways of setting the environment variables such as suing config maps and secrets.
-![]()
+![](images/cka-s05-66.png)
 - The difference in this case is that instead of specifying value, we say `valueForm`. 
-![]()
+![](images/cka-s05-67.png)
 - And then a specification of configMap or secret.
 - We will discuss about configMaps and secretKeys in the upcoming lectures.
 # 100. Configuring ConfigMaps in Applications
-![]()
+![](images/cka-s05-68.png)
 - In this lecture, we discuss how to work with configuration data in Kubernetes. In the previous lecture, we saw how to define environment variables in it pod-definition file. When you have a lot of pod-definition files, it will become difficult to manage the environment data stored within the query files.
-![]()
+![](images/cka-s05-69.png)
 - We can take this information out of the pod-definition file and manage it centrally using Configuration Maps. ConfigMaps are used to pass configuration data in the form of key value pairs in Kubernetes. 
-![]()
+![](images/cka-s05-70.png)
 - When it Pod is created inject the ConfigMap into the Pod, so the key value pairs that are available as environment variables for the application hosted inside the container in the Pod.
-![]()
+![](images/cka-s05-71.png)
 - There are 2 phases involved in configuring ConfigMaps. First create the ConfigMap and second inject them into the Pod. 
-![]()
+![](images/cka-s05-72.png)
 - Just like any other Kubernetes object, there are 2 ways of creating a ConfigMap. The `imperative` way - without using a ConfigMap definition file and the `declarative` way - by using a ConfigMap definition file.
-![]()
+![](images/cka-s05-73.png)
 - If you do not with to create a ConfigMap definition file, you could simply use the `kubectl create  configmap` command and specify the required arguments.
-![]()
+![](images/cka-s05-74.png)
 - Let’s take a look at that first. With this method, you can directly specify the key value pairs in the command line. To create a ConfigMap of the given values, run the `kubectl create configmap` command. The command is followed by the config name and the option `--from-literal`. The `--from-literal` option is used to specify the key value pairs in the command itself. In this example, we are creating a ConfigMap by the name `app-config`, with a key value pair `APP_COLOR=blue`.
-![]()
+![](images/cka-s05-75.png)
 - If you wish to add additional key value pairs, simply specify the `--from-literal` options multiple times. However, this will get complicated when you have too many configuration items.
-![]()
+![](images/cka-s05-76.png)
 - Another way to input configuration data is through a file. Use the `--from-file` option to specify a path to the file that containers the required data. The data from this file is read and stored under the name of the file.
-![]()
+![](images/cka-s05-77.png)
 - Let us now look at the declarative approach. For this, we create a definition file just like how we did for the Pod. The file has `apiVersion`, `kind`, `metadata` and instead of spec, here we have `data`.
-![]()
+![](images/cka-s05-78.png)
 - The apiVersion is ‘v1’, kind is ‘ConfigMap’, under metadata specif the name of the ConfigMap, we will call it ‘app-config’. Under data add the configuration data in a key value format. Run the `kubectl create` command and specify the configuration file name. So that creates the ‘app-config’ ConfigMap with the values we specified.
 - You can create as many ConfigMaps as you need in the same way for various different purposes.
-![]()
+![](images/cka-s05-79.png)
 - Here I have one for my application, other for MySQL and another one for Redis.
-![]()
+![](images/cka-s05-80.png)
 - So It is important to name the ConfigMaps appropriately as you will be using these names later while associating it with Pods. To view the ConfigMaps, run the `kubectl get configmaps` command. 
-![]()
+![](images/cka-s05-81.png)
 - This lists the newly created ConfigMap named ‘app-config’. The describe ConfigMaps command list the configuration data as well under the data section.
-![]()
+![](images/cka-s05-82.png)
 - Now that we have the ConfigMap created, let us proceed with step 2, configuring it with a Pod. Here I have a simple pod-definition file that runs my simple web application. To inject an environment variable add a new property to the container called `envForm`.
 - The `envForm` property is a list, so we can pass as many environment variables as required. Each item in the list corresponds to a ConfigMap item. 
-![]()
+![](images/cka-s05-83.gif)
 - Specify the name of the ConfigMap we created earlier, This is how we inject a specific ConfigMap from the ones we created before. 
-![]()
+![](images/cka-s05-84.png)
 - Creating the pod-definition file creates a web application with a blue background.
-![]()
+![](images/cka-s05-85.png)
 - What we just saw was using ConfigMaps to inject environment variables, there are other way to inject configuration data into Pods.
-![]()
+![](images/cka-s05-86.png)
 - You can inject it as a single environment variable or you can inject the whole the data as files in a volume. We will look at some of these options in the coding exercises that accompany this lecture.
 # 101. Practice Test: Environment Variables
 Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-env-variables-2/](https://uklabs.kodekloud.com/topic/practice-test-env-variables-2/)
@@ -600,7 +600,7 @@ Events:
 	```
 3. What is the value set on the environment variable `APP_COLOR` on the container in the pod? ⇒ **`pink`**
 4. View the web application UI by clicking on the `Webapp Color` Tab above your terminal. This is located on the right side.
-	![]()
+	![](images/cka-s05-87.png)
 5. Update the environment variable on the POD to display a `green` background Note: Delete and recreate the POD. Only make the necessary changes. Do not modify the name of the Pod.
 	- Pod Name: webapp-color
 	- Label Name: webapp-color
@@ -631,7 +631,7 @@ controlplane ~ ➜  kubectl create -f webapp-color.yml
 pod/webapp-color created
 	```
 6. View the changes to the web application UI by clicking on the `Webapp Color` Tab above your terminal. If you already have it open, simply refresh the browser.
-	![]()
+	![](images/cka-s05-88.png)
 7. How many `ConfigMaps` exists in the `default` namespace? ⇒ **`2`**
 	```shell
 controlplane ~ ➜  kubectl get configmaps
@@ -732,64 +732,64 @@ controlplane ~ ➜  kubectl create -f webapp-color.yml
 pod/webapp-color created
 	```
 11. View the changes to the web application UI by clicking on the `Webapp Color` Tab above your terminal. If you already have it open, simply refresh the browser.
-	![]()
+	![](images/cka-s05-89.png)
 # 103. Configure Secrets in Applications
-![]()
+![](images/cka-s05-90.png)
 - Here we have a simple Python Web Application that connects to a MySQL Database. 
-![]()
+![](images/cka-s05-91.png)
 - On success, the Application displays a successful message.
-![]()
+![](images/cka-s05-92.png)
 - If you look closely into the code, you will see the hostname, username, and password hardcoded. This is of course not a good idea.
-![]()
+![](images/cka-s05-93.png)
 - As we learned in the previous lecture, one option would be to move these values into a ConfigMap. 
-![]()
+![](images/cka-s05-94.png)
 - The ConfigMap Stores configuration data in plain text format. So while it would be okay to move the hostname and username into a ConfigMap it is definitely not the right place to store a password. This is where secrets coming.
-![]()
+![](images/cka-s05-95.gif)
 - Secrets are used to store sensitive information like passwords or keys. They’re similar to ConfigMap except that they’re stored in an encoded or hashed format.
-![]()
+![](images/cka-s05-96.png)
 - As with ConfigMaps, there are 2 steps involved in working with secrets. First, create the secret, and second, injected the Pod.
-![]()
+![](images/cka-s05-97.png)
 - There are 2 ways of creating a secret. The `imperative` way - without using a secret definition file and the `declarative` way - by using a secret definition file.
-![]()
+![](images/cka-s05-98.png)
 - With the imperative method, you can directly specify the key value pairs in the command line itself. To create a secret of the given values, run the `kubectl create secret generic` command. The command is followed by the secret name and the option `--form-literal`. The `--from-literal` option is used to specify the key value pairs in the command itself. In this example, we are creating a secret by the name ‘app-secret’, with a key value pair ‘DB_HOST=mysql’. 
-![]()
+![](images/cka-s05-99.png)
 - If you wish to add additional key value pairs, simply specify the `—from-literal` options multiple times. 
-![]()
+![](images/cka-s05-100.png)
 - However, this could get complicated when you have too many secret to pass in. Another way to input the secret data is through a file. Use the `--from-file` option to specify a path to the file that contains the required data. The data from this file is read and stored under the name of the file.
-![]()
+![](images/cka-s05-101.png)
 - Let us now look at the `declarative`  approach. For this, we create a definition file, just like how we did for the ConfigMap. The file has `apiVersion`, `kind`, `metadata` and `data`. The `apiVersion` is ‘v1’, kind is ‘Secret’. Under metadata specify the name of the Secret, we will call it ‘app-secret’.
-![]()
+![](images/cka-s05-102.png)
 - Under the data, add the secret data in a key-value format. 
-![]()
+![](images/cka-s05-103.png)
 - However, on thing we discussed about secrets was that there used to store sensitive data and are stored in an encoded format. Here we have specified the data in plain text which is not very safe. 
-![]()
+![](images/cka-s05-104.png)
 - So while creating a secret with a declarative approach, you must specify the secret values in a hashed format. 
-![]()
+![](images/cka-s05-105.png)
 - So you must specify the data in an encoded form like this.
-![]()
+![](images/cka-s05-106.png)
 - But how do you convert the data from plain text to an encoded format.
-![]()
+![](images/cka-s05-107.png)
 - On a Linux host from the command, `echo -n` followed by the text you are trying to convert, which is MySQL in this case and pipe that to the base64 utility. 
-![]()
+![](images/cka-s05-108.png)
 - To view secrets run the `kubectl get secrets` command. 
-![]()
+![](images/cka-s05-109.png)
 - This lists the newly created secret along with another secret previously created by Kubernetes for its internal purposes.
 - To view more information on the newly created Secret, run the `kubectl describe secret` command. This shows the attributes in the Secret. But hides the value themselves. 
-![]()
+![](images/cka-s05-110.png)
 - To view the values as well, run the `kubectl get secret` command with the output displayed in a YAML format using the `-o` option. You can now see the hashed values as well.
-![]()
+![](images/cka-s05-111.png)
 - Now, how do you decode these hashed values? Use the same base64 command used earlier to encode it, but this time add a decode option to it. Now that we have Secret created, let us proceed with step 2.
-![]()
+![](images/cka-s05-112.png)
 - Configuring it with a Pod, here I have a simple pod-definition file that runs my application.
-![]()
+![](images/cka-s05-113.png)
 - To inject an environment variable, add a new property to the container called `envForm`. The `envForm` property is a list. So we can pass as many environment variables as required.
-![]()
+![](images/cka-s05-114.gif)
 - Each item in the list corresponds to a secret item. Specify the name of the Secret we created earlier, creating the pod-definition file now makes the data in the Secret available as environment variables for the application.
-![]()
+![](images/cka-s05-115.png)
 - What we just saw was injecting Secrets as environment variables into the Pods. There are other ways to inject secret into Pods.
-![]()
+![](images/cka-s05-116.png)
 - You can inject as single environment variables or inject the whole secret as files in a volume.
-![]()
+![](images/cka-s05-117.png)
 - If you were to mount the Secret as a volume in the Pod, each attribute in the Secret is created as a file with the value of the Secret as its content. In this case, since we have 3 attributes in our Secret 3 files are created and If we look at the contents of the ‘DB_Password’ file we see the password in it.
 # 104. A note about Secrets!
 Remember that secrets encode data in base64 format. Anyone with the base64 encoded secret can easily decode it. As such the secrets can be considered as not very safe.
@@ -832,14 +832,14 @@ token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IjJPOWVoMkhhZzU0UEkxMWhzWkNYUFQyZWYyUW8y
 3. What is the type of the `default-token` secret? ⇒ **`kubernetes.io/service-account-token`**
 4. Which of the following is not a secret data defined in `default-token` secret? ⇒ **`type`**
 5. We are going to deploy an application with the below architecture We have already deployed the required pods and services. Check out the pods and services created. Check out the web application using the `Webapp MySQL` link above your terminal, next to the Quiz Portal Link.
-	![]()
+	![](images/cka-s05-118.png)
 6. The reason the application is failed is because we have not created the secrets yet. Create a new secret named `db-secret` with the data given below. You may follow any one of the methods discussed in lecture to create the secret.
 	(Hint) Run the command: `kubectl create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123`
 	- Secret Name: db-secret
 	- Secret 1: DB_Host=sql01
 	- Secret 2: DB_User=root
 	- Secret 3: DB_Password=password123
-	![]()
+	![](images/cka-s05-119.png)
 	```shell
 controlplane ~ ➜  kubectl create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123
 secret/db-secret created
@@ -924,30 +924,30 @@ controlplane ~ ➜  kubectl create -f webapp-pod.yml
 pod/webapp-pod created
 	```
 8. View the web application to verify it can successfully connect to the database.
-	![]()
+	![](images/cka-s05-120.png)
 # 107. Scale Applications
 We have already discussed about scaling applications in the Deployments and Rolling updates and Rollback sections.
 # 108. Multi Container PODs
-![]()
+![](images/cka-s05-121.gif)
 - The idea of decoupling a large Monolithic Application into sub-components known as Microservices enables us to develop and deploy a set of independent small and reusable code.
-![]()
+![](images/cka-s05-122.gif)
 - This architecture can then help us scale up, down as well as modify each Service as required as opposed to modifying the entire Application.
-![]()
+![](images/cka-s05-123.png)
 - However at times you may need 2 Services to work together such as a Web Server and a logging Service.
-![]()
+![](images/cka-s05-124.gif)
 - You need on agent instance per Web Server instance paired together. You don’t want to march and bloat the code of the 2 Services as each of them target different functionalities,
-![]()
+![](images/cka-s05-125.gif)
 - And you’d still like them to be developed and deployed separately.
 - You only need the 2 functionality yo work together.
-![]()
+![](images/cka-s05-126.gif)
 - You need 1 agent per Web Server instance paired together and can scale up and down together.
-![]()
+![](images/cka-s05-127.gif)
 - And that is why you have multi-container Pods that share the same life cycle which means they are created together and destroy together.
-![]()
+![](images/cka-s05-128.png)
 - They share the same network space which means they can refer to each other as local host and they have access to the same storage volumes. This way you do not have to establish volume sharing or Services between the Pods to enable communication between them.
-![]()
+![](images/cka-s05-129.png)
 - To create a Multi-Container Pod, add the new container information to the pod-definition file. Remember, the container section under the `spec` section in a pod-definition file is an array. And the reason it is an array is to allow multiple containers in a single Pod.
-![]()
+![](images/cka-s05-130.png)
 - In this case, we add a new container named log agent to our existing Pod.
 # 109. Practice Test - Multi Container PODs
 Link to Practice Test: [https://uklabs.kodekloud.com/topic/practice-test-multi-container-pods-2/](https://uklabs.kodekloud.com/topic/practice-test-multi-container-pods-2/)
@@ -1052,7 +1052,7 @@ spec:
     image: redis
 	```
 4. We have deployed an application logging stack in the `elastic-stack` namespace. Inspect it. Before proceeding with the next set of questions, please wait for all the pods in the `elastic-stack` namespace to be ready. This can take a few minutes.
-	![]()
+	![](images/cka-s05-131.png)
 5. We will configure a sidecar container for the application to send logs to Elastic Search.NOTE: It can take a couple of minutes for the `Kibana` UI to be ready after the `Kibana` pod is ready. You can inspect the `Kibana` logs by running:`kubectl -n elastic-stack logs kibana`.
 	<details>
 	<summary>logs</summary>
@@ -1277,13 +1277,13 @@ spec:
 	```
 9. Inspect the Kibana UI. You should now see logs appearing in the `Discover` section. You might have to wait for a couple of minutes for the logs to populate. You might have to create an index pattern to list the logs. If not sure check this video: `https://bit.ly/2EXYdHf`
 	⇒ Go to Kibaba UI.
-	![]()
-	![]()
-	![]()
+	![](images/cka-s05-132.png)
+	![](images/cka-s05-133.png)
+	![](images/cka-s05-134.png)
 	- Is that you have to create an index pattern and combine a user’s index patterns to retrieve data from Elasticsearch. In this case, Basically we’re just going to get everything.
-	![]()
-	![]()
-	![]()
+	![](images/cka-s05-135.png)
+	![](images/cka-s05-136.png)
+	![](images/cka-s05-137.png)
 	- So, these are the logs that are coming through.
 # 111. Multi-container PODs Design Patterns
 There are 3 common patterns, when it comes to designing multi-container PODs. The first and what we just saw with the logging service example is known as a side car pattern. The others are the adapter and the ambassador pattern.
